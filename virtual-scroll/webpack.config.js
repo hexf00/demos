@@ -6,17 +6,17 @@ module.exports = function (env) {
     resolve: {
       /** js是必填 */
       extensions: [".ts", ".tsx", ".js"],
-      alias: {
-        /** node版的vue 没有运行时解析模板的能力 */
-        'vue': 'vue/dist/vue.js'
-      }
+      // alias: {
+      //   /** node版的vue 没有运行时解析模板的能力 */
+      //   'vue': 'vue/dist/vue.js'
+      // }
     },
     plugins: [
       new HtmlWebpackPlugin({
         /** html模板的路径地址 */
-        template: './src/index.html', 
+        template: './src/index.html',
         /** 生成的文件名 */
-        filename: 'index.html', 
+        filename: 'index.html',
         /** 引入JS里面加入hash值 */
         hash: true
       })
@@ -24,7 +24,20 @@ module.exports = function (env) {
     module: {
       rules: [
         /** 仅接受ts */
-        { test: /\.tsx?$/, loader: "ts-loader" }
+        { test: /\.ts$/, loader: "ts-loader" },
+        {
+          test: /\.tsx$/,
+          exclude: /(node_modules)/,
+          use: [
+            {
+              loader: 'babel-loader',
+              options: {
+                presets: ['@babel/preset-env']
+              }
+            },
+            "ts-loader"
+          ]
+        }
       ]
     }
   };
