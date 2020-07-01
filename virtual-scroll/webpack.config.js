@@ -2,10 +2,14 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = function (env) {
   return {
-    entry: "./src/index.ts",
+    entry: "./src/index.tsx",
     resolve: {
       /** js是必填 */
-      extensions: [".ts",".js"]
+      extensions: [".ts", ".tsx", ".js"],
+      alias: {
+        /** node版的vue 没有运行时解析模板的能力 */
+        'vue': 'vue/dist/vue.js'
+      }
     },
     plugins: [
       new HtmlWebpackPlugin({
@@ -20,7 +24,7 @@ module.exports = function (env) {
     module: {
       rules: [
         /** 仅接受ts */
-        { test: /\.ts$/, loader: "ts-loader" }
+        { test: /\.tsx?$/, loader: "ts-loader" }
       ]
     }
   };
