@@ -1,8 +1,10 @@
+import a from "./a";
 
-class a {
-  static b() {
-    console.log("b");
-  }
-}
+
 
 console.log(a.b());
+
+
+window.a = a;
+
+window.b = "123";
