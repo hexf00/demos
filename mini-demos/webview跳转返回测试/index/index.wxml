@@ -1,0 +1,2 @@
+<view class="intro">要想webview有返回按钮，则需要添加一个非webview的首页</view>
+<button bindtap="goWebView">gowebview</button>
