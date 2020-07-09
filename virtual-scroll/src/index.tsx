@@ -5,20 +5,31 @@ interface INode {
   text: string;
   child?: INode[];
   focus: Function;
+  showEditStatus: Boolean;
+  showEdit: Function;
   bindFocus(fn: () => void): void;
+  bindShowEdit(fn: () => void): void;
 }
 
 class Node implements INode {
   text: string;
   child?: INode[];
+  showEditStatus =false;
   focus = () => {};
-  constructor(text: string) {
+  showEdit = () => {};
+  constructor(text: string, child: INode[] = []) {
     this.text = text;
+    this.child = child;
   }
   bindFocus(fn: () => void) {
     this.focus = fn;
   }
+  bindShowEdit(fn: () => void) {
+    this.showEdit = fn;
+  }
 }
+
+
 
 /** 节点 */
 Vue.component("node", {
@@ -31,20 +42,39 @@ Vue.component("node", {
         this.$emit("newb");
         e.stopPropagation();
         e.preventDefault();
+      } else if (e.key == "ArrowUp") {
+        var div1 = document.getElementsByTagName("div")[0];
+        div1.focus();
+        console.log(div1, window.getSelection());
+        //@ts-ignore
+        window.getSelection().collapse(div1,1);
       }
     },
     New() {
       console.log("newb");
       this.$emit("newb");
     },
+    blur() {
+      console.log("blur", this.value.text);
+      this.value.showEditStatus = false;
+    }
   },
-  mounted(){
+  mounted() {
+    this.value.bindFocus(() => {
+      let nodeEl = this.$refs.node as HTMLElement;
+      nodeEl.focus();
+    })
 
-  },
+    this.value.bindShowEdit(() => {
+      let nodeEl = this.$refs.node as HTMLTextAreaElement;
+      console.log("ShowEdit", this.value.text);
+      this.value.showEditStatus = true;
+    });
+  },  
   render(h) {
     console.log(this.value);
 
-    let list = this.value.child ? (
+    let list = this.value.child.length > 0 ? (
       <node-list value={this.value.child} onnewb={this.New}></node-list>
     ) : (
       ""
@@ -52,9 +82,18 @@ Vue.component("node", {
 
     return (
       <li onNew={this.New}>
-        <p ref="node" contenteditable="true" onKeydown={this.onKeyUp}>
+       
+        <div
+          ref="node"
+          contenteditable={this.value.showEditStatus}
+          onFocus={this.value.showEdit}
+          onBlur={this.blur}
+          onMousedown={this.value.showEdit}
+          onKeydown={this.onKeyUp}
+          tabindex={-1}
+        >
           {this.value.text}
-        </p>
+        </div>
         {list}
       </li>
     );
@@ -95,22 +134,23 @@ new Vue({
   data() {
     return {
       a: [
-        { text: "123" },
-        {
-          text: "abc",
-          child: [
-            {
-              text: "def",
-            },
-          ],
-        },
+        new Node("123"),
+        new Node("abc", [
+          new Node("def")
+        ])
       ] as INode[],
     };
   },
   methods: {
     New() {
       console.log("newb");
-      this.a.push(new Node(""));
+      let newNode = new Node("");
+      this.a.push(newNode);
+
+      this.$nextTick(() => {
+        newNode.focus();
+      })
+
     },
   },
   render(h) {
