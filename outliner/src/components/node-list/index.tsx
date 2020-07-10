@@ -1,8 +1,12 @@
 import { FC } from '../../common/vue-tsx'
 import NodeComponent, { INode } from '../node'
+import NodeService from '../node/service'
 
 export interface INodeList {
-  nodes: INode[]
+  nodes: INode[];
+  dict: {
+    [key: string]: NodeService
+  }
 }
 
 
