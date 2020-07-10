@@ -12,7 +12,7 @@ interface INode {
 }
 
 class Node implements INode {
-  text: string;
+  text: string = "";
   child?: INode[];
   showEditStatus = false;
   focus = () => {};
@@ -52,10 +52,18 @@ Vue.component("node", {
       console.log("newb");
       this.$emit("newb");
     },
-    blur() {
-      console.log("blur", this.value.text);
+    blur(e:Event){
+      
       this.value.showEditStatus = false;
-    },
+      
+      var html  =(e.currentTarget as HTMLElement).innerHTML;
+      console.log("blur",html);
+      this.$nextTick(()=>{
+        this.value.text = html;
+      })
+      
+
+    }
   },
   mounted() {
     this.value.bindFocus(() => {
@@ -86,18 +94,29 @@ Vue.component("node", {
     let input;
 
     if (this.value.showEditStatus) {
+      // input = (
+      //   <textarea
+      //     ref="node"
+      //     onKeydown={this.onKeyUp}
+      //     onBlur={this.onInput}
+      //     tabindex={-1}
+      //   >
+      //     {this.value.text}
+      //   </textarea>
+      // );
       input = (
-        <textarea
+        <div
           ref="node"
+          contenteditable={true}
           onKeydown={this.onKeyUp}
-          tabindex={-1}
+          onBlur={this.blur}
         >
           {this.value.text}
-        </textarea>
+        </div>
       );
     } else {
       input = (
-        <div ref="node" onMouseup={this.value.focus} tabindex={-1}>
+        <div ref="node" onMouseup={this.value.focus}>
           {this.value.text}
         </div>
       );
@@ -133,8 +152,8 @@ Vue.component("node-list", {
   render(h) {
     return (
       <ul>
-        {(this.value as INode[]).map((it: INode) => (
-          <node value={it} onnewb={this.New}></node>
+        {(this.value as INode[]).map((it: INode, index) => (
+          <node key={index} value={it} onnewb={this.New}></node>
         ))}
       </ul>
     );
