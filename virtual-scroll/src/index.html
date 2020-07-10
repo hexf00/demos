@@ -1,13 +1,30 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Demo</title>
-</head>
-<body>
-  <div id="app">
-    123:{{a}}
-  </div>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Demo</title>
+    <style>
+      /* html,body{
+        min-height: 100%;
+    } */
+      textarea {
+        outline: 1px solid transparent;
+        overflow-wrap: break-spaces;
+        vertical-align: top;
+        margin-top: -1px;
+        background-color: transparent;
+        padding-top: 4px;
+        padding-bottom: 4px;
+        letter-spacing: inherit;
+        border: none;
+        resize: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      123:{{a}}
+    </div>
+  </body>
 </html>

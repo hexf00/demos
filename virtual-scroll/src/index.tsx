@@ -14,7 +14,7 @@ interface INode {
 class Node implements INode {
   text: string;
   child?: INode[];
-  showEditStatus =false;
+  showEditStatus = false;
   focus = () => {};
   showEdit = () => {};
   constructor(text: string, child: INode[] = []) {
@@ -28,8 +28,6 @@ class Node implements INode {
     this.showEdit = fn;
   }
 }
-
-
 
 /** 节点 */
 Vue.component("node", {
@@ -47,7 +45,7 @@ Vue.component("node", {
         div1.focus();
         console.log(div1, window.getSelection());
         //@ts-ignore
-        window.getSelection().collapse(div1,1);
+        window.getSelection().collapse(div1, 1);
       }
     },
     New() {
@@ -57,43 +55,57 @@ Vue.component("node", {
     blur() {
       console.log("blur", this.value.text);
       this.value.showEditStatus = false;
-    }
+    },
   },
   mounted() {
     this.value.bindFocus(() => {
-      let nodeEl = this.$refs.node as HTMLElement;
-      nodeEl.focus();
-    })
-
-    this.value.bindShowEdit(() => {
-      let nodeEl = this.$refs.node as HTMLTextAreaElement;
       console.log("ShowEdit", this.value.text);
       this.value.showEditStatus = true;
+      this.$nextTick(() => {
+        console.log(123);
+        let nodeEl = this.$refs.node as HTMLTextAreaElement;
+        console.log(nodeEl);
+      
+        nodeEl.focus()
+        // nodeEl.select();
+      });
     });
-  },  
+
+    // this.value.bindShowEdit();
+  },
   render(h) {
     console.log(this.value);
 
-    let list = this.value.child.length > 0 ? (
-      <node-list value={this.value.child} onnewb={this.New}></node-list>
-    ) : (
-      ""
-    );
+    let list =
+      this.value.child.length > 0 ? (
+        <node-list value={this.value.child} onnewb={this.New}></node-list>
+      ) : (
+        ""
+      );
 
-    return (
-      <li onNew={this.New}>
-       
-        <div
+    let input;
+
+    if (this.value.showEditStatus) {
+      input = (
+        <textarea
           ref="node"
-          contenteditable={this.value.showEditStatus}
-          onFocus={this.value.showEdit}
-          onBlur={this.blur}
-          onMousedown={this.value.showEdit}
           onKeydown={this.onKeyUp}
           tabindex={-1}
         >
           {this.value.text}
+        </textarea>
+      );
+    } else {
+      input = (
+        <div ref="node" onMouseup={this.value.focus} tabindex={-1}>
+          {this.value.text}
         </div>
+      );
+    }
+
+    return (
+      <li onNew={this.New}>
+        {input}
         {list}
       </li>
     );
@@ -107,7 +119,7 @@ Vue.component("node-list", {
   },
   methods: {
     onKeyUp(e: KeyboardEvent) {
-      if (e.key == "Enter") { 
+      if (e.key == "Enter") {
         this.$emit("newb");
         e.stopPropagation();
         e.preventDefault();
@@ -133,12 +145,7 @@ Vue.component("node-list", {
 new Vue({
   data() {
     return {
-      a: [
-        new Node("123"),
-        new Node("abc", [
-          new Node("def")
-        ])
-      ] as INode[],
+      a: [new Node("123"), new Node("abc", [new Node("def")])] as INode[],
     };
   },
   methods: {
@@ -149,8 +156,7 @@ new Vue({
 
       this.$nextTick(() => {
         newNode.focus();
-      })
-
+      });
     },
   },
   render(h) {
