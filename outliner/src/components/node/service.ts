@@ -20,7 +20,7 @@ export default class NodeService implements INode {
   add(item: NodeService) {
     const index = this.nodes.indexOf(item)
     const node = new NodeService({
-      value: this.editor.value + '-',
+      value: '',
       children: []
     }, this)
     this.nodes.splice(index + 1, 0, node)

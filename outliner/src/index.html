@@ -11,33 +11,34 @@
       width: 400px;
       overflow-y: auto;
     }
-
-    ul {
-      position: relative;
-
+    ul{
+      border-left: 1px solid #ddd;
     }
 
     li {
       width: 100%;
+      display: block;
+      position: relative;
+    }
+
+    div.input::before{
+      content:"*";
+      position:absolute;
+      display:block;
+      left: -1.5em;
     }
 
     li div {
-      min-height: 1em;
       word-wrap: break-word;
-      word-break: normal;
-    }
-
-    textarea {
+      word-break: break-all;
       outline: 1px solid transparent;
       overflow-wrap: break-spaces;
       vertical-align: top;
-      margin-top: -1px;
       background-color: transparent;
-      padding-top: 4px;
-      padding-bottom: 4px;
       letter-spacing: inherit;
       border: none;
       resize: none;
+      white-space: none;
     }
   </style>
 </head>

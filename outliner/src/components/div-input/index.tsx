@@ -11,42 +11,52 @@ export interface IDivInput {
 
 @Component
 export default class DivInput extends Vue {
-  $props!: { service: IDivInput }
-  $el!: HTMLElement
-  @Prop() service!: IDivInput
+  $props!: { service: IDivInput };
+  $el!: HTMLElement;
+
+  $refs!: {
+    input: HTMLInputElement;
+  };
+
+  @Prop() service!: IDivInput;
 
   mounted() {
-    this.$watch('service.value', () => {
-      console.log("watch", this.service.value);
-      // if (this.service.value !== this.$el.innerText) {
-        this.$el.innerHTML = this.service.value
-      // }else{
-      //   console.log("!!");
-      // }
-    }, { immediate: true })
+    this.$watch(
+      "service.value",
+      () => {
+        console.log("watch", this.service.value);
+        if (this.service.value !== this.$refs.input.innerText) {
+          this.$refs.input.innerHTML = this.service.value;
+        } else {
+          console.log("!!");
+        }
+      },
+      { immediate: true }
+    );
 
     this.service.bindFocus(() => {
-      this.$el.focus()
-      // getSelection()?.collapse(this.$el, this.service.value ? 1 : 0)
-    })
+      this.$refs.input.focus();
+    });
   }
 
-
   render(h: CreateElement) {
-
-    return <div
-      contenteditable
-      onkeydown={(event: KeyboardEvent) => {
-        if (event.keyCode === 13) {
-          this.service.onEnter()
-          event.preventDefault()
-        }
-      }}
-      onBlur={
-        ({ currentTarget }: { currentTarget: HTMLDivElement }) => {
-          this.service.onInput(currentTarget.innerText)
-        }
-      }
-    >{this.service.value}</div>
+    return (
+      <div>
+        <div
+          ref="input"
+          class="input"
+          contenteditable
+          onkeydown={(event: KeyboardEvent) => {
+            if (event.keyCode === 13) {
+              this.service.onEnter();
+              event.preventDefault();
+            }
+          }}
+          onInput={({ currentTarget }: { currentTarget: HTMLDivElement }) => {
+            this.service.onInput(currentTarget.innerText);
+          }}
+        ></div>
+      </div>
+    );
   }
 }
