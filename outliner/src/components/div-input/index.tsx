@@ -7,11 +7,12 @@ export interface IDivInput {
   onInput: (value: string) => void;
   onEnter: () => void;
   bindFocus: (callback: () => void) => void;
+  tab: () => void;
 }
 
 @Component
 export default class DivInput extends Vue {
-  $props!: { service: IDivInput; hideClass?: string };
+  $props!: { service: IDivInput;};
   $el!: HTMLElement;
 
   $refs!: {
@@ -19,7 +20,6 @@ export default class DivInput extends Vue {
   };
 
   @Prop() service!: IDivInput;
-  @Prop() hideClass?: string;
 
   mounted() {
     this.$watch(
@@ -38,9 +38,7 @@ export default class DivInput extends Vue {
     console.log("div-input mounted", this.service.value);
     this.service.bindFocus(() => {
       console.log("focus");
-      setTimeout(() => {
-         this.$refs.input.focus();
-      },0)
+      this.$refs.input.focus();
     });
   }
 
@@ -48,11 +46,16 @@ export default class DivInput extends Vue {
     return (
       <div
         ref="input"
-        class={"input  " + this.hideClass}
+        class={"input"}
         contenteditable
         onkeydown={(event: KeyboardEvent) => {
-          if (event.keyCode === 13) {
+          // console.log(event.keyCode);
+
+          if (event.keyCode === 13 /** 回车 */) {
             this.service.onEnter();
+            event.preventDefault();
+          } else if (event.keyCode === 9 /** tab */) {
+            this.service.tab();
             event.preventDefault();
           }
         }}

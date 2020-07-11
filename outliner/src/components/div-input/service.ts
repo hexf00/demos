@@ -7,6 +7,7 @@ export default class DivInputService implements IDivInput {
     private onEnterCallback: () => void,
     private onBlurCallback: () => void,
     private updateValue: (value: string) => void,
+    public tab: () => void,
   ) {
     console.log(arguments)
   }
@@ -25,22 +26,24 @@ export default class DivInputService implements IDivInput {
   }
   bindFocus(callback: () => void) {
 
-    console.log("bindFocus", this.isNeedBindFocus)
+    // console.log("bindFocus", this.isNeedBindFocus)
     this.focusCallback = callback
 
 
     //此处要求 data和dom有1对1关系，否则focus则始终只有一处
 
-    if (this.isNeedBindFocus) {
+    // if (this.isNeedBindFocus) {
       this.focusCallback()
-      this.isNeedBindFocus = false
-    }
+    //   this.isNeedBindFocus = false
+    // }
   }
   focus() {
+    console.log("focus");
     if (this.focusCallback) {
       this.focusCallback()
-    } else {
-      this.isNeedBindFocus = true
-    }
+    } 
+    // else {
+    //   this.isNeedBindFocus = true
+    // }
   }
 }

@@ -8,36 +8,58 @@ import NodePreview, { INodePreview } from "../node-preview";
 export interface INode {
   root: INodeList;
   isShowEditor: boolean;
-  showEditor: Function;
   hideEditor: Function;
   editor: IDivInput;
   preview: INodePreview;
+  currFocus: string;
   nodes: INode[];
   key: string;
+  focus: Function;
 }
 
-const NodeComponent = FC<{ service: INode }>({
-  functional: true,
-  render(h, context) {
+@Component
+export default class NodeComponent extends Vue {
+  $props!: { service: INode; key?: string };
+  @Prop() service!: INode;
+
+  render(h: CreateElement) {
     const {
       root,
       isShowEditor,
-      showEditor,
       editor,
       preview,
+      currFocus,
       nodes,
       key,
-    } = context.props.service;
-    let service = context.props.service;
+    } = this.service;
+    let service = this.service;
 
-    console.log("render isShowEditor", key, isShowEditor);
+    // console.log("render isShowEditor", key, isShowEditor);
+
+    //isShowEditor 需要进行双重判断。 只改变当前激活的节点（鼠标所在，光标所在）
+    console.error(isShowEditor, key == currFocus, key, currFocus);
+    let input =
+      isShowEditor && this?.$vnode?.key == currFocus ? (
+        <DivInput service={editor}></DivInput>
+      ) : (
+        ""
+      );
+    let previewC =
+      isShowEditor && this?.$vnode?.key == currFocus ? (
+        ""
+      ) : (
+        <NodePreview service={preview}></NodePreview>
+      );
 
     //子节点，无论如何都是应该显示的
     let list =
       nodes.length > 0 ? (
         <ul>
           {nodes.map((node) => (
-            <NodeComponent service={node}></NodeComponent>
+            <NodeComponent
+              key={this?.$vnode?.key+"-" + node.key}
+              service={node}
+            ></NodeComponent>
           ))}
         </ul>
       ) : (
@@ -56,17 +78,22 @@ const NodeComponent = FC<{ service: INode }>({
         //无引用
 
         return (
-          <li key={key} key2={key}>
-            <DivInput
-              hideClass={isShowEditor ? "" : "hide"}
-              service={editor}
-            ></DivInput>
+          <li key2={key}>
+            {input}
             <div class={isShowEditor ? "hide" : "refNode"}>
-              <i class="edit" onClick={() => service.showEditor()}>
+              <i
+                class="edit"
+                onClick={() => {
+                  service.focus(this.$vnode?.key);
+                }}
+              >
                 修改
               </i>
               <ul>
-                <NodeComponent service={refNode}></NodeComponent>
+                <NodeComponent
+                  key={this.$vnode?.key+"-"+ refNode.key}
+                  service={refNode}
+                ></NodeComponent>
               </ul>
             </div>
             {list}
@@ -77,15 +104,9 @@ const NodeComponent = FC<{ service: INode }>({
 
         //无引用
         return (
-          <li key={key} key2={key}>
-            <DivInput
-              hideClass={isShowEditor ? "" : "hide"}
-              service={editor}
-            ></DivInput>
-            <NodePreview
-              hideClass={isShowEditor ? "hide" : ""}
-              service={preview}
-            ></NodePreview>
+          <li key2={key}>
+            {input}
+            {previewC}
             {list}
           </li>
         );
@@ -93,20 +114,12 @@ const NodeComponent = FC<{ service: INode }>({
     } else {
       //无引用
       return (
-        <li key={key} key2={key}>
-          <DivInput
-            hideClass={isShowEditor ? "" : "hide"}
-            service={editor}
-          ></DivInput>
-          <NodePreview
-            hideClass={isShowEditor ? "hide" : ""}
-            service={preview}
-          ></NodePreview>
+        <li key2={key}>
+          {input}
+          {previewC}
           {list}
         </li>
       );
     }
-  },
-});
-
-export default NodeComponent;
+  }
+}

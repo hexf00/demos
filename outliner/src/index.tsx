@@ -30,6 +30,7 @@ new Vue({
   data() {
     return {
       list,
+      currFocus:"",
     };
   },
   render(h) {

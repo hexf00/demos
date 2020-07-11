@@ -7,15 +7,17 @@ export default class NodeListService implements INodeList {
     [key: string]: NodeService
   } = {}
   constructor(data: Tree<{value: string }>) {
-    this.nodes = data.map(item => new NodeService(item, this, this, ''))
+    this.nodes = data.map(item => new NodeService(item, this, this, '',this))
   }
   add(item: NodeService) {
     const index = this.nodes.indexOf(item)
+
+    // 此处传参不一样
     const node = new NodeService({
       value: '',
       children: []
-    }, this, this,'')
+    }, this, this,'', this)
     this.nodes.splice(index + 1, 0, node)
-    node.focus()
+    node.focus(node.key)
   }
 }

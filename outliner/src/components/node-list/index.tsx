@@ -14,7 +14,7 @@ const NodeList = FC<{ service: INodeList }>({
   functional: true,
   render(h, context) {
     const { nodes } = context.props.service
-    return nodes.map(item => <NodeComponent service={item}></NodeComponent>)
+    return nodes.map(item => <NodeComponent key={item.key} service={item}></NodeComponent>)
   }
 })
 

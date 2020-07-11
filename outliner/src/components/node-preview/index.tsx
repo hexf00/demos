@@ -4,15 +4,14 @@ import { CreateElement } from 'vue'
 
 export interface INodePreview {
   value: string;
-  onClick: () => void;
+  focus: (currKey:string) => void;
 }
 
 @Component
 export default class NodePreview extends Vue {
   //给组件检验提示  使用这个组件的时候 属性要符合这个规则
-  $props!: { service: INodePreview; hideClass?: string };
+  $props!: { service: INodePreview;};
   @Prop() service!: INodePreview;
-  @Prop() hideClass?: string;
   $refs!: {
     input: HTMLInputElement;
   };
@@ -40,9 +39,9 @@ export default class NodePreview extends Vue {
     return (
       <div
         ref="input"
-        class={"input preview " + this.hideClass}
+        class={"input preview"}
         onClick={() => {
-          this.service.onClick();
+            this.service.focus(String(this.$parent?.$vnode?.key));
         }}
       >
         {this.service.value}

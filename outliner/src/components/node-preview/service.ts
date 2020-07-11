@@ -3,14 +3,9 @@ import { INodePreview } from "."
 export default class NodePreviewService implements INodePreview {
   value = ''
   constructor(
-
-    private onClickCallback: () => void
-
+    public focus: (key:string) => void
   ) {
     
   }
 
-  onClick() {
-    this.onClickCallback();
-  }
 }
