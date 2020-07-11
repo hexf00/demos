@@ -4,25 +4,25 @@ import NodeList from "./components/node-list";
 
 let list = new NodeListService([
   {
-    value: "a",
+    value: "{{2}}",
     children: [],
   },
   {
-    value: "b",
+    value: "上海",
+    children: [],
+  },
+  {
+    value: "江苏",
     children: [
       {
-        value: "b-1",
-        children: [{ value: "b-1-1", children: [] }],
+        value: "南京",
+        children: [{ value: "秦淮", children: [] }],
       },
       {
-        value: "b-2",
+        value: "苏州",
         children: [],
       },
     ],
-  },
-  {
-    value: "{{1}}",
-    children: [],
   },
 ]);
 

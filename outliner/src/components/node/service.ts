@@ -4,7 +4,7 @@ import NodeListService from "../node-list/service"
 
 let key = 0
 export default class NodeService implements INode {
-  key = (key++).toString()
+  key :string
   nodes: NodeService[]
   root: NodeListService
   isShowEditor: boolean = false
@@ -29,14 +29,17 @@ export default class NodeService implements INode {
       value: string
     }>
   }, private callback: { add: (node: NodeService) => void },
-    root: NodeListService) {
+    root: NodeListService,
+    parentKey: string) {
+    this.key = parentKey + (key++).toString();
+
     this.root = root;
     this.editor.value = value
 
     //建立字典
     this.root.dict[this.key] = this;
 
-    this.nodes = children.map(item => new NodeService(item, this, root))
+    this.nodes = children.map(item => new NodeService(item, this, root, this.key))
   }
   add(item: NodeService) {
     const index = this.nodes.indexOf(item)
@@ -45,7 +48,7 @@ export default class NodeService implements INode {
     const node = new NodeService({
       value: '',
       children: []
-    }, this, this.root)
+    }, this, this.root, this.key)
     this.nodes.splice(index + 1, 0, node)
     node.focus()
   }

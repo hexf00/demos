@@ -49,7 +49,7 @@ const NodeComponent = FC<{ service: INode }>({
         let refNode = root.dict[r[1]];
 
         let preview = (
-          <li key={key}>
+          <li key={key}  key2={key}>
             <div class="refNode">
               <i class="edit" onClick={() => service.showEditor()}>
                 修改
@@ -63,7 +63,7 @@ const NodeComponent = FC<{ service: INode }>({
         );
 
         let editorEL = (
-          <li key={key}>
+          <li key={key}  key2={key}>
             <DivInput service={editor}></DivInput>
             {list}
           </li>
@@ -76,7 +76,7 @@ const NodeComponent = FC<{ service: INode }>({
 
         //无引用
         return (
-          <li key={key}>
+          <li key={key}  key2={key}>
             <DivInput service={editor}></DivInput>
             {list}
           </li>
@@ -85,7 +85,7 @@ const NodeComponent = FC<{ service: INode }>({
     } else {
       //无引用
       return (
-        <li key={key}>
+        <li key={key}  key2={key}>
           <DivInput service={editor}></DivInput>
           {list}
         </li>

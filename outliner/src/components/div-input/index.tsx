@@ -41,10 +41,6 @@ export default class DivInput extends Vue {
     });
   }
 
-  /** 销毁生命周期 */
-  $destroy() {
-    console.log("destroy")
-  }
 
   render(h: CreateElement) {
     return (
