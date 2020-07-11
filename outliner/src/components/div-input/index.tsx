@@ -7,7 +7,7 @@ export interface IDivInput {
   onInput: (value: string) => void;
   onEnter: () => void;
   bindFocus: (callback: () => void) => void;
-  tab: () => void;
+  tab: (currKey : string) => void;
 }
 
 @Component
@@ -55,7 +55,12 @@ export default class DivInput extends Vue {
             this.service.onEnter();
             event.preventDefault();
           } else if (event.keyCode === 9 /** tab */) {
-            this.service.tab();
+            
+            if (this.$parent.$vnode.data?.class != "ref"){
+              //引用根节点不可再缩进
+              this.service.tab(String(this.$parent.$vnode.key));
+            }
+            
             event.preventDefault();
           }
         }}

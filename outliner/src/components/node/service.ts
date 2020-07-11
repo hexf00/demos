@@ -27,11 +27,13 @@ export default class NodeService implements INode {
 
       const index = this.parent.nodes.indexOf(this);
 
-      console.log("tab", index);
+      console.log("tab", currKey, index);
       if (index == 0) {
         //已是最末端的节点
         return;
       }
+
+      //引用的根节点不允许继续缩进
 
       const newParent = this.parent.nodes[index - 1];
       const my = this.parent.nodes.splice(index,1);
@@ -41,7 +43,8 @@ export default class NodeService implements INode {
       my[0].parent = newParent;
 
 
-      my[0].focus();
+      //此处需要重新设置焦点
+      //my[0].focus();
 
       //成为相邻的前一个节点的子节点
 

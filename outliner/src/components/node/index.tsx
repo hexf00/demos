@@ -19,7 +19,7 @@ export interface INode {
 
 @Component
 export default class NodeComponent extends Vue {
-  $props!: { service: INode; key?: string };
+  $props!: { service: INode; key?: string; class?: string };
   @Prop() service!: INode;
 
   render(h: CreateElement) {
@@ -57,7 +57,7 @@ export default class NodeComponent extends Vue {
         <ul>
           {nodes.map((node) => (
             <NodeComponent
-              key={this?.$vnode?.key+"-" + node.key}
+              key={this?.$vnode?.key + "-" + node.key}
               service={node}
             ></NodeComponent>
           ))}
@@ -75,15 +75,15 @@ export default class NodeComponent extends Vue {
         console.log(root.dict[r[1]]);
         let refNode = root.dict[r[1]];
 
-        //无引用
-
-        return (
-          <li key2={key}>
-            {input}
-            <div class={isShowEditor ? "hide" : "refNode"}>
+        let previewC2 =
+          isShowEditor && this?.$vnode?.key == currFocus ? (
+            ""
+          ) : (
+            <div class="refNode">
               <i
                 class="edit"
                 onClick={() => {
+                  console.log("ref edit onclick ", this.$vnode?.key);
                   service.focus(this.$vnode?.key);
                 }}
               >
@@ -91,11 +91,21 @@ export default class NodeComponent extends Vue {
               </i>
               <ul>
                 <NodeComponent
-                  key={this.$vnode?.key+"-"+ refNode.key}
+                  key={this.$vnode?.key + "-" + refNode.key}
+                  class="ref"
                   service={refNode}
                 ></NodeComponent>
               </ul>
             </div>
+          );
+
+        //无引用
+
+        //ref 用来标准是否为引用的根节点
+        return (
+          <li>
+            {input}
+            {previewC2}
             {list}
           </li>
         );
@@ -104,7 +114,7 @@ export default class NodeComponent extends Vue {
 
         //无引用
         return (
-          <li key2={key}>
+          <li>
             {input}
             {previewC}
             {list}
@@ -114,7 +124,7 @@ export default class NodeComponent extends Vue {
     } else {
       //无引用
       return (
-        <li key2={key}>
+        <li>
           {input}
           {previewC}
           {list}
