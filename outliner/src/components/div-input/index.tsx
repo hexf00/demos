@@ -4,6 +4,7 @@ import { CreateElement } from 'vue'
 
 export interface IDivInput {
   value: string
+  onBlur: ()=>void
   onInput: (value: string) => void
   onEnter: () => void
   bindFocus: (callback: () => void) => void
@@ -33,10 +34,16 @@ export default class DivInput extends Vue {
       },
       { immediate: true }
     );
-
+    
+    console.log("div-input mounted", this.service.value);
     this.service.bindFocus(() => {
       this.$refs.input.focus();
     });
+  }
+
+  /** 销毁生命周期 */
+  $destroy() {
+    console.log("destroy")
   }
 
   render(h: CreateElement) {
@@ -52,6 +59,7 @@ export default class DivInput extends Vue {
               event.preventDefault();
             }
           }}
+          onBlur={() => { this.service.onBlur() } }
           onInput={({ currentTarget }: { currentTarget: HTMLDivElement }) => {
             this.service.onInput(currentTarget.innerText);
           }}

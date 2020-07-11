@@ -7,9 +7,22 @@ export default class NodeService implements INode {
   key = (key++).toString()
   nodes: NodeService[]
   root: NodeListService
+  isShowEditor: boolean = false
+
+
   editor = new DivInputService(() => {
     this.callback.add(this)
+  }, () => {
+    this.hideEditor()
   })
+
+  showEditor() {
+    this.isShowEditor = true
+    this.focus()
+  }
+  hideEditor() {
+    this.isShowEditor = false
+  }
   constructor({ value, children }: {
     value: string
     children: Tree<{

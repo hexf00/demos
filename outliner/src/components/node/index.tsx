@@ -6,6 +6,9 @@ import { INodeList } from "../node-list";
 
 export interface INode {
   root: INodeList;
+  isShowEditor: boolean;
+  showEditor: Function;
+  hideEditor: Function;
   editor: IDivInput;
   nodes: INode[];
   key: string;
@@ -14,7 +17,15 @@ export interface INode {
 const NodeComponent = FC<{ service: INode }>({
   functional: true,
   render(h, context) {
-    const { root, editor, nodes, key } = context.props.service;
+    const {
+      root,
+      isShowEditor: showEditorStatus,
+      showEditor,
+      editor,
+      nodes,
+      key,
+    } = context.props.service;
+    let service = context.props.service;
 
     //子节点，无论如何都是应该显示的
     let list =
@@ -37,16 +48,29 @@ const NodeComponent = FC<{ service: INode }>({
         console.log(root.dict[r[1]]);
         let refNode = root.dict[r[1]];
 
-
-        //无引用
-        return (
+        let preview = (
           <li key={key}>
-            <ul class="refNode">
-              <NodeComponent service={refNode}></NodeComponent>
-            </ul>
+            <div class="refNode">
+              <i class="edit" onClick={() => service.showEditor()}>
+                修改
+              </i>
+              <ul>
+                <NodeComponent service={refNode}></NodeComponent>
+              </ul>
+            </div>
             {list}
           </li>
         );
+
+        let editorEL = (
+          <li key={key}>
+            <DivInput service={editor}></DivInput>
+            {list}
+          </li>
+        );
+
+        //无引用
+        return showEditorStatus ? editorEL : preview;
       } else {
         console.error("错误的节点");
 

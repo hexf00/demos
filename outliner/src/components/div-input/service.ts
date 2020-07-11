@@ -1,12 +1,13 @@
 import { IDivInput } from "."
 
 export default class DivInputService implements IDivInput {
-  private isNeedFocus = false
+  private isNeedBindFocus = false
   private focusCallback?: () => void
   constructor(
-    private onEnterCallback: () => void
+    private onEnterCallback: () => void,
+    private onBlurCallback: () => void
   ) {
-
+    console.log(arguments)
   }
   value = ''
   onInput(value: string) {
@@ -16,18 +17,22 @@ export default class DivInputService implements IDivInput {
   onEnter() {
     this.onEnterCallback()
   }
+  onBlur() {
+    this.onBlurCallback();
+    this.focusCallback = undefined; //销毁
+  }
   bindFocus(callback: () => void) {
     this.focusCallback = callback
-    if (this.isNeedFocus) {
+    if (this.isNeedBindFocus) {
       this.focusCallback()
-      this.isNeedFocus = false
+      this.isNeedBindFocus = false
     }
   }
   focus() {
     if (this.focusCallback) {
       this.focusCallback()
     } else {
-      this.isNeedFocus = true
+      this.isNeedBindFocus = true
     }
   }
 }
