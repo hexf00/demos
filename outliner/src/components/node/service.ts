@@ -31,7 +31,7 @@ export default class NodeService implements INode {
   showEditor() {
     console.log("isShowEditor", this.isShowEditor);
     this.isShowEditor = true
-    // this.focus()
+    this.focus()
   }
   hideEditor() {
     this.isShowEditor = false

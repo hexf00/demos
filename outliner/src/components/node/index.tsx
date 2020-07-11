@@ -53,9 +53,15 @@ const NodeComponent = FC<{ service: INode }>({
         console.log(root.dict[r[1]]);
         let refNode = root.dict[r[1]];
 
-        let preview2 = (
+        //无引用
+
+        return (
           <li key={key} key2={key}>
-            <div class="refNode">
+            <DivInput
+              hideClass={isShowEditor ? "" : "hide"}
+              service={editor}
+            ></DivInput>
+            <div class={isShowEditor ? "hide" : "refNode"}>
               <i class="edit" onClick={() => service.showEditor()}>
                 修改
               </i>
@@ -66,23 +72,20 @@ const NodeComponent = FC<{ service: INode }>({
             {list}
           </li>
         );
-
-        let editorEL = (
-          <li key={key} key2={key}>
-            <NodePreview service={preview}></NodePreview>
-            {list}
-          </li>
-        );
-
-        //无引用
-        return isShowEditor ? editorEL : preview2;
       } else {
         console.error("错误的节点");
 
         //无引用
         return (
           <li key={key} key2={key}>
-            <NodePreview service={preview}></NodePreview>
+            <DivInput
+              hideClass={isShowEditor ? "" : "hide"}
+              service={editor}
+            ></DivInput>
+            <NodePreview
+              hideClass={isShowEditor ? "hide" : ""}
+              service={preview}
+            ></NodePreview>
             {list}
           </li>
         );
@@ -91,8 +94,14 @@ const NodeComponent = FC<{ service: INode }>({
       //无引用
       return (
         <li key={key} key2={key}>
-          <DivInput service={editor}></DivInput>
-          <NodePreview hideClass={isShowEditor?"":"hide"} service={preview}></NodePreview>
+          <DivInput
+            hideClass={isShowEditor ? "" : "hide"}
+            service={editor}
+          ></DivInput>
+          <NodePreview
+            hideClass={isShowEditor ? "hide" : ""}
+            service={preview}
+          ></NodePreview>
           {list}
         </li>
       );

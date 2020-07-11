@@ -1,18 +1,17 @@
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
-import { CreateElement } from 'vue'
-
+import { Vue, Component, Prop, Watch } from "vue-property-decorator";
+import { CreateElement } from "vue";
 
 export interface IDivInput {
-  value: string
-  onBlur: ()=>void
-  onInput: (value: string) => void
-  onEnter: () => void
-  bindFocus: (callback: () => void) => void
+  value: string;
+  onBlur: () => void;
+  onInput: (value: string) => void;
+  onEnter: () => void;
+  bindFocus: (callback: () => void) => void;
 }
 
 @Component
 export default class DivInput extends Vue {
-  $props!: { service: IDivInput };
+  $props!: { service: IDivInput; hideClass?: string };
   $el!: HTMLElement;
 
   $refs!: {
@@ -20,6 +19,7 @@ export default class DivInput extends Vue {
   };
 
   @Prop() service!: IDivInput;
+  @Prop() hideClass?: string;
 
   mounted() {
     this.$watch(
@@ -34,31 +34,35 @@ export default class DivInput extends Vue {
       },
       { immediate: true }
     );
-    
+
     console.log("div-input mounted", this.service.value);
     this.service.bindFocus(() => {
-      this.$refs.input.focus();
+      console.log("focus");
+      setTimeout(() => {
+         this.$refs.input.focus();
+      },0)
     });
   }
 
-
   render(h: CreateElement) {
     return (
-        <div
-          ref="input"
-          class="input"
-          contenteditable
-          onkeydown={(event: KeyboardEvent) => {
-            if (event.keyCode === 13) {
-              this.service.onEnter();
-              event.preventDefault();
-            }
-          }}
-          onBlur={() => { this.service.onBlur() } }
-          onInput={({ currentTarget }: { currentTarget: HTMLDivElement }) => {
-            this.service.onInput(currentTarget.innerText);
-          }}
-        ></div>
+      <div
+        ref="input"
+        class={"input  " + this.hideClass}
+        contenteditable
+        onkeydown={(event: KeyboardEvent) => {
+          if (event.keyCode === 13) {
+            this.service.onEnter();
+            event.preventDefault();
+          }
+        }}
+        onBlur={() => {
+          this.service.onBlur();
+        }}
+        onInput={({ currentTarget }: { currentTarget: HTMLDivElement }) => {
+          this.service.onInput(currentTarget.innerText);
+        }}
+      ></div>
     );
   }
 }
