@@ -42,8 +42,12 @@
       display:block;
       left: -1em;
     }
-
+    .hide{
+      display: none;
+    }
     li div {
+      /** 无内容时需要撑开div */
+      min-height: 1.3em;
       word-wrap: break-word;
       word-break: break-all;
       outline: 1px solid transparent;

@@ -44,7 +44,6 @@ export default class DivInput extends Vue {
 
   render(h: CreateElement) {
     return (
-      <div>
         <div
           ref="input"
           class="input"
@@ -60,7 +59,6 @@ export default class DivInput extends Vue {
             this.service.onInput(currentTarget.innerText);
           }}
         ></div>
-      </div>
     );
   }
 }

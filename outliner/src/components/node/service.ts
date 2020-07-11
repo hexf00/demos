@@ -1,24 +1,37 @@
 import { INode } from "."
 import DivInputService from "../div-input/service"
 import NodeListService from "../node-list/service"
+import NodePreviewService from "../node-preview/service"
 
 let key = 0
 export default class NodeService implements INode {
-  key :string
+  key: string
+  value: string
   nodes: NodeService[]
   root: NodeListService
   isShowEditor: boolean = false
 
 
+
+  //实例化编辑器Data
   editor = new DivInputService(() => {
     this.callback.add(this)
   }, () => {
-    this.hideEditor()
+      this.hideEditor()
+  }, (value:string) => {
+      this.value = value
+      this.preview.value = value
+  })
+
+  //实例化预览Data
+  preview = new NodePreviewService(() => {
+    this.showEditor();
   })
 
   showEditor() {
+    console.log("isShowEditor", this.isShowEditor);
     this.isShowEditor = true
-    this.focus()
+    // this.focus()
   }
   hideEditor() {
     this.isShowEditor = false
@@ -34,7 +47,9 @@ export default class NodeService implements INode {
     this.key = parentKey + (key++).toString();
 
     this.root = root;
+    this.value = value
     this.editor.value = value
+    this.preview.value = value
 
     //建立字典
     this.root.dict[this.key] = this;

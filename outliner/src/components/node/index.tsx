@@ -3,6 +3,7 @@ import { CreateElement } from "vue";
 import { FC } from "../../common/vue-tsx";
 import DivInput, { IDivInput } from "../div-input";
 import { INodeList } from "../node-list";
+import NodePreview, { INodePreview } from "../node-preview";
 
 export interface INode {
   root: INodeList;
@@ -10,6 +11,7 @@ export interface INode {
   showEditor: Function;
   hideEditor: Function;
   editor: IDivInput;
+  preview: INodePreview;
   nodes: INode[];
   key: string;
 }
@@ -19,13 +21,16 @@ const NodeComponent = FC<{ service: INode }>({
   render(h, context) {
     const {
       root,
-      isShowEditor: showEditorStatus,
+      isShowEditor,
       showEditor,
       editor,
+      preview,
       nodes,
       key,
     } = context.props.service;
     let service = context.props.service;
+
+    console.log("render isShowEditor", key, isShowEditor);
 
     //子节点，无论如何都是应该显示的
     let list =
@@ -48,8 +53,8 @@ const NodeComponent = FC<{ service: INode }>({
         console.log(root.dict[r[1]]);
         let refNode = root.dict[r[1]];
 
-        let preview = (
-          <li key={key}  key2={key}>
+        let preview2 = (
+          <li key={key} key2={key}>
             <div class="refNode">
               <i class="edit" onClick={() => service.showEditor()}>
                 修改
@@ -63,21 +68,21 @@ const NodeComponent = FC<{ service: INode }>({
         );
 
         let editorEL = (
-          <li key={key}  key2={key}>
-            <DivInput service={editor}></DivInput>
+          <li key={key} key2={key}>
+            <NodePreview service={preview}></NodePreview>
             {list}
           </li>
         );
 
         //无引用
-        return showEditorStatus ? editorEL : preview;
+        return isShowEditor ? editorEL : preview2;
       } else {
         console.error("错误的节点");
 
         //无引用
         return (
-          <li key={key}  key2={key}>
-            <DivInput service={editor}></DivInput>
+          <li key={key} key2={key}>
+            <NodePreview service={preview}></NodePreview>
             {list}
           </li>
         );
@@ -85,8 +90,9 @@ const NodeComponent = FC<{ service: INode }>({
     } else {
       //无引用
       return (
-        <li key={key}  key2={key}>
+        <li key={key} key2={key}>
           <DivInput service={editor}></DivInput>
+          <NodePreview hideClass={isShowEditor?"":"hide"} service={preview}></NodePreview>
           {list}
         </li>
       );
