@@ -5,6 +5,7 @@ declare global {
     a: typeof a,
     b: string
     currFocus: string
+    shiftKeyStatus: boolean
   }
 
   namespace JSX {

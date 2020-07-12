@@ -7,17 +7,19 @@ export interface IDivInput {
   onInput: (value: string) => void;
   onEnter: () => void;
   bindFocus: (callback: () => void) => void;
-  tab: (currKey : string) => void;
+  tab: (currKey: string) => void;
+  shiftTab: (currKey: string) => void;
 }
 
 @Component
 export default class DivInput extends Vue {
-  $props!: { service: IDivInput;};
+  $props!: { service: IDivInput };
   $el!: HTMLElement;
 
   $refs!: {
     input: HTMLInputElement;
   };
+
 
   @Prop() service!: IDivInput;
 
@@ -41,7 +43,6 @@ export default class DivInput extends Vue {
       this.$refs.input.focus();
     });
   }
-
   render(h: CreateElement) {
     return (
       <div
@@ -49,18 +50,38 @@ export default class DivInput extends Vue {
         class={"input"}
         contenteditable
         onkeydown={(event: KeyboardEvent) => {
-          // console.log(event.keyCode);
+          console.log(event.keyCode);
 
           if (event.keyCode === 13 /** 回车 */) {
             this.service.onEnter();
             event.preventDefault();
+          } else if (event.keyCode === 16 /** shift */) {
+            window.shiftKeyStatus = true;
+            event.preventDefault();
           } else if (event.keyCode === 9 /** tab */) {
-            
-            if (this.$parent.$vnode.data?.class != "ref"){
-              //引用根节点不可再缩进
-              this.service.tab(String(this.$parent.$vnode.key));
+            if (
+              this.$parent.$vnode.data?.class !=
+              "ref" /** 引用内，根节点不可缩进和反缩进 */
+            ) {
+              if (window.shiftKeyStatus) {
+                if (
+                  this.$parent.$parent?.$vnode?.data?.class !=
+                  "ref" /** 引用内，子节点不能成为和引用根节点同级节点 */
+                ) {
+                  this.service.shiftTab(String(this.$parent.$vnode.key));
+                }
+              } else {
+                this.service.tab(String(this.$parent.$vnode.key));
+              }
             }
-            
+
+            event.preventDefault();
+          }
+        }}
+        onkeyup={(event: KeyboardEvent) => {
+          if (event.keyCode === 16 /** shift */) {
+            window.shiftKeyStatus = false;
+            console.log("恢复shift按键");
             event.preventDefault();
           }
         }}

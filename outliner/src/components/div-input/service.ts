@@ -8,6 +8,7 @@ export default class DivInputService implements IDivInput {
     private onBlurCallback: () => void,
     private updateValue: (value: string) => void,
     public tab: (currKey: string) => void,
+    public shiftTab: (currKey: string) => void,
   ) {
     console.log(arguments)
   }
