@@ -92,7 +92,7 @@ export default class NodeComponent extends Vue {
               <ul>
                 <NodeComponent
                   key={this.$vnode?.key + "-" + refNode.key}
-                  class="ref"
+                  node-role="ref-root"
                   service={refNode}
                 ></NodeComponent>
               </ul>

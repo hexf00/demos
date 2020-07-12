@@ -66,18 +66,29 @@ export default class DivInput extends Vue {
           };
 
           hotKey[9 /** tab */] = () => {
-            if (this.$parent.$vnode.data?.class === "ref") {
-              /** 引用内，根节点不可缩进和反缩进 */
+            /** 判断是否为引用内的根节点 */
+            const isRefRoot = (com: Vue) => {
+              console.log("isRefRoot", com, com.$attrs["node-role"]);
+              return com.$attrs["node-role"] === "ref-root";
+            };
+
+            if (
+              isRefRoot(this.$parent)
+              /** 引用内，根节点不可缩进/反缩进 */
+            ) {
               return;
             }
 
             if (window.isKeyDownShiftKey /** 反缩进 */) {
               if (
-                this.$parent.$parent?.$vnode?.data?.class !=
-                "ref" /** 引用内，子节点不能成为和引用根节点同级节点 */
+                isRefRoot(
+                  this.$parent.$parent
+                ) /** 引用内，根节点的子节点不能成为和根节点的同级节点 */
               ) {
-                this.service.shiftTab(String(this.$parent.$vnode.key));
+                return;
               }
+
+              this.service.shiftTab(String(this.$parent.$vnode.key));
             } /** 缩进 */ else {
               this.service.tab(String(this.$parent.$vnode.key));
             }
