@@ -43,27 +43,27 @@ export default class NodeService implements INode {
 
     let path = currKey.split("-");
     path.pop();
-      path.push(newParent.key)
-      path.push(my[0].key)
+    path.push(newParent.key)
+    path.push(my[0].key)
 
     newParent.nodes.push(my[0]);
 
 
     my[0].parent = newParent;
 
-      console.log("newPath",  path.join("-"));
+    console.log("newPath", path.join("-"));
     //此处需要重新设置焦点
-      // my[0].focus(path.join("-"));
-      
-      setTimeout(() => {
-        my[0].focus(path.join("-"));
-      },0)
+    // my[0].focus(path.join("-"));
+
+    setTimeout(() => {
+      my[0].focus(path.join("-"));
+    }, 0)
 
     //成为相邻的靠前一个节点的子节点
 
-      
 
-      //引用中不再能实现超越引用的节点
+
+    //引用中不再能实现超越引用的节点
 
 
 
@@ -83,7 +83,7 @@ export default class NodeService implements INode {
 
       newParent.nodes.splice(parentIndex + 1, 0, my[0]);
 
-   
+
 
       my[0].parent = newParent;
 
@@ -111,6 +111,20 @@ export default class NodeService implements INode {
   hideEditor() {
     this.isShowEditor = false
   }
+  /**
+   *Creates an instance of NodeService.
+   * @param {{
+   *     value: string
+   *     children: Tree<{
+   *       value: string
+   *     }>
+   *   }} { value, children }
+   * @param {{ add: (node: NodeService) => void }} callback
+   * @param {NodeListService} root
+   * @param {string} parentKey
+   * @param {(NodeService | NodeListService)} parent
+   * @memberof NodeService
+   */
   constructor({ value, children }: {
     value: string
     children: Tree<{
@@ -134,28 +148,55 @@ export default class NodeService implements INode {
 
     this.nodes = children.map(item => new NodeService(item, this, root, this.key, this))
   }
+  //item 为被操作的节点
+
   add(item: NodeService) {
-    const index = this.nodes.indexOf(item)
 
-    // 创建新节点,此处传参不一样
-    const node = new NodeService({
-      value: '',
-      children: []
-    }, this, this.root, this.key, this)
-    this.nodes.splice(index + 1, 0, node)
-
-    // console.log("this.currFocus", this.currFocus)
-
-    //引用中不再能实现超越引用的节点
-
-    //插入同级节点
-
-    let newKey = window.currFocus.split("-");
-    newKey.pop();
-    newKey.push(node.key);
+    console.log("Add", item);
+    let parent = item.parent;
+    
+    if (item.nodes.length > 0 /** 有子节点则创建子节点 */) {
 
 
-    node.focus(newKey.join("-"))
+      // 创建新节点,此处传参不一样
+      const node = new NodeService({
+        value: '',
+        children: []
+      }, this, this.root, this.key, this)
+
+      item.nodes.push(node);
+
+
+      let newKey = window.currFocus.split("-");
+      newKey.push(node.key);
+
+
+      node.focus(newKey.join("-"))
+    } else /** 靠后创建同级节点 */ {
+      const index = parent.nodes.indexOf(item)
+
+      // 创建新节点,此处传参不一样
+      const node = new NodeService({
+        value: '',
+        children: []
+      }, this, this.root, this.key, this)
+      parent.nodes.splice(index + 1, 0, node)
+
+      // console.log("this.currFocus", this.currFocus)
+
+      //引用中不再能实现超越引用的节点
+
+      //插入同级节点
+
+      let newKey = window.currFocus.split("-");
+      newKey.pop();
+      newKey.push(node.key);
+
+
+      node.focus(newKey.join("-"))
+    }
+
+
   }
   focus(currKey: string) {
     console.log("currKey", currKey);

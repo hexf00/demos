@@ -6,6 +6,7 @@ declare global {
     b: string
     currFocus: string
     shiftKeyStatus: boolean
+    altKeyStatus: boolean
   }
 
   namespace JSX {

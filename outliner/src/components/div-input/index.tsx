@@ -20,7 +20,6 @@ export default class DivInput extends Vue {
     input: HTMLInputElement;
   };
 
-
   @Prop() service!: IDivInput;
 
   mounted() {
@@ -58,6 +57,9 @@ export default class DivInput extends Vue {
           } else if (event.keyCode === 16 /** shift */) {
             window.shiftKeyStatus = true;
             event.preventDefault();
+          } else if (event.keyCode === 18 /** alt */) {
+            window.altKeyStatus = true;
+            event.preventDefault();
           } else if (event.keyCode === 9 /** tab */) {
             if (
               this.$parent.$vnode.data?.class !=
@@ -76,12 +78,16 @@ export default class DivInput extends Vue {
             }
 
             event.preventDefault();
-          }
+          } 
         }}
         onkeyup={(event: KeyboardEvent) => {
           if (event.keyCode === 16 /** shift */) {
+            //恢复shift
             window.shiftKeyStatus = false;
-            console.log("恢复shift按键");
+            event.preventDefault();
+          } else if (event.keyCode === 18 /** alt */) {
+            //恢复alt
+            window.altKeyStatus = false;
             event.preventDefault();
           }
         }}
