@@ -5,8 +5,15 @@ declare global {
     a: typeof a,
     b: string
     currFocus: string
-    shiftKeyStatus: boolean
-    altKeyStatus: boolean
+    /**
+     * shift键按下状态
+     */
+    isKeyDownShiftKey: boolean
+
+    /**
+     * alt键按下状态
+     */
+    isKeyDownAltKey: boolean
   }
 
   namespace JSX {

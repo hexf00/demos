@@ -51,43 +51,60 @@ export default class DivInput extends Vue {
         onkeydown={(event: KeyboardEvent) => {
           console.log(event.keyCode);
 
-          if (event.keyCode === 13 /** 回车 */) {
+          const hotKey: { [key: string]: () => void } = {};
+
+          hotKey[13 /** 回车 */] = () => {
             this.service.onEnter();
-            event.preventDefault();
-          } else if (event.keyCode === 16 /** shift */) {
-            window.shiftKeyStatus = true;
-            event.preventDefault();
-          } else if (event.keyCode === 18 /** alt */) {
-            window.altKeyStatus = true;
-            event.preventDefault();
-          } else if (event.keyCode === 9 /** tab */) {
-            if (
-              this.$parent.$vnode.data?.class !=
-              "ref" /** 引用内，根节点不可缩进和反缩进 */
-            ) {
-              if (window.shiftKeyStatus) {
-                if (
-                  this.$parent.$parent?.$vnode?.data?.class !=
-                  "ref" /** 引用内，子节点不能成为和引用根节点同级节点 */
-                ) {
-                  this.service.shiftTab(String(this.$parent.$vnode.key));
-                }
-              } else {
-                this.service.tab(String(this.$parent.$vnode.key));
-              }
+          };
+
+          hotKey[16 /** shift */] = () => {
+            window.isKeyDownShiftKey = true;
+          };
+
+          hotKey[18 /** alt */] = () => {
+            window.isKeyDownAltKey = true;
+          };
+
+          hotKey[9 /** tab */] = () => {
+            if (this.$parent.$vnode.data?.class === "ref") {
+              /** 引用内，根节点不可缩进和反缩进 */
+              return;
             }
 
+            if (window.isKeyDownShiftKey /** 反缩进 */) {
+              if (
+                this.$parent.$parent?.$vnode?.data?.class !=
+                "ref" /** 引用内，子节点不能成为和引用根节点同级节点 */
+              ) {
+                this.service.shiftTab(String(this.$parent.$vnode.key));
+              }
+            } /** 缩进 */ else {
+              this.service.tab(String(this.$parent.$vnode.key));
+            }
+          };
+
+          hotKey[38 /** up */] = () => {};
+
+          hotKey[40 /** down */] = () => {};
+
+          if (hotKey[event.keyCode]) {
+            hotKey[event.keyCode]();
             event.preventDefault();
-          } 
+          }
         }}
         onkeyup={(event: KeyboardEvent) => {
-          if (event.keyCode === 16 /** shift */) {
-            //恢复shift
-            window.shiftKeyStatus = false;
-            event.preventDefault();
-          } else if (event.keyCode === 18 /** alt */) {
-            //恢复alt
-            window.altKeyStatus = false;
+          const hotKey: { [key: string]: () => void } = {};
+
+          hotKey[16 /** shift */] = () => {
+            window.isKeyDownShiftKey = false;
+          };
+
+          hotKey[18 /** alt */] = () => {
+            window.isKeyDownAltKey = false;
+          };
+
+          if (hotKey[event.keyCode]) {
+            hotKey[event.keyCode]();
             event.preventDefault();
           }
         }}

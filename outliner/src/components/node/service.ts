@@ -43,7 +43,8 @@ export default class NodeService implements INode {
 
     let path = currKey.split("-");
     path.pop();
-    path.push(newParent.key)
+    // node-list没有key
+    newParent.key && path.push(newParent.key);
     path.push(my[0].key)
 
     newParent.nodes.push(my[0]);
@@ -154,7 +155,7 @@ export default class NodeService implements INode {
 
     console.log("Add", item);
     let parent = item.parent;
-    
+
     if (item.nodes.length > 0 /** 有子节点则创建子节点 */) {
 
 
