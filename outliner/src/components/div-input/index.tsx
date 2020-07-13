@@ -66,7 +66,9 @@ export default class DivInput extends Vue {
           };
 
           hotKey[9 /** tab */] = () => {
-            /** 判断是否为引用内的根节点 */
+          /** 判断是否为引用内的根节点 */
+            
+            //此处还需要考虑会存在多种身份。
             const isRefRoot = (com: Vue) => {
               console.log("isRefRoot", com, com.$attrs["node-role"]);
               return com.$attrs["node-role"] === "ref-root";

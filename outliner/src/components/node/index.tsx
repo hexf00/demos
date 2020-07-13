@@ -4,6 +4,7 @@ import { FC } from "../../common/vue-tsx";
 import DivInput, { IDivInput } from "../div-input";
 import { INodeList } from "../node-list";
 import NodePreview, { INodePreview } from "../node-preview";
+import { NodePath } from "../../common/NodePath";
 
 export interface INode {
   root: INodeList;
@@ -11,7 +12,7 @@ export interface INode {
   hideEditor: Function;
   editor: IDivInput;
   preview: INodePreview;
-  currFocus: string;
+  currentFocusPath?: NodePath;
   nodes: INode[];
   key: string;
   focus: Function;
@@ -28,7 +29,7 @@ export default class NodeComponent extends Vue {
       isShowEditor,
       editor,
       preview,
-      currFocus,
+      currentFocusPath,
       nodes,
       key,
     } = this.service;
@@ -37,15 +38,19 @@ export default class NodeComponent extends Vue {
     // console.log("render isShowEditor", key, isShowEditor);
 
     //isShowEditor 需要进行双重判断。 只改变当前激活的节点（鼠标所在，光标所在）
-    console.error(isShowEditor, key == currFocus, key, currFocus);
+    // console.error(isShowEditor, key, currentFocusPath);
     let input =
-      isShowEditor && this?.$vnode?.key == currFocus ? (
+      isShowEditor &&
+      currentFocusPath &&
+      currentFocusPath.isEqual(this?.$vnode?.key) ? (
         <DivInput service={editor}></DivInput>
       ) : (
         ""
       );
     let previewC =
-      isShowEditor && this?.$vnode?.key == currFocus ? (
+      isShowEditor &&
+      currentFocusPath &&
+      currentFocusPath.isEqual(this?.$vnode?.key) ? (
         ""
       ) : (
         <NodePreview service={preview}></NodePreview>
@@ -76,7 +81,9 @@ export default class NodeComponent extends Vue {
         let refNode = root.dict[r[1]];
 
         let previewC2 =
-          isShowEditor && this?.$vnode?.key == currFocus ? (
+          isShowEditor &&
+          currentFocusPath &&
+          currentFocusPath.isEqual(this?.$vnode?.key) ? (
             ""
           ) : (
             <div class="refNode">

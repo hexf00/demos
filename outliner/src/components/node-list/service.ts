@@ -6,47 +6,50 @@ export default class NodeListService implements INodeList {
   dict: {
     [key: string]: NodeService
   } = {}
+
+  key = '';
+  isRoot = true;
+
   constructor(data: Tree<{ value: string }>) {
-    this.nodes = data.map(item => new NodeService(item, this, this, '', this))
+    this.nodes = data.map(item => new NodeService(item, this, this, this))
   }
   //被操作的节点
   add(item: NodeService) {
 
-    let parent, parentKey:string[];
+    let newParent, newNodeFocusKey: string[], insertMode: "push" | "splice";
     console.log("NodeList ADD", this, item.parent);
 
 
-    if (item.nodes.length > 0 /** 有子节点则创建子节点 */) {
-      parent = item;
-      parentKey = window.currFocus.split("-");
+    if (item.nodes.length > 0 /** 有子节点则末尾创建子节点 */) {
+      newParent = item;
+      newNodeFocusKey = window.currFocus.split("-");
+      insertMode = 'push';
     } else /** 靠后创建同级节点 */ {
-      parent = item.parent;
-      parentKey = window.currFocus.split("-");
-      parentKey.pop();
+      newParent = item.parent;
+      newNodeFocusKey = window.currFocus.split("-");
+      newNodeFocusKey.pop();
+      insertMode = 'splice';
     }
 
-
-
-    //表现应该和node一致，有子则创建子，没有则创建同级  
-
-    const index = parent.nodes.indexOf(item)
-
-    // 此处传参不一样
     const newNode = new NodeService({
       value: '',
       children: []
-    }, this, this, '', parent)
-    parent.nodes.splice(index + 1, 0, newNode)
+    }, this, item.root, newParent);
+
+
+    if (insertMode == "push") {
+      newParent.nodes.push(newNode);
+    } else if (insertMode == "splice") {
+      const index = newParent.nodes.indexOf(item)
+      newParent.nodes.splice(index + 1, 0, newNode)
+    }
 
     //同级
-    parentKey.push(newNode.key);
 
+    newNodeFocusKey.push(newNode.key);
     setTimeout(() => {
-      newNode.focus(parentKey.join("-"))
+      newNode.focus(newNodeFocusKey.join("-"))
     }, 0)
-
-
-
 
   }
 }
