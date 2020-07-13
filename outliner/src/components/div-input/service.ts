@@ -7,8 +7,9 @@ export default class DivInputService implements IDivInput {
     private onEnterCallback: () => void,
     private onBlurCallback: () => void,
     private updateValue: (value: string) => void,
-    public tab: (currKey: string) => void,
-    public shiftTab: (currKey: string) => void,
+    public tab: () => void,
+    public shiftTab: () => void,
+    public up:() =>void,
   ) {
     console.log(arguments)
   }

@@ -7,8 +7,9 @@ export interface IDivInput {
   onInput: (value: string) => void;
   onEnter: () => void;
   bindFocus: (callback: () => void) => void;
-  tab: (currKey: string) => void;
-  shiftTab: (currKey: string) => void;
+  tab: () => void;
+  shiftTab: () => void;
+  up: () => void;
 }
 
 @Component
@@ -43,6 +44,13 @@ export default class DivInput extends Vue {
     });
   }
   render(h: CreateElement) {
+    //此处还需要考虑会存在多种身份。
+    //判断是否为引用内的根节点
+    const isRefRoot = (com: Vue) => {
+      // console.log("isRefRoot", com, com.$attrs["node-role"]);
+      return com.$attrs["node-role"] === "ref-root";
+    };
+
     return (
       <div
         ref="input"
@@ -51,7 +59,9 @@ export default class DivInput extends Vue {
         onkeydown={(event: KeyboardEvent) => {
           console.log(event.keyCode);
 
-          const hotKey: { [key: string]: () => void } = {};
+          const hotKey: {
+            [key: string]: () => void;
+          } = {};
 
           hotKey[13 /** 回车 */] = () => {
             this.service.onEnter();
@@ -66,14 +76,6 @@ export default class DivInput extends Vue {
           };
 
           hotKey[9 /** tab */] = () => {
-          /** 判断是否为引用内的根节点 */
-            
-            //此处还需要考虑会存在多种身份。
-            const isRefRoot = (com: Vue) => {
-              console.log("isRefRoot", com, com.$attrs["node-role"]);
-              return com.$attrs["node-role"] === "ref-root";
-            };
-
             if (
               isRefRoot(this.$parent)
               /** 引用内，根节点不可缩进/反缩进 */
@@ -90,13 +92,19 @@ export default class DivInput extends Vue {
                 return;
               }
 
-              this.service.shiftTab(String(this.$parent.$vnode.key));
+              this.service.shiftTab();
             } /** 缩进 */ else {
-              this.service.tab(String(this.$parent.$vnode.key));
+              this.service.tab();
             }
           };
 
-          hotKey[38 /** up */] = () => {};
+          hotKey[38 /** up */] = () => {
+            // this.service.up();
+            //ref root 则移动到真实节点以上
+            if (isRefRoot(this.$parent)) {
+              
+            }
+          };
 
           hotKey[40 /** down */] = () => {};
 
@@ -106,7 +114,9 @@ export default class DivInput extends Vue {
           }
         }}
         onkeyup={(event: KeyboardEvent) => {
-          const hotKey: { [key: string]: () => void } = {};
+          const hotKey: {
+            [key: string]: () => void;
+          } = {};
 
           hotKey[16 /** shift */] = () => {
             window.isKeyDownShiftKey = false;

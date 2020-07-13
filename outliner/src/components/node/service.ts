@@ -28,7 +28,9 @@ export default class NodeService implements INode {
   }, (value: string) => {
     this.value = value
     this.preview.value = value
-  }, () => this.tab(), () => this.shiftTab())
+  }, () => this.tab()
+    , () => this.shiftTab()
+    , () => this.moveFocusUp())
 
   //实例化预览Data
   preview = new NodePreviewService((nodePath: NodePath) => {
@@ -174,5 +176,13 @@ export default class NodeService implements INode {
 
     this.currentFocusPath.moveTo(newParentFullPath);
     this.focus(this.currentFocusPath);
+  }
+
+  moveFocusUp() {
+    if (this.currentFocusPath) {
+      return;
+    }
+
+    
   }
 }
