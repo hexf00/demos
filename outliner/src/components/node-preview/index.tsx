@@ -1,16 +1,16 @@
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
-import { CreateElement } from 'vue'
-
+import { Vue, Component, Prop, Watch } from "vue-property-decorator";
+import { CreateElement } from "vue";
+import { NodePath } from "../../common/NodePath";
 
 export interface INodePreview {
   value: string;
-  focus: (currKey:string) => void;
+  focus: (nodePath: NodePath) => void;
 }
 
 @Component
 export default class NodePreview extends Vue {
   //给组件检验提示  使用这个组件的时候 属性要符合这个规则
-  $props!: { service: INodePreview;};
+  $props!: { service: INodePreview };
   @Prop() service!: INodePreview;
   $refs!: {
     input: HTMLInputElement;
@@ -41,7 +41,8 @@ export default class NodePreview extends Vue {
         ref="input"
         class={"input preview"}
         onClick={() => {
-            this.service.focus(String(this.$parent?.$vnode?.key));
+          let key = this.$parent?.$vnode?.key;
+          key && this.service.focus(new NodePath(key.toString()));
         }}
       >
         {this.service.value}

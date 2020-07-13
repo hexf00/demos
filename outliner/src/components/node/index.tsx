@@ -90,8 +90,8 @@ export default class NodeComponent extends Vue {
               <i
                 class="edit"
                 onClick={() => {
-                  console.log("ref edit onclick ", this.$vnode?.key);
-                  service.focus(this.$vnode?.key);
+                  let key = this.$vnode?.key;
+                  key && this.service.focus(new NodePath(key.toString()));
                 }}
               >
                 修改

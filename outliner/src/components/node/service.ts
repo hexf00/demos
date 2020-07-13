@@ -18,12 +18,12 @@ export default class NodeService implements INode {
 
   //实例化编辑器Data
   editor = new DivInputService(() => {
-    this.callback.add(this)
+    this.onEnter(this)
   }, () => {
     //blur 失去焦点事件
     this.hideEditor()
 
-    //说明 focusPath不应该销毁，而应该持续保留。
+    // focusPath不应该销毁，而应该持续保留。
     // this.currentFocusPath = undefined;
   }, (value: string) => {
     this.value = value
@@ -31,32 +31,19 @@ export default class NodeService implements INode {
   }, () => this.tab(), () => this.shiftTab())
 
   //实例化预览Data
-  preview = new NodePreviewService((key: string) => {
-    this.focus(key);
+  preview = new NodePreviewService((nodePath: NodePath) => {
+    this.focus(nodePath);
   })
   hideEditor() {
     this.isShowEditor = false
   }
-  /**
-   *Creates an instance of NodeService.
-   * @param {{
-   *     value: string
-   *     children: Tree<{
-   *       value: string
-   *     }>
-   *   }} { value, children }
-   * @param {{ add: (node: NodeService) => void }} callback
-   * @param {NodeListService} root
-   * @param {string} parentKey
-   * @param {(NodeService | NodeListService)} parent
-   * @memberof NodeService
-   */
+
   constructor({ value, children }: {
     value: string
     children: Tree<{
       value: string
     }>
-  }, private callback: { add: (node: NodeService) => void },
+  },
     root: NodeListService,
     parent: NodeService | NodeListService) {
     this.key = (key++).toString();
@@ -66,78 +53,36 @@ export default class NodeService implements INode {
     this.editor.value = value
     this.preview.value = value
     this.parent = parent;
-    // this.add = this.callback.add;
 
-    //建立字典
+    //添加到字典中
     this.root.dict[this.key] = this;
 
-    this.nodes = children.map(item => new NodeService(item, this, root, this))
+    this.nodes = children.map(item => new NodeService(item, root, this))
   }
+
   //item 为被操作的节点
-
-  add(item: NodeService) {
-
-    console.log("Add", item);
-    let parent = item.parent;
-
-    if (item.nodes.length > 0 /** 有子节点则创建子节点 */) {
-
-
-      // 创建新节点,此处传参不一样
-      const node = new NodeService({
-        value: '',
-        children: []
-      }, this, this.root, this)
-
-      item.nodes.push(node);
-
-
-      let newKey = window.currFocus.split("-");
-      newKey.push(node.key);
-
-
-      node.focus(newKey.join("-"))
-    } else /** 靠后创建同级节点 */ {
-      const index = parent.nodes.indexOf(item)
-
-      // 创建新节点,此处传参不一样
-      const node = new NodeService({
-        value: '',
-        children: []
-      }, this, this.root, this)
-      parent.nodes.splice(index + 1, 0, node)
-
-      // console.log("this.currFocus", this.currFocus)
-
-      //引用中不再能实现超越引用的节点
-
-      //插入同级节点
-
-      let newKey = window.currFocus.split("-");
-      newKey.pop();
-      newKey.push(node.key);
-
-
-      node.focus(newKey.join("-"))
+  onEnter(item: NodeService) {
+    let newParent, newIndex, newParentFullPath;
+    if (item.nodes.length > 0 /** 创建子节点在首位 */) {
+      newParent = item;
+      newIndex = 0;
+      newParentFullPath = item.currentFocusPath;
+    } else /** 创建靠后同级节点 */ {
+      newParent = item.parent;
+      newIndex = newParent.nodes.indexOf(item) + 1;
+      newParentFullPath = item.currentFocusPath?.getParent();
     }
 
-
+    const newNode = new NodeService({
+      value: '',
+      children: []
+    }, item.root, newParent);
+    //改变位置
+    newParent.nodes.splice(newIndex, 0, newNode);
+    //激活焦点
+    newParentFullPath && newNode.moveFocus(newParentFullPath);
   }
 
-  /**
-   * 因为引用的原因，由于一个nodeService和多个dom存在映射关系
-   * currentFocusDomPath是一个Vue的概念，而非数据概念
-   * 所以通过
-   * @param currentFocusDomPathString 
-   */
-  focus(currentFocusDomPathString?: string) {
-    console.log("currKey", currentFocusDomPathString);
-    this.isShowEditor = true
-    if (currentFocusDomPathString) {
-      this.currentFocusPath = new NodePath(currentFocusDomPathString);
-    }
-    this.editor.focus()
-  }
   tab() {
     //缩进
     //成为同级相邻靠前节点的子节点
@@ -205,18 +150,29 @@ export default class NodeService implements INode {
 
     //3. 更新parent
     this.parent = newParent;
-
-
   }
+
+  /**
+   * 因为引用的原因，由于一个nodeService和多个dom存在映射关系
+   * currentFocusDomPath是一个Vue的概念，而非数据概念
+   * 所以通过
+   * @param currentFocusDomPathString 
+   */
+  focus(nodePath: NodePath) {
+    setTimeout(() => {
+      this.isShowEditor = true
+      this.currentFocusPath = nodePath
+      this.editor.focus()
+    }, 0)
+  }
+
   //更新currentFocusPath 并 激活焦点
   moveFocus(newParentFullPath: NodePath) {
-    if (this.currentFocusPath) {
-      this.currentFocusPath.moveTo(newParentFullPath);
-
-      //暂时不清楚为什么focus不能删除
-      setTimeout(() => {
-        this.focus();
-      }, 0)
+    if (!this.currentFocusPath) {
+      this.currentFocusPath = new NodePath(this.key);
     }
+
+    this.currentFocusPath.moveTo(newParentFullPath);
+    this.focus(this.currentFocusPath);
   }
 }
