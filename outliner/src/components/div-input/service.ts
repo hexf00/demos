@@ -10,6 +10,7 @@ export default class DivInputService implements IDivInput {
     public tab: () => void,
     public shiftTab: () => void,
     public up:() =>void,
+    public deleteSelf:() =>void,
   ) {
     console.log(arguments)
   }

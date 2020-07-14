@@ -10,6 +10,7 @@ export interface IDivInput {
   tab: () => void;
   shiftTab: () => void;
   up: () => void;
+  deleteSelf: () => void;
 }
 
 @Component
@@ -60,19 +61,38 @@ export default class DivInput extends Vue {
           console.log(event.keyCode);
 
           const hotKey: {
-            [key: string]: () => void;
+            [key: string]: () => boolean;
           } = {};
 
           hotKey[13 /** 回车 */] = () => {
             this.service.onEnter();
+            return true;
           };
 
           hotKey[16 /** shift */] = () => {
             window.isKeyDownShiftKey = true;
+            return true;
           };
 
           hotKey[18 /** alt */] = () => {
             window.isKeyDownAltKey = true;
+            return true;
+          };
+
+          hotKey[8 /** backspace */] = () => {
+            if (
+              isRefRoot(this.$parent)
+              /** 引用内，根节点不可被删除 */
+            ) {
+              return true;
+            }
+
+            if(!this.service.value.trim()){
+              this.service.deleteSelf();
+              return true;
+            }else{
+              return false;
+            }
           };
 
           hotKey[9 /** tab */] = () => {
@@ -80,7 +100,7 @@ export default class DivInput extends Vue {
               isRefRoot(this.$parent)
               /** 引用内，根节点不可缩进/反缩进 */
             ) {
-              return;
+              return true;
             }
 
             if (window.isKeyDownShiftKey /** 反缩进 */) {
@@ -89,13 +109,14 @@ export default class DivInput extends Vue {
                   this.$parent.$parent
                 ) /** 引用内，根节点的子节点不能成为和根节点的同级节点 */
               ) {
-                return;
+                return true;
               }
 
               this.service.shiftTab();
             } /** 缩进 */ else {
               this.service.tab();
             }
+            return true;
           };
 
           hotKey[38 /** up */] = () => {
@@ -104,13 +125,15 @@ export default class DivInput extends Vue {
             if (isRefRoot(this.$parent)) {
               
             }
+            return true;
           };
 
-          hotKey[40 /** down */] = () => {};
+          hotKey[40 /** down */] = () => {
+            return true;
+          };
 
           if (hotKey[event.keyCode]) {
-            hotKey[event.keyCode]();
-            event.preventDefault();
+            !hotKey[event.keyCode]() || event.preventDefault();
           }
         }}
         onkeyup={(event: KeyboardEvent) => {

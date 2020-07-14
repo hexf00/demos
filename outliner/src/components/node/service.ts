@@ -30,7 +30,9 @@ export default class NodeService implements INode {
     this.preview.value = value
   }, () => this.tab()
     , () => this.shiftTab()
-    , () => this.moveFocusUp())
+    , () => this.moveFocusUp()
+    , () => this.deleteSelf()
+    )
 
   //实例化预览Data
   preview = new NodePreviewService((nodePath: NodePath) => {
@@ -184,5 +186,18 @@ export default class NodeService implements INode {
     }
 
     
+  }
+
+  //删除自己
+  //如果有相邻考前的同级节点，且该同级节点没有子节点，则将当前节点的子节点转交给该同级节点
+  deleteSelf(){
+    console.log("deleteSelf");
+
+    const oldParent = this.parent;
+    if (oldParent) {
+      const index = oldParent.nodes.indexOf(this);
+      oldParent.nodes.splice(index, 1);
+    }
+
   }
 }
