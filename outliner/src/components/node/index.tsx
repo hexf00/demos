@@ -72,6 +72,10 @@ export default class NodeComponent extends Vue {
       );
 
     let r = editor.value.match(/\{\{(.*?)\}\}/);
+
+    //存在多引用;
+    
+
     if (r) {
       //存在引用
       console.log(r[1]);

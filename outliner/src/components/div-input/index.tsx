@@ -1,5 +1,6 @@
 import { Vue, Component, Prop, Watch } from "vue-property-decorator";
 import { CreateElement } from "vue";
+import * as $ from "jquery";
 
 export interface IDivInput {
   value: string;
@@ -131,6 +132,7 @@ export default class DivInput extends Vue {
           hotKey[40 /** down */] = () => {
             return true;
           };
+          
 
           if (hotKey[event.keyCode]) {
             !hotKey[event.keyCode]() || event.preventDefault();
