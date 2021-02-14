@@ -1,13 +1,13 @@
-import { Vue, Component } from "vue-property-decorator";
-import { CreateElement } from "vue";
+import { Vue, Component } from 'vue-property-decorator'
+import { CreateElement } from 'vue'
 
 @Component
 export default class extends Vue {
   mounted() {
-    
+
   }
 
   render(h: CreateElement) {
-    return <div>No UI Index</div>;
+    return <div>No UI Index</div>
   }
 }

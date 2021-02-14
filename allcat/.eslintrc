@@ -1,0 +1,25 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  "rules": {
+    // 使用2个空格缩进
+    "indent": [2, 2, { "SwitchCase": 1 }],
+    // 单引号
+    "quotes": [2, "single"],
+    // 不使用分号
+    "semi": [2, "never"],
+    // 逗号换行时在行尾
+    "comma-style": [2, "last"],
+    // 多行时候需要尾随逗号
+    "comma-dangle": [2, "always-multiline"],
+    // 不允许使用一般比较
+    "eqeqeq": [2, "always"],
+
+    // 不检查未使用的变量，因为h
+    "@typescript-eslint/no-unused-vars": 0,
+    // 不检查函数一定要有返回值类型定义，因为render
+    "@typescript-eslint/explicit-module-boundary-types": 0,
+    // 不检查空方法
+    "@typescript-eslint/no-empty-function": 0
+  }
+}
