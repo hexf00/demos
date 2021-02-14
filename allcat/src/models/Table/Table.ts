@@ -14,5 +14,5 @@ export interface ITable {
   /** 表数据 */
   data: Record<string, ITableRow>
   /** 视图 */
-  views: IView
+  views: IView[]
 }
