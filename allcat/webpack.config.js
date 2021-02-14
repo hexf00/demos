@@ -1,3 +1,5 @@
+const path = require('path');
+
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = function (env) {
@@ -6,10 +8,11 @@ module.exports = function (env) {
     resolve: {
       /** js是必填 */
       extensions: [".ts", ".tsx", ".js"],
-      // alias: {
-      //   /** node版的vue 没有运行时解析模板的能力 */
-      //   'vue': 'vue/dist/vue.js'
-      // }
+      alias: {
+        '@': path.resolve("src"),
+        //   /** node版的vue 没有运行时解析模板的能力 */
+        //   'vue': 'vue/dist/vue.js'
+      }
     },
     plugins: [
       new HtmlWebpackPlugin({
