@@ -9,7 +9,7 @@ export interface IRuleItem {
 
 export interface IViewFilter {
   /** 过滤器类型 */
-  type: "simple"
+  type: 'simple'
   /** 过滤器规则 */
   rules: IRuleItem[]
 }

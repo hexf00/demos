@@ -1,4 +1,4 @@
-import { IControl } from "../Control/Control";
+import { IControl } from '../Control/Control'
 
 export interface ITableField {
   /** 字段主键 */

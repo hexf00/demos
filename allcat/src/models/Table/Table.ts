@@ -1,6 +1,6 @@
-import { IView } from "../View/View";
-import { ITableField } from "./TableField";
-import { ITableRow } from "./TableRow";
+import { IView } from '../View/View'
+import { ITableField } from './TableField'
+import { ITableRow } from './TableRow'
 
 export interface ITable {
   /** 表主键 */

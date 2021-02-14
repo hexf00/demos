@@ -1,6 +1,6 @@
-import { IViewField } from "./ViewField";
-import { ITableRow } from "../Table/TableRow";
-import { IViewFilter } from "./ViewFilter";
+import { IViewField } from './ViewField'
+import { ITableRow } from '../Table/TableRow'
+import { IViewFilter } from './ViewFilter'
 
 export interface IView {
   /** 视图主键 */
