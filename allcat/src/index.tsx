@@ -1,4 +1,6 @@
 import Vue from "vue";
+import ElementUIIndex from "@/themes/element-ui"
+import NoUIIndex from '@/themes/no-ui'
 
 new Vue({
   data() {
@@ -7,9 +9,7 @@ new Vue({
   },
   render(h) {
     return (
-      <ul>
-        <li>132333</li>
-      </ul>
+      <ElementUIIndex></ElementUIIndex>
     );
   },
 }).$mount("#app");
