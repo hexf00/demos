@@ -42,14 +42,20 @@ module.exports = function (env) {
             'ts-loader',
           ],
         },
+        /** 样式，element会用到scss以外的样式 */
         {
-          test: /\.scss$/,
+          test: /\.(scss|sass|css|less)$/,
           use: [
             'style-loader',
             'css-loader',
             'sass-loader',
           ]
         },
+        /** element 会用到字体文件 */
+        {
+          test: /\.(eot|svg|ttf|woff|woff2)(\?\S*)?$/,
+          loader: 'file-loader'
+        }
       ],
     },
   }
