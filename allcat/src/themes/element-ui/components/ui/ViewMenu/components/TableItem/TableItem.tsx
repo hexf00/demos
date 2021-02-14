@@ -8,6 +8,9 @@ export default class extends Vue {
   }
 
   render(h: CreateElement) {
-    return <div>menu item</div>
+    return <div>
+      <div>Table</div>
+      <div> - View</div>
+    </div>
   }
 }
