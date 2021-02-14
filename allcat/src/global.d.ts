@@ -1,5 +1,5 @@
 declare global {
-  interface Window { }
+  // interface Window { }
 }
 
 namespace JSX {
@@ -7,4 +7,9 @@ namespace JSX {
   interface ElementAttributesProperty {
     $props: any
   }
+}
+
+declare module '*.module.scss' {
+  const classes: { [key: string]: string }
+  export default classes
 }
