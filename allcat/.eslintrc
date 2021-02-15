@@ -6,20 +6,36 @@
     "indent": [2, 2, { "SwitchCase": 1 }],
     // 单引号
     "quotes": [2, "single"],
-    // 不使用分号
-    "semi": [2, "never"],
     // 逗号换行时在行尾
     "comma-style": [2, "last"],
     // 多行时候需要尾随逗号
     "comma-dangle": [2, "always-multiline"],
     // 不允许使用一般比较
     "eqeqeq": [2, "always"],
-
     // 不检查未使用的变量，因为h
     "@typescript-eslint/no-unused-vars": 0,
     // 不检查函数一定要有返回值类型定义，因为render
     "@typescript-eslint/explicit-module-boundary-types": 0,
     // 不检查空方法
-    "@typescript-eslint/no-empty-function": 0
+    "@typescript-eslint/no-empty-function": 0,
+    // 需要禁用，才能使用ts的校验
+    "semi": 0,
+    // TS也不要分号
+    "@typescript-eslint/semi": [2, "never"],
+    // 定义ts interface type分号类型
+    "@typescript-eslint/member-delimiter-style": [
+      2,
+      {
+        // 多行情况 不要分号
+        "multiline": {
+          "delimiter": "none"
+        },
+        "singleline": {
+          "delimiter": "semi",
+          // 单行情况下 不要最后一个分号
+          "requireLast": false
+        }
+      }
+    ]
   }
 }
