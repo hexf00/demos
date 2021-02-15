@@ -1,7 +1,9 @@
 import { Vue, Component } from 'vue-property-decorator'
 import { CreateElement } from 'vue'
-import ViewMenu from './components/ui/ViewMenu/ViewMenu'
-import TableView from './components/ui/TableView/TableView'
+
+import '@/themes/element-ui/element-ui'
+import ViewMenu from '@/themes/element-ui/components/ui/ViewMenu/ViewMenu'
+import TableView from '@/themes/element-ui/components/ui/TableView/TableView'
 
 import style from './index.module.scss'
 import IndexService from './index.service'

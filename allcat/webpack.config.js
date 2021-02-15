@@ -27,10 +27,9 @@ module.exports = function (env) {
     ],
     module: {
       rules: [
-        /** 仅接受ts */
-        { test: /\.ts$/, loader: 'ts-loader' },
+        /** ts和tsx需要使用相同的loader, 否则出现ts中不引入element样式的问题 */
         {
-          test: /\.tsx$/,
+          test: /\.(ts|tsx)$/,
           exclude: /(node_modules)/,
           use: [
             {
