@@ -2,7 +2,7 @@
   "[typescriptreact]": {
     "editor.defaultFormatter": "vscode.typescript-language-features"
   },
-  "files.autoSave": "onWindowChange",
+  "files.autoSave": "onFocusChange",
   "editor.formatOnSave": true,
   "eslint.validate": [
     "javascript",
