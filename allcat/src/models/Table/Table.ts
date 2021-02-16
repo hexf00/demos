@@ -2,7 +2,7 @@ import libs from '@/libs'
 import { IApp } from '../App/App'
 import view, { IView } from '../View/View'
 import { ITableField } from './TableField'
-import { ITableRow } from './TableRow'
+import { IRow } from './Row'
 import Vue from 'vue'
 
 
@@ -16,7 +16,7 @@ export interface ITable {
   /** 表字段配置 */
   fields: Record<string, ITableField>
   /** 表数据 */
-  data: Record<string, ITableRow>
+  rows: Record<string, IRow>
   /** 表视图 */
   views: Record<string, IView>
   /** 表视图排序 */
@@ -71,7 +71,7 @@ function addTable(app: IApp) {
     name: generateTableName(app),
     description: '',
     fields: {},
-    data: {},
+    rows: {},
     views: {},
     viewsSorts: [],
   }

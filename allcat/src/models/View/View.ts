@@ -1,5 +1,4 @@
 import { IViewField } from './ViewField'
-import { ITableRow } from '../Table/TableRow'
 import { IViewFilter } from './ViewFilter'
 import { ITable } from '../Table/Table'
 import libs from '@/libs'
@@ -16,8 +15,8 @@ export interface IView {
   description: string
   /** 视图字段配置 */
   fields: IViewField[]
-  /** 视图数据 */
-  data: ITableRow[]
+  /** 视图数据排序 */
+  rowsSorts: string[]
   /** 过滤器 */
   filters: IViewFilter[]
 }
@@ -74,7 +73,7 @@ function addView(table: ITable) {
     name: generateViewName(table),
     description: '',
     fields: [],
-    data: [],
+    rowsSorts: [],
     filters: [],
   }
   //需要通过Vue给不存在的属性添加响应式

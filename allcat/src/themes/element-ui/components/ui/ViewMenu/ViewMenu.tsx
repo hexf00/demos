@@ -7,6 +7,7 @@ import { ITable } from '@/models/Table/Table'
 import { IView } from '@/models/View/View'
 import MenuItem, { IMenuItem } from './components/MenuItem/MenuItem'
 import { TreeNode } from 'element-ui/types/tree'
+import store from '@/store'
 
 export interface IViewMenuService {
   app: IApp
@@ -93,6 +94,15 @@ export default class extends Vue {
     sorts.splice(tragetIndex, 0, id)
   }
 
+  /** 树节点被点击 */
+  nodeClick(nodeData: ITreeNode) {
+    const { table, view, type } = nodeData
+    if (type === 'view') {
+      store.currentTable = table
+      store.currentView = view as IView
+    }
+  }
+
   render(h: CreateElement) {
     const { list, service, expandedTableIds } = this
 
@@ -101,6 +111,7 @@ export default class extends Vue {
         draggable={true} allow-drop={this.isAllowDrop}
         on={{
           'node-drop': this.dropSuccess,
+          'node-click': this.nodeClick,
         }}
         node-key="id" class={style.tree} default-expand-all scopedSlots={{
           default: ({ data }: { data: IMenuItem }) => {
