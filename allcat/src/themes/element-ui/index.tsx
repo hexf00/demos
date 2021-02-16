@@ -15,8 +15,8 @@ export default class extends Vue {
 
   render(h: CreateElement) {
     const { name, description } = this.service.app
-    return <div>
-      <div>{name} {description}</div>
+    return <div class={style.bg}>
+      <div class={style.top}>{name} {description}</div>
       <div class={style.editor}>
         <ViewMenu class={style.left}></ViewMenu>
         <TableView class={style.right}></TableView>

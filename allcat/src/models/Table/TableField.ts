@@ -10,5 +10,5 @@ export interface ITableField {
   /** 字段数据类型 */
   type: 'string' | 'number' | 'select' | 'script'
   /** 字段控件配置 */
-  control: IControl,
+  control: IControl
 }

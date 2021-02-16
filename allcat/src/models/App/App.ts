@@ -10,49 +10,47 @@ export interface IApp {
   description: string
   /** App表配置 */
   tables: Record<string, ITable>
+  /** App表排序 */
+  tableSorts: string[]
 }
-
 
 /** 获取表数据结构 */
-function get(id = 'default_app'): IApp {
-  if (store.app) {
-    return store.app
+function get(appId = 'default_app'): IApp {
+  if (store.apps[appId]) {
+    return store.apps[appId]
   }
 
-  const content = localStorage.getItem('app:' + id)
+  const content = localStorage.getItem('app:' + appId)
   if (content) {
     const app: IApp = JSON.parse(content)
-    store.app = app
+    store.apps[appId] = app
   } else {
-    const app: IApp = create(id)
-    store.app = app
+    const app: IApp = {
+      _id: appId,
+      name: '新App',
+      description: '',
+      tables: {},
+      tableSorts: [],
+    }
+    store.apps[appId] = app
   }
 
-  return store.app
+  return store.apps[appId]
 }
 
-/** 获取新表数据结构 */
-function create(id: string): IApp {
-  return {
-    _id: id,
-    name: '新App',
-    description: '',
-    tables: {},
-  }
-}
+
 
 /** 缓存表结构 */
-function save() {
-  if (!store.app) {
+function save(appId = 'default_app') {
+  if (!store.apps[appId]) {
     return
   }
-  const { _id } = store.app
-  localStorage.setItem('app:' + _id, JSON.stringify(store.app))
+  const { _id } = store.apps[appId]
+  localStorage.setItem('app:' + _id, JSON.stringify(store.apps[appId]))
 }
 
 const app = {
   get,
-  create,
   save,
 }
 

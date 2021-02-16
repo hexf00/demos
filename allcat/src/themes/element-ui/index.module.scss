@@ -1,9 +1,35 @@
-.editor {
+:global(html, body) {
+  padding: 0;
+  margin: 0;
+}
+
+.bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
   display: flex;
-  .left {
-    width: 200px;
+  flex-direction: column;
+
+  .top {
+    background: #f00;
   }
-  .right {
+
+  .editor {
     flex: 1;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+
+    .left {
+      width: 200px;
+      padding: 10px 5px;
+      overflow-y: auto;
+    }
+    .right {
+      flex: 1;
+    }
   }
 }
