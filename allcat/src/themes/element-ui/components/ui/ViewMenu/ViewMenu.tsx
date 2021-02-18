@@ -8,6 +8,7 @@ import { IView } from '@/models/View/View'
 import MenuItem, { IMenuItem } from './components/MenuItem/MenuItem'
 import { TreeNode } from 'element-ui/types/tree'
 import store from '@/store'
+import qs from 'qs'
 
 export interface IViewMenuService {
   app: IApp
@@ -100,6 +101,13 @@ export default class extends Vue {
     if (type === 'view') {
       store.currentTable = table
       store.currentView = view as IView
+      const title = `${view?.name} - ${table.name}`
+
+      const search = qs.stringify({
+        tableId: table._id,
+        viewId: view?._id,
+      })
+      history.replaceState('', title, `/?${search}`)
     }
   }
 

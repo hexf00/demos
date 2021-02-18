@@ -2,7 +2,8 @@ import { Vue, Component, Prop } from 'vue-property-decorator'
 import { CreateElement } from 'vue'
 import table, { ITable } from '@/models/Table/Table'
 import { IView } from '@/models/View/View'
-
+import FieldPanel from '../Panel/FieldPanel/FieldPanel'
+import style from './TableView.module.scss'
 
 @Component
 export default class extends Vue {
@@ -10,8 +11,10 @@ export default class extends Vue {
   @Prop(Object) view!: IView
 
   mounted() {
-
+    this.isShowPopover = true
   }
+
+  isShowPopover = false
 
   get list() {
     return this.view.rowsSorts.map(it => this.table.rows[it])
@@ -22,11 +25,18 @@ export default class extends Vue {
     return <div>
       <div>{table.name} {view.name}</div>
       <div>
-        <el-button on={{
-          click: () => {
 
-          },
-        }}>add Field</el-button>
+
+        <el-popover
+          value={this.isShowPopover}
+          popper-class={style.popperClass}
+          placement="bottom-start"
+          width="280"
+          trigger="manual">
+          <FieldPanel table={table} view={view} />
+          <el-button slot="reference">Field Config</el-button>
+        </el-popover>
+
         <el-button on={{
           click: () => {
 
@@ -40,6 +50,6 @@ export default class extends Vue {
           <el-table-column prop="address" label="地址"></el-table-column>
         </el-table>
       </div>
-    </div>
+    </div >
   }
 }

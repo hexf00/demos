@@ -7,6 +7,10 @@ export interface IStore {
   currentApp: IApp | null
   currentTable: ITable | null
   currentView: IView | null
+  search: {
+    tableId?: string
+    viewId?: string
+  }
 }
 
 const store: IStore = {
@@ -14,6 +18,7 @@ const store: IStore = {
   currentApp: null,
   currentTable: null,
   currentView: null,
+  search: {},
 }
 
 export default store

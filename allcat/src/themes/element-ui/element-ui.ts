@@ -10,6 +10,7 @@ import {
   DropdownMenu,
   DropdownItem,
   Input,
+  Popover,
 } from 'element-ui'
 
 Vue.use(Button)
@@ -21,3 +22,4 @@ Vue.use(Dropdown)
 Vue.use(DropdownMenu)
 Vue.use(DropdownItem)
 Vue.use(Input)
+Vue.use(Popover)
