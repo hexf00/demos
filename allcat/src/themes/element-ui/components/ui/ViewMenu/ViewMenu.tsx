@@ -121,7 +121,8 @@ export default class extends Vue {
           'node-drop': this.dropSuccess,
           'node-click': this.nodeClick,
         }}
-        node-key="id" class={style.tree} default-expand-all scopedSlots={{
+        node-key="id" class={style.tree} default-expand-all
+        scopedSlots={{
           default: ({ data }: { data: IMenuItem }) => {
             return <MenuItem data={data} viewMenuService={service} ></MenuItem>
           },

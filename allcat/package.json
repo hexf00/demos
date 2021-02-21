@@ -32,7 +32,9 @@
     "sass": "^1.32.7",
     "sass-loader": "^7.2.0",
     "style-loader": "^2.0.0",
-    "typescript": "^3.9.9"
+    "typescript": "^3.9.9",
+    "vue-hot-reload-api": "^2.3.4",
+    "vue-jsx-hot-loader": "^1.4.1"
   },
   "scripts": {
     "start": "webpack-dev-server",

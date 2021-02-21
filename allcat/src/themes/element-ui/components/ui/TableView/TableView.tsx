@@ -25,8 +25,6 @@ export default class extends Vue {
     return <div>
       <div>{table.name} {view.name}</div>
       <div>
-
-
         <el-popover
           value={this.isShowPopover}
           popper-class={style.popperClass}

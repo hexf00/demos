@@ -5,6 +5,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = function (env) {
   return {
+    devServer: {
+      hot: true, //启用热更新，必须，相当于--hot
+    },
     entry: './src/index.tsx',
     resolve: {
       /** js是必填 */
@@ -29,7 +32,7 @@ module.exports = function (env) {
       rules: [
         /** ts和tsx需要使用相同的loader, 否则出现ts中不引入element样式的问题 */
         {
-          test: /\.(ts|tsx)$/,
+          test: /\.ts$/,
           exclude: /(node_modules)/,
           use: [
             {
@@ -39,6 +42,26 @@ module.exports = function (env) {
               },
             },
             'ts-loader',
+          ],
+        },
+        {
+          test: /\.tsx$/,
+          exclude: /(node_modules)/,
+          use: [
+            {
+              loader: 'babel-loader',
+              options: {
+                presets: ['@babel/preset-env'],
+              },
+            },
+            {
+              loader: 'ts-loader',
+              options: {
+                transpileOnly: true, // 禁用 type checking，否则热更新会报错
+                // appendTsxSuffixTo: [/\.vue$/]
+              },
+            },
+            'vue-jsx-hot-loader',
           ],
         },
         /** 样式，element会用到scss以外的样式 */
