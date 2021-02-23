@@ -4,14 +4,17 @@ import table, { ITable } from '@/models/Table/Table'
 import { IView } from '@/models/View/View'
 import FieldPanel from '../Panel/FieldPanel/FieldPanel'
 import style from './TableView.module.scss'
+import Clickoutside from 'element-ui/src/utils/clickoutside'
 
-@Component
+
+@Component({
+  directives: { Clickoutside },
+})
 export default class extends Vue {
   @Prop(Object) table!: ITable
   @Prop(Object) view!: IView
 
   mounted() {
-    this.isShowPopover = true
   }
 
   isShowPopover = false
@@ -22,6 +25,16 @@ export default class extends Vue {
 
   render(h: CreateElement) {
     const { table, view } = this
+
+
+    const directives = [{
+      name: 'Clickoutside',
+      value: () => {
+        this.isShowPopover = false
+      },
+    }]
+
+
     return <div>
       <div>{table.name} {view.name}</div>
       <div>
@@ -31,8 +44,21 @@ export default class extends Vue {
           placement="bottom-start"
           width="280"
           trigger="manual">
-          <FieldPanel table={table} view={view} />
-          <el-button slot="reference">Field Config</el-button>
+          <FieldPanel table={table} view={view}
+            {...{ directives }}
+          // 下面写法无效
+          // directives={[{
+          //   name: 'Clickoutside',
+          //   value: () => {
+          //     this.isShowPopover = false
+          //   },
+          // }]}
+          />
+          <el-button slot="reference" on={{
+            click: () => {
+              this.isShowPopover = !this.isShowPopover
+            },
+          }}>Field Config</el-button>
         </el-popover>
 
         <el-button on={{

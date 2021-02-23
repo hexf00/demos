@@ -2,6 +2,8 @@ declare global {
   // interface Window { }
 }
 
+declare module 'element-ui/src/utils/clickoutside'
+
 namespace JSX {
   interface IntrinsicElements { [key: string]: any }
   interface ElementAttributesProperty {
