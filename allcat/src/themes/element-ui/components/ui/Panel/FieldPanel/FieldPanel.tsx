@@ -70,7 +70,7 @@ export default class extends Vue {
       },
     }
 
-    return <div>
+    return <div class={style.fieldPanel}>
       <el-tree data={list}
         draggable={true} allow-drop={this.isAllowDrop}
         on={{

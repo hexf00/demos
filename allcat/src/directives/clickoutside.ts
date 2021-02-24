@@ -61,6 +61,7 @@ function createDocumentHandler(el: HTMLElement, binding: VNodeDirective, vnode: 
  */
 export default {
   bind(el: HTMLElement, binding: VNodeDirective, vnode: VNode) {
+    // console.log(arguments)
     nodeList.push(el)
     const id = seed++
     (el as customNode)[ctx] = {

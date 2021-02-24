@@ -59,7 +59,7 @@ export default class extends Vue {
           placement="bottom-start"
           width="280"
           trigger="manual">
-          <FieldPanel table={table} view={view}
+          {this.isShowPopover && <FieldPanel table={table} view={view}
             {...{ directives }}
           // 下面写法无效
           // directives={[{
@@ -68,7 +68,7 @@ export default class extends Vue {
           //     this.isShowPopover = false
           //   },
           // }]}
-          />
+          />}
           <el-button slot="reference" on={{
             click: () => {
               this.isShowPopover = !this.isShowPopover
