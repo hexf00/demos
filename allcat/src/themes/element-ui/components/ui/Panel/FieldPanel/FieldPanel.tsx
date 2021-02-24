@@ -62,7 +62,13 @@ export default class extends Vue {
   }
 
   render(h: CreateElement) {
+    console.count('hmr count render FieldPanel')
     const { list } = this
+    const scopedSlots = {
+      default: ({ data }: { data: IFieldItem }) => {
+        return <FieldItem data={data}></FieldItem>
+      },
+    }
 
     return <div>
       <el-tree data={list}
@@ -70,11 +76,8 @@ export default class extends Vue {
         on={{
           'node-drop': this.dropSuccess,
         }}
-        node-key="id" class={style.tree} default-expand-all scopedSlots={{
-          default: ({ data }: { data: IFieldItem }) => {
-            return <FieldItem data={data}></FieldItem>
-          },
-        }} />
+        {...{ scopedSlots }}
+        node-key="id" class={style.tree} default-expand-all />
       <el-button size="mini" on={{ click: () => this.addField() }}>新建字段</el-button>
     </div >
   }

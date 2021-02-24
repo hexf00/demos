@@ -20,6 +20,13 @@ export interface IFieldItem {
 export default class FieldItem extends Vue {
   @Prop(Object) data!: IFieldItem
 
+  created() {
+    console.log('hmr count created', this.data.label)
+  }
+
+  destroyed() {
+    console.log('hmr count destroyed', this.data.label)
+  }
 
   render(h: CreateElement) {
     const { label, table, field } = this.data
