@@ -4,7 +4,7 @@ import table, { ITable } from '@/models/Table/Table'
 import { IView } from '@/models/View/View'
 import FieldPanel from '../Panel/FieldPanel/FieldPanel'
 import style from './TableView.module.scss'
-import Clickoutside from 'element-ui/src/utils/clickoutside'
+import Clickoutside from '@/directives/clickoutside'
 
 
 @Component({
@@ -29,7 +29,22 @@ export default class extends Vue {
 
     const directives = [{
       name: 'Clickoutside',
-      value: () => {
+      value: ({ mouseup, mousedown }: { mouseup: MouseEvent; mousedown: MouseEvent }) => {
+        if (!this.isShowPopover /** 未显示 */) {
+          return
+        }
+
+        let parent: null | HTMLElement = mouseup.target as HTMLElement
+        while (parent) {
+          if (parent.classList.contains('el-dropdown-menu') /** 下拉框 */
+            || parent.classList.contains('el-message-box__wrapper') /** 信息框的模态框 */) {
+            //下拉菜单的点击不关闭弹层
+            return
+          }
+
+          // console.log('Clickoutside', parent.classList)
+          parent = parent.parentElement
+        }
         this.isShowPopover = false
       },
     }]

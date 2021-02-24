@@ -3,6 +3,7 @@ declare global {
 }
 
 declare module 'element-ui/src/utils/clickoutside'
+declare module 'element-ui/src/utils/dom'
 
 namespace JSX {
   interface IntrinsicElements { [key: string]: any }
