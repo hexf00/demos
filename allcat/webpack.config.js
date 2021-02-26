@@ -66,7 +66,25 @@ module.exports = function (env) {
         },
         /** 样式，element会用到scss以外的样式 */
         {
-          test: /\.(scss|sass|css|less)$/,
+          test: /\.module.(scss|sass|css|less)$/,
+          use: [
+            'style-loader',
+            {
+              loader: 'css-loader',
+              options: {
+                modules: {
+                  // localIdentName: '[local]--[hash]', //getLocalIdent优先级高于localIdentName
+                  getLocalIdent: (context, localIdentName, localName, options) => {
+                    return `${localName}--${context._module.debugId}`
+                  }
+                }
+              },
+            },
+            'sass-loader',
+          ]
+        },
+        {
+          test: /(?<!\.module)\.(scss|sass|css|less)$/,
           use: [
             'style-loader',
             'css-loader',
