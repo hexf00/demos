@@ -5,6 +5,7 @@ import { IView } from '@/models/View/View'
 import FieldPanel from '../Panel/FieldPanel/FieldPanel'
 import style from './TableView.module.scss'
 import Clickoutside from '@/directives/clickoutside'
+import row from '@/models/Table/Row'
 
 
 @Component({
@@ -18,7 +19,9 @@ export default class extends Vue {
   }
 
   isShowPopover = false
-
+  get cols() {
+    return this.view.fields.map(it => this.table.fields[it._id])
+  }
   get list() {
     return this.view.rowsSorts.map(it => this.table.rows[it])
   }
@@ -49,7 +52,6 @@ export default class extends Vue {
       },
     }]
 
-
     return <div>
       <div>{table.name} {view.name}</div>
       <div>
@@ -78,15 +80,15 @@ export default class extends Vue {
 
         <el-button on={{
           click: () => {
-
+            row.addRow(this.table)
           },
         }}>add Row</el-button>
       </div>
       <div>
         <el-table data={this.list}>
-          <el-table-column prop="date" label="日期" width="180"></el-table-column>
-          <el-table-column prop="name" label="姓名" width="180"></el-table-column>
-          <el-table-column prop="address" label="地址"></el-table-column>
+          {this.cols.map(it => (
+            <el-table-column prop={it._id} label={it.name} width="180"></el-table-column>
+          ))}
         </el-table>
       </div>
     </div >
