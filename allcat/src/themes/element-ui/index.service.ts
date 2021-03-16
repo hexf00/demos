@@ -1,14 +1,14 @@
-import app, { IApp } from '@/models/App/App'
+import app, { IJSONApp } from '@/models/App/App'
 import store from '@/store'
 import qs from 'qs'
 export default class IndexService {
-  app: IApp
+  app: IJSONApp
 
   constructor() {
     this.app = app.get()
     store.currentApp = this.app
     this.routerInit();
-    (window as unknown as { app: IApp }).app = this.app
+    (window as unknown as { app: IJSONApp }).app = this.app
 
 
     window.onbeforeunload = function () {

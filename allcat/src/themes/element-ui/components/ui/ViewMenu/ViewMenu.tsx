@@ -1,9 +1,9 @@
 import { Vue, Component } from 'vue-property-decorator'
 import { CreateElement } from 'vue'
 import ViewMenuService from './ViewMenu.service'
-import { IApp } from '@/models/App/App'
+import { IJSONApp } from '@/models/App/App'
 import style from './ViewMenu.module.scss'
-import { ITable } from '@/models/Table/Table'
+import { IJSONTable } from '@/models/Table/Table'
 import { IView } from '@/models/View/View'
 import MenuItem, { IMenuItem } from './components/MenuItem/MenuItem'
 import { TreeNode } from 'element-ui/types/tree'
@@ -11,17 +11,17 @@ import store from '@/store'
 import qs from 'qs'
 
 export interface IViewMenuService {
-  app: IApp
+  app: IJSONApp
   createNewTable: () => void
-  createNewView: (table: ITable) => void
-  deleteTable: (table: ITable) => void
-  deleteView: (table: ITable, view: IView) => void
+  createNewView: (table: IJSONTable) => void
+  deleteTable: (table: IJSONTable) => void
+  deleteView: (table: IJSONTable, view: IView) => void
 }
 
 export interface ITreeNode {
   id: string
   label: string
-  table: ITable
+  table: IJSONTable
   type: 'table' | 'view'
   view?: IView
   children?: ITreeNode[]

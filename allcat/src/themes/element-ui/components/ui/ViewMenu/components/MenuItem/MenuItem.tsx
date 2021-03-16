@@ -2,7 +2,7 @@ import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import { CreateElement } from 'vue'
 import { IViewMenuService } from '../../ViewMenu'
 import style from './MenuItem.module.scss'
-import tableModel, { ITable } from '@/models/Table/Table'
+import tableModel, { IJSONTable } from '@/models/Table/Table'
 import viewModel, { IView } from '@/models/View/View'
 import { Input, MessageBox } from 'element-ui'
 
@@ -12,7 +12,7 @@ export interface IMenuItem {
   /** 唯一标识符,可能el-tree会用来判断dom复用 */
   id: string
   label: string
-  table: ITable
+  table: IJSONTable
   view: IView
   type: 'table' | 'view'
 }

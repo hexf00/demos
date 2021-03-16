@@ -1,8 +1,8 @@
 import libs from '@/libs'
 import Vue from 'vue'
-import { ITable } from './Table'
+import { IJSONTable } from './Table'
 
-export interface IRow {
+export interface IJSONRow {
   /** 行主键 */
   _id: string
   [key: string]: string | number
@@ -10,7 +10,7 @@ export interface IRow {
 
 
 /** 获取一个表格唯一id */
-function generateRowId(table: ITable): string {
+function generateRowId(table: IJSONTable): string {
   let isUnique = false
   let id = libs.randomChar()
   while (!isUnique) {
@@ -24,10 +24,10 @@ function generateRowId(table: ITable): string {
   return id
 }
 
-function addRow(table: ITable) {
+function addRow(table: IJSONTable) {
 
 
-  const row: IRow = {
+  const row: IJSONRow = {
     _id: generateRowId(table),
   }
 

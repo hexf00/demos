@@ -1,6 +1,6 @@
-import { IViewField } from './ViewField'
+import { IJSONViewField } from './ViewField'
 import { IViewFilter } from './ViewFilter'
-import { ITable } from '../Table/Table'
+import { IJSONTable } from '../Table/Table'
 import libs from '@/libs'
 import Vue from 'vue'
 
@@ -14,7 +14,7 @@ export interface IView {
   /** 视图描述 */
   description: string
   /** 视图字段配置 */
-  fields: IViewField[]
+  fields: IJSONViewField[]
   /** 视图数据排序 */
   rowsSorts: string[]
   /** 过滤器 */
@@ -24,7 +24,7 @@ export interface IView {
 /**
  * 获取一个视图唯一id
  */
-function generateViewId(table: ITable): string {
+function generateViewId(table: IJSONTable): string {
   let isUnique = false
   let id = libs.randomChar()
   while (!isUnique) {
@@ -39,7 +39,7 @@ function generateViewId(table: ITable): string {
 }
 
 /** 检查视图名称在table中是否存在 */
-function checkViewNameIsExist(table: ITable, name: string): boolean {
+function checkViewNameIsExist(table: IJSONTable, name: string): boolean {
   for (const viewId in table.views) {
     const view = table.views[viewId]
     if (view.name === name) {
@@ -50,7 +50,7 @@ function checkViewNameIsExist(table: ITable, name: string): boolean {
 }
 
 /** 获取一个视图唯一标题 */
-function generateViewName(table: ITable): string {
+function generateViewName(table: IJSONTable): string {
   let isUnique = false
   let index = table.viewsSorts.length + 1
   while (!isUnique) {
@@ -64,7 +64,7 @@ function generateViewName(table: ITable): string {
   return `表格视图 ${index}`
 }
 
-function addView(table: ITable) {
+function addView(table: IJSONTable) {
   const index = table.viewsSorts.length + 1
 
   const view: IView = {
@@ -81,7 +81,7 @@ function addView(table: ITable) {
   table.viewsSorts.push(view._id)
 }
 
-function removeView(table: ITable, view: IView) {
+function removeView(table: IJSONTable, view: IView) {
   delete table.views[view._id]
 
   const index = table.viewsSorts.indexOf(view._id)

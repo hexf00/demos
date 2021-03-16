@@ -1,7 +1,7 @@
 import store from '@/store'
-import { ITable } from '../Table/Table'
+import { IJSONTable } from '../Table/Table'
 
-export interface IApp {
+export interface IJSONApp {
   /** App主键 */
   _id: string
   /** App名称 */
@@ -9,23 +9,23 @@ export interface IApp {
   /** App描述 */
   description: string
   /** App表配置 */
-  tables: Record<string, ITable>
+  tables: Record<string, IJSONTable>
   /** App表排序 */
   tableSorts: string[]
 }
 
 /** 获取表数据结构 */
-function get(appId = 'default_app'): IApp {
+function get(appId = 'default_app'): IJSONApp {
   if (store.apps[appId]) {
     return store.apps[appId]
   }
 
   const content = localStorage.getItem('app:' + appId)
   if (content) {
-    const app: IApp = JSON.parse(content)
+    const app: IJSONApp = JSON.parse(content)
     store.apps[appId] = app
   } else {
-    const app: IApp = {
+    const app: IJSONApp = {
       _id: appId,
       name: '新App',
       description: '',

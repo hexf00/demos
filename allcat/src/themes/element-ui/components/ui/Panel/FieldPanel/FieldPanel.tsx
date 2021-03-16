@@ -4,16 +4,16 @@ import style from './FieldPanel.module.scss'
 import { TreeNode } from 'element-ui/types/tree'
 import FieldItem, { IFieldItem } from './components/FieldItem/FieldItem'
 import store from '@/store'
-import { IApp } from '@/models/App/App'
-import { ITable } from '@/models/Table/Table'
+import { IJSONApp } from '@/models/App/App'
+import { IJSONTable } from '@/models/Table/Table'
 import { IView } from '@/models/View/View'
-import tableField from '@/models/Table/TableField'
+import tableField from '@/models/Table/Field'
 
 
 
 @Component
 export default class extends Vue {
-  @Prop(Object) table!: ITable
+  @Prop(Object) table!: IJSONTable
   @Prop(Object) view!: IView
 
   get list(): IFieldItem[] {

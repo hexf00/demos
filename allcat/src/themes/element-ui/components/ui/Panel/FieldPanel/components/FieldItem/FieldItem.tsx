@@ -1,19 +1,19 @@
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import { CreateElement } from 'vue'
 import style from './FieldItem.module.scss'
-import tableModel, { ITable } from '@/models/Table/Table'
+import tableModel, { IJSONTable } from '@/models/Table/Table'
 import viewModel, { IView } from '@/models/View/View'
 import EyeSwitch from '@/themes/element-ui/components/base/EyeSwitch/EyeSwitch'
 import { MessageBox } from 'element-ui'
-import tableField, { ITableField } from '@/models/Table/TableField'
+import tableField, { IJSONField } from '@/models/Table/Field'
 
 export interface IFieldItem {
   /** 唯一标识符,可能el-tree会用来判断dom复用 */
   id: string
   label: string
-  table: ITable
+  table: IJSONTable
   view: IView
-  field: ITableField
+  field: IJSONField
 }
 
 @Component

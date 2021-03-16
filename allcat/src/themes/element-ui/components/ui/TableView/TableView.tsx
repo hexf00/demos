@@ -1,6 +1,6 @@
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import { CreateElement } from 'vue'
-import table, { ITable } from '@/models/Table/Table'
+import table, { IJSONTable } from '@/models/Table/Table'
 import { IView } from '@/models/View/View'
 import FieldPanel from '../Panel/FieldPanel/FieldPanel'
 import style from './TableView.module.scss'
@@ -12,7 +12,7 @@ import row from '@/models/Table/Row'
   directives: { Clickoutside },
 })
 export default class extends Vue {
-  @Prop(Object) table!: ITable
+  @Prop(Object) table!: IJSONTable
   @Prop(Object) view!: IView
 
   mounted() {

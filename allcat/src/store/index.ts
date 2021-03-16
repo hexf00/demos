@@ -1,11 +1,11 @@
-import { IApp } from '@/models/App/App'
-import { ITable } from '@/models/Table/Table'
+import { IJSONApp } from '@/models/App/App'
+import { IJSONTable } from '@/models/Table/Table'
 import { IView } from '@/models/View/View'
 
 export interface IStore {
-  apps: Record<string, IApp>
-  currentApp: IApp | null
-  currentTable: ITable | null
+  apps: Record<string, IJSONApp>
+  currentApp: IJSONApp | null
+  currentTable: IJSONTable | null
   currentView: IView | null
   search: {
     tableId?: string
