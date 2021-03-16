@@ -47,9 +47,9 @@ function addRow(table: IJSONTable) {
   }
 }
 
-const row = {
+const JsonRow = {
   generateRowId,
   addRow,
 }
 
-export default row
+export default JsonRow

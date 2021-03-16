@@ -90,10 +90,10 @@ function removeView(table: IJSONTable, view: IView) {
   }
 }
 
-const view = {
+const JsonView = {
   addView,
   removeView,
   checkViewNameIsExist,
 }
 
-export default view
+export default JsonView

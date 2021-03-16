@@ -1,11 +1,11 @@
-import app, { IJSONApp } from '@/models/App/App'
+import JsonApp, { IJSONApp } from '@/models/App/App'
 import store from '@/store'
 import qs from 'qs'
 export default class IndexService {
   app: IJSONApp
 
   constructor() {
-    this.app = app.get()
+    this.app = JsonApp.get()
     store.currentApp = this.app
     this.routerInit();
     (window as unknown as { app: IJSONApp }).app = this.app
@@ -13,7 +13,7 @@ export default class IndexService {
 
     window.onbeforeunload = function () {
       console.log('自动保存')
-      app.save()
+      JsonApp.save()
     }
   }
 

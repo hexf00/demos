@@ -5,7 +5,7 @@ import tableModel, { IJSONTable } from '@/models/Table/Table'
 import viewModel, { IView } from '@/models/View/View'
 import EyeSwitch from '@/themes/element-ui/components/base/EyeSwitch/EyeSwitch'
 import { MessageBox } from 'element-ui'
-import tableField, { IJSONField } from '@/models/Table/Field'
+import JsonField, { IJSONField } from '@/models/Table/Field'
 
 export interface IFieldItem {
   /** 唯一标识符,可能el-tree会用来判断dom复用 */
@@ -51,7 +51,7 @@ export default class FieldItem extends Vue {
                 confirmButtonText: '确认删除',
               })
                 .then(() => {
-                  tableField.removeField(table, field)
+                  JsonField.removeField(table, field)
                 })
             }
           },

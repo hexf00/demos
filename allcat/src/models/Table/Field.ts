@@ -89,10 +89,10 @@ function addField(table: IJSONTable) {
   }
 }
 
-const tableField = {
+const JsonField = {
   addField,
   removeField,
   checkFieldNameIsExist,
 }
 
-export default tableField
+export default JsonField

@@ -1,6 +1,6 @@
 import libs from '@/libs'
 import { IJSONApp } from '../App/App'
-import view, { IView } from '../View/View'
+import JsonView, { IView } from '../View/View'
 import { IJSONField } from './Field'
 import { IJSONRow } from './Row'
 import Vue from 'vue'
@@ -77,7 +77,7 @@ function addTable(app: IJSONApp) {
   }
 
   //添加默认视图
-  view.addView(table)
+  JsonView.addView(table)
 
   //需要通过Vue给不存在的属性添加响应式
   Vue.set(app.tables, table._id, table)
@@ -93,10 +93,10 @@ function removeTable(app: IJSONApp, table: IJSONTable) {
   }
 }
 
-const table = {
+const JsonTable = {
   addTable,
   removeTable,
   checkTableNameIsExist,
 }
 
-export default table
+export default JsonTable

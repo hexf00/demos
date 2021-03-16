@@ -7,7 +7,7 @@ import store from '@/store'
 import { IJSONApp } from '@/models/App/App'
 import { IJSONTable } from '@/models/Table/Table'
 import { IView } from '@/models/View/View'
-import tableField from '@/models/Table/Field'
+import JsonField from '@/models/Table/Field'
 
 
 
@@ -58,7 +58,7 @@ export default class extends Vue {
   }
 
   addField() {
-    tableField.addField(this.table)
+    JsonField.addField(this.table)
   }
 
   render(h: CreateElement) {

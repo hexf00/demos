@@ -1,11 +1,11 @@
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import { CreateElement } from 'vue'
-import table, { IJSONTable } from '@/models/Table/Table'
+import JsonTable, { IJSONTable } from '@/models/Table/Table'
 import { IView } from '@/models/View/View'
 import FieldPanel from '../Panel/FieldPanel/FieldPanel'
 import style from './TableView.module.scss'
 import Clickoutside from '@/directives/clickoutside'
-import row from '@/models/Table/Row'
+import JsonRow from '@/models/Table/Row'
 
 
 @Component({
@@ -80,7 +80,7 @@ export default class extends Vue {
 
         <el-button on={{
           click: () => {
-            row.addRow(this.table)
+            JsonRow.addRow(this.table)
           },
         }}>add Row</el-button>
       </div>

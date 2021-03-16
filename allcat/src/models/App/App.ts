@@ -49,9 +49,9 @@ function save(appId = 'default_app') {
   localStorage.setItem('app:' + _id, JSON.stringify(store.apps[appId]))
 }
 
-const app = {
+const JsonApp = {
   get,
   save,
 }
 
-export default app
+export default JsonApp
