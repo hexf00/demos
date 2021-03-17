@@ -44,17 +44,21 @@ export default class extends Vue {
 
   /** 拖拽成功时候触发 */
   dropSuccess(raggingNode: TreeNode<string, IFieldItem>, dropNode: TreeNode<string, IFieldItem>, pos: 'before' | 'after') {
-    // const { id } = raggingNode.data
-    // const targetId = dropNode.data.id
-    // const sorts = store.currentApp.tableSorts
+    const { id } = raggingNode.data
+    const targetId = dropNode.data.id
+    const fields = store.currentView?.fields
 
-    // const index = sorts.indexOf(id)
-    // let tragetIndex = sorts.indexOf(targetId)
+    if (fields) {
+      const current = fields.find(it => it._id === id)
+      if (!current) return
+      const index = fields.indexOf(current)
+      let tragetIndex = fields.findIndex(it => it._id === targetId)
 
-    // tragetIndex = pos === 'before' ? tragetIndex : tragetIndex + 1
+      tragetIndex = pos === 'before' ? tragetIndex : tragetIndex + 1
 
-    // sorts.splice(index, 1)
-    // sorts.splice(tragetIndex, 0, id)
+      fields.splice(index, 1)
+      fields.splice(tragetIndex, 0, current)
+    }
   }
 
   addField() {
