@@ -1,7 +1,7 @@
 import libs from '@/libs'
 import { IJSONApp } from '../App/App'
 import JsonView, { IView } from '../View/View'
-import { IJSONField } from './Field'
+import { IJSONTableField } from './TableField'
 import { IJSONRow } from './Row'
 import Vue from 'vue'
 
@@ -14,7 +14,7 @@ export interface IJSONTable {
   /** 表描述 */
   description: string
   /** 表字段配置 */
-  fields: Record<string, IJSONField>
+  fields: Record<string, IJSONTableField>
   /** 表数据 */
   rows: Record<string, IJSONRow>
   /** 表视图 */

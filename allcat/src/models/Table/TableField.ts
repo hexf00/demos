@@ -3,7 +3,7 @@ import { IJSONApp } from '../App/App'
 import { IControl } from '../Control/Control'
 import { IJSONTable } from './Table'
 import Vue from 'vue'
-export interface IJSONField {
+export interface IJSONTableField {
   /** 字段主键 */
   _id: string
   /** 字段名称 */
@@ -60,7 +60,7 @@ function generateFieldName(table: IJSONTable): string {
 }
 
 /** 删除字段 */
-function removeField(table: IJSONTable, field: IJSONField) {
+function removeField(table: IJSONTable, field: IJSONTableField) {
   delete table.fields[field._id]
 
   for (const viewId in table.views) {
@@ -73,7 +73,7 @@ function removeField(table: IJSONTable, field: IJSONField) {
 }
 
 function addField(table: IJSONTable) {
-  const field: IJSONField = {
+  const field: IJSONTableField = {
     _id: generateFieldId(table),
     name: generateFieldName(table),
     description: '',

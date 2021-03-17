@@ -7,7 +7,7 @@ import store from '@/store'
 import { IJSONApp } from '@/models/App/App'
 import { IJSONTable } from '@/models/Table/Table'
 import { IView } from '@/models/View/View'
-import JsonField from '@/models/Table/Field'
+import JsonField from '@/models/Table/TableField'
 
 
 
