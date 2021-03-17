@@ -5,7 +5,7 @@ import { IJSONTable } from './Table'
 import Vue from 'vue'
 export interface IJSONTableField {
   /** 字段主键 */
-  _id: string
+  id: string
   /** 字段名称 */
   name: string
   /** 字段描述 */
@@ -61,11 +61,11 @@ function generateFieldName(table: IJSONTable): string {
 
 /** 删除字段 */
 function removeField(table: IJSONTable, field: IJSONTableField) {
-  delete table.fields[field._id]
+  delete table.fields[field.id]
 
   for (const viewId in table.views) {
     const view = table.views[viewId]
-    const index = view.fields.findIndex(it => it._id === field._id)
+    const index = view.fields.findIndex(it => it.id === field.id)
     if (index !== -1) {
       view.fields.splice(index, 1)
     }
@@ -74,18 +74,18 @@ function removeField(table: IJSONTable, field: IJSONTableField) {
 
 function addField(table: IJSONTable) {
   const field: IJSONTableField = {
-    _id: generateFieldId(table),
+    id: generateFieldId(table),
     name: generateFieldName(table),
     description: '',
     type: 'text',
   }
 
   //需要通过Vue给不存在的属性添加响应式
-  Vue.set(table.fields, field._id, field)
+  Vue.set(table.fields, field.id, field)
 
   for (const viewId in table.views) {
     const view = table.views[viewId]
-    view.fields.push({ _id: field._id, isShow: true })
+    view.fields.push({ id: field.id, isShow: true })
   }
 }
 

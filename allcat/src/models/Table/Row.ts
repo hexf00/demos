@@ -4,7 +4,7 @@ import { IJSONTable } from './Table'
 
 export interface IJSONRow {
   /** 行主键 */
-  _id: string
+  id: string
   [key: string]: string | number
 }
 
@@ -28,7 +28,7 @@ function addRow(table: IJSONTable) {
 
 
   const row: IJSONRow = {
-    _id: generateRowId(table),
+    id: generateRowId(table),
   }
 
 
@@ -39,11 +39,11 @@ function addRow(table: IJSONTable) {
   }
 
   //需要通过Vue给不存在的属性添加响应式
-  Vue.set(table.rows, row._id, row)
+  Vue.set(table.rows, row.id, row)
 
   for (const viewId in table.views) {
     const view = table.views[viewId]
-    view.rowsSorts.push(row._id)
+    view.rowsSorts.push(row.id)
   }
 }
 

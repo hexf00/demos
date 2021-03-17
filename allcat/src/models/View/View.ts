@@ -6,7 +6,7 @@ import Vue from 'vue'
 
 export interface IView {
   /** 视图主键 */
-  _id: string
+  id: string
   /** 视图类型 */
   type: 'table' | 'kanban'
   /** 视图名称 */
@@ -68,7 +68,7 @@ function addView(table: IJSONTable) {
   const index = table.viewsSorts.length + 1
 
   const view: IView = {
-    _id: generateViewId(table),
+    id: generateViewId(table),
     type: 'table',
     name: generateViewName(table),
     description: '',
@@ -77,14 +77,14 @@ function addView(table: IJSONTable) {
     filters: [],
   }
   //需要通过Vue给不存在的属性添加响应式
-  Vue.set(table.views, view._id, view)
-  table.viewsSorts.push(view._id)
+  Vue.set(table.views, view.id, view)
+  table.viewsSorts.push(view.id)
 }
 
 function removeView(table: IJSONTable, view: IView) {
-  delete table.views[view._id]
+  delete table.views[view.id]
 
-  const index = table.viewsSorts.indexOf(view._id)
+  const index = table.viewsSorts.indexOf(view.id)
   if (index !== -1) {
     table.viewsSorts.splice(index, 1)
   }

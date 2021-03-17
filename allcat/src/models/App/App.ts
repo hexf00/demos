@@ -3,7 +3,7 @@ import { IJSONTable } from '../Table/Table'
 
 export interface IJSONApp {
   /** App主键 */
-  _id: string
+  id: string
   /** App名称 */
   name: string
   /** App描述 */
@@ -26,7 +26,7 @@ function get(appId = 'default_app'): IJSONApp {
     store.apps[appId] = app
   } else {
     const app: IJSONApp = {
-      _id: appId,
+      id: appId,
       name: '新App',
       description: '',
       tables: {},
@@ -45,7 +45,7 @@ function save(appId = 'default_app') {
   if (!store.apps[appId]) {
     return
   }
-  const { _id } = store.apps[appId]
+  const { id: _id } = store.apps[appId]
   localStorage.setItem('app:' + _id, JSON.stringify(store.apps[appId]))
 }
 

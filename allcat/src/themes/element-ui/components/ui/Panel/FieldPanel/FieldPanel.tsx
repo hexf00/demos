@@ -21,9 +21,9 @@ export default class extends Vue {
     const { table, view } = this
 
     return view.fields.map(viewField => {
-      const field = table.fields[viewField._id]
+      const field = table.fields[viewField.id]
       return {
-        id: viewField._id,
+        id: viewField.id,
         label: field.name,
         table,
         field,
@@ -49,10 +49,10 @@ export default class extends Vue {
     const fields = store.currentView?.fields
 
     if (fields) {
-      const current = fields.find(it => it._id === id)
+      const current = fields.find(it => it.id === id)
       if (!current) return
       const index = fields.indexOf(current)
-      let tragetIndex = fields.findIndex(it => it._id === targetId)
+      let tragetIndex = fields.findIndex(it => it.id === targetId)
 
       tragetIndex = pos === 'before' ? tragetIndex : tragetIndex + 1
 

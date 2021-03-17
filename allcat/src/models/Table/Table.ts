@@ -8,7 +8,7 @@ import Vue from 'vue'
 
 export interface IJSONTable {
   /** 表主键 */
-  _id: string
+  id: string
   /** 表名称 */
   name: string
   /** 表描述 */
@@ -67,7 +67,7 @@ function generateTableName(app: IJSONApp): string {
 
 function addTable(app: IJSONApp) {
   const table: IJSONTable = {
-    _id: generateTableId(app),
+    id: generateTableId(app),
     name: generateTableName(app),
     description: '',
     fields: {},
@@ -80,14 +80,14 @@ function addTable(app: IJSONApp) {
   JsonView.addView(table)
 
   //需要通过Vue给不存在的属性添加响应式
-  Vue.set(app.tables, table._id, table)
-  app.tableSorts.push(table._id)
+  Vue.set(app.tables, table.id, table)
+  app.tableSorts.push(table.id)
 }
 
 function removeTable(app: IJSONApp, table: IJSONTable) {
-  delete app.tables[table._id]
+  delete app.tables[table.id]
 
-  const index = app.tableSorts.indexOf(table._id)
+  const index = app.tableSorts.indexOf(table.id)
   if (index !== -1) {
     app.tableSorts.splice(index, 1)
   }

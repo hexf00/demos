@@ -39,14 +39,14 @@ export default class extends Vue {
     return app.tableSorts.map(tableId => {
       const table = app.tables[tableId]
       return {
-        id: table._id,
+        id: table.id,
         label: table.name,
         table: table,
         type: 'table',
         children: table.viewsSorts.map(viewId => {
           const view = table.views[viewId]
           return {
-            id: view._id,
+            id: view.id,
             label: view.name,
             table: table,
             view: view,
@@ -104,8 +104,8 @@ export default class extends Vue {
       const title = `${view?.name} - ${table.name}`
 
       const search = qs.stringify({
-        tableId: table._id,
-        viewId: view?._id,
+        tableId: table.id,
+        viewId: view?.id,
       })
       history.replaceState('', title, `/?${search}`)
     }
