@@ -20,7 +20,7 @@ export default class extends Vue {
 
   isShowPopover = false
   get cols() {
-    return this.view.fields.map(it => this.table.fields[it.id])
+    return this.view.fields.filter(it => it.isShow).map(it => this.table.fields[it.id])
   }
   get list() {
     return this.view.rowsSorts.map(it => this.table.rows[it])
@@ -85,9 +85,9 @@ export default class extends Vue {
         }}>add Row</el-button>
       </div>
       <div>
-        <el-table data={this.list}>
+        <el-table data={this.list} row-key="id">
           {this.cols.map(it => (
-            <el-table-column prop={it.id} label={it.name} width="180"></el-table-column>
+            <el-table-column key={it.id} prop={it.id} label={it.name} width="180"></el-table-column>
           ))}
         </el-table>
       </div>

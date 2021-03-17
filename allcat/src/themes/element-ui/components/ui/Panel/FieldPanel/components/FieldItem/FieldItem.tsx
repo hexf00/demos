@@ -6,10 +6,12 @@ import viewModel, { IView } from '@/models/View/View'
 import EyeSwitch from '@/themes/element-ui/components/base/EyeSwitch/EyeSwitch'
 import { MessageBox } from 'element-ui'
 import JsonField, { IJSONTableField } from '@/models/Table/TableField'
+import { IJSONViewField } from '@/models/View/ViewField'
 
 export interface IFieldItem {
   /** 唯一标识符,可能el-tree会用来判断dom复用 */
   id: string
+  viewField: IJSONViewField
   label: string
   table: IJSONTable
   view: IView
@@ -29,8 +31,7 @@ export default class FieldItem extends Vue {
   }
 
   render(h: CreateElement) {
-    const { label, table, field } = this.data
-
+    const { label, viewField, table, field } = this.data
 
     return <div class={style.treeItem}>
       {/* 重命名 */}
@@ -42,7 +43,7 @@ export default class FieldItem extends Vue {
 
 
 
-        <EyeSwitch />
+        <EyeSwitch vModel={viewField.isShow} />
         <el-dropdown size="mini" trigger="click" on={{
           command: (command: string) => {
             if (command === 'remove') {

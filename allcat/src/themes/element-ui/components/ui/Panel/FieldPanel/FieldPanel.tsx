@@ -23,11 +23,12 @@ export default class extends Vue {
     return view.fields.map(viewField => {
       const field = table.fields[viewField.id]
       return {
-        id: viewField.id,
+        id: field.id,
         label: field.name,
         table,
         field,
         view,
+        viewField: viewField,
       }
     })
   }
