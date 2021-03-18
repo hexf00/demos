@@ -113,15 +113,21 @@ export default class extends Vue {
 
   render(h: CreateElement) {
     const { list, service, expandedTableIds } = this
-
+    const currentNodeKey = store.currentView?.id
     return <div>
-      <el-tree data={list} default-expanded-keys={expandedTableIds}
-        draggable={true} allow-drop={this.isAllowDrop}
+      <el-tree
+        data={list}
+        default-expanded-keys={expandedTableIds}
+        draggable={true}
+        allow-drop={this.isAllowDrop}
         on={{
           'node-drop': this.dropSuccess,
           'node-click': this.nodeClick,
         }}
-        node-key="id" class={style.tree} default-expand-all
+        node-key="id"
+        class={style.tree}
+        default-expand-all
+        current-node-key={currentNodeKey}
         scopedSlots={{
           default: ({ data }: { data: IMenuItem }) => {
             return <MenuItem data={data} viewMenuService={service} ></MenuItem>
