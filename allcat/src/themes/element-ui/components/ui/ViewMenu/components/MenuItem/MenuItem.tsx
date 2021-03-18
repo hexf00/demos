@@ -130,9 +130,9 @@ export default class MenuItem extends Vue {
                 })
                   .then(() => {
                     if (type === 'table') {
-                      service.deleteTable(table)
+                      service.removeTable(table)
                     } else if (type === 'view') {
-                      service.deleteView(table, view)
+                      service.removeView(table, view)
                     }
                   })
               } else if (command === 'rename') {

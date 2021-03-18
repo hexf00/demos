@@ -19,11 +19,11 @@ export default class ViewMenuService implements IViewMenuService {
     JsonView.addView(table)
   }
 
-  deleteTable(tb: IJSONTable) {
+  removeTable(tb: IJSONTable) {
     JsonTable.removeTable(this.app, tb)
   }
 
-  deleteView(tb: IJSONTable, v: IView) {
+  removeView(tb: IJSONTable, v: IView) {
     JsonView.removeView(tb, v)
   }
 }

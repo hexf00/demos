@@ -14,8 +14,8 @@ export interface IViewMenuService {
   app: IJSONApp
   createNewTable: () => void
   createNewView: (table: IJSONTable) => void
-  deleteTable: (table: IJSONTable) => void
-  deleteView: (table: IJSONTable, view: IView) => void
+  removeTable: (table: IJSONTable) => void
+  removeView: (table: IJSONTable, view: IView) => void
 }
 
 export interface ITreeNode {
