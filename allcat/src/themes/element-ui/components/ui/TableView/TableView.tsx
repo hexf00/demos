@@ -87,7 +87,7 @@ export default class extends Vue {
       <div>
         <el-table data={this.list} row-key="id">
           {this.cols.map(it => (
-            <el-table-column key={it.id} prop={it.id} label={it.name} width="180"></el-table-column>
+            <el-table-column prop={it.id} label={it.name} width="180"></el-table-column>
           ))}
         </el-table>
       </div>
