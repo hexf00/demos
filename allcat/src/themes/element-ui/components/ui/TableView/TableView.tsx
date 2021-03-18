@@ -40,7 +40,9 @@ export default class extends Vue {
         let parent: null | HTMLElement = mouseup.target as HTMLElement
         while (parent) {
           if (parent.classList.contains('el-dropdown-menu') /** 下拉框 */
-            || parent.classList.contains('el-message-box__wrapper') /** 信息框的模态框 */) {
+            || parent.classList.contains('el-message-box__wrapper') /** 信息框的模态框 */
+            || parent.classList.contains('el-popper') /** 字段配置面板 */
+          ) {
             //下拉菜单的点击不关闭弹层
             return
           }

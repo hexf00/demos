@@ -7,7 +7,8 @@ import store from '@/store'
 import { IJSONApp } from '@/models/App/App'
 import { IJSONTable } from '@/models/Table/Table'
 import { IView } from '@/models/View/View'
-import JsonField from '@/models/Table/TableField'
+import JsonField, { IJSONTableField } from '@/models/Table/TableField'
+import FieldItemPanel from '../FieldItemPanel/FieldItemPanel'
 
 
 
@@ -15,6 +16,12 @@ import JsonField from '@/models/Table/TableField'
 export default class FieldListPanel extends Vue {
   @Prop(Object) table!: IJSONTable
   @Prop(Object) view!: IView
+
+  /** 是否显示字段配置面板 */
+  showFieldItemPanel = false
+
+  /** 当前编辑状态的字段Model */
+  fieldModel: IJSONTableField | null = null
 
   get list(): IFieldItem[] {
     console.count('list')
@@ -71,11 +78,25 @@ export default class FieldListPanel extends Vue {
     const { list } = this
     const scopedSlots = {
       default: ({ data }: { data: IFieldItem }) => {
-        return <FieldItem data={data}></FieldItem>
+        return <FieldItem on={{
+          showFieldItemPanel: (field: IJSONTableField) => {
+            this.showFieldItemPanel = true
+            this.fieldModel = field
+          },
+        }} data={data}></FieldItem>
       },
     }
 
     return <div class={style.fieldPanel}>
+      <el-popover
+        value={this.showFieldItemPanel}
+        trigger="manual"
+        placement="right-start"
+        visible-arrow={false}
+        width="280">
+        {this.fieldModel && <FieldItemPanel field={this.fieldModel} ></FieldItemPanel>}
+        <div slot="reference"></div>
+      </el-popover>
       <el-tree data={list}
         draggable={true} allow-drop={this.isAllowDrop}
         on={{

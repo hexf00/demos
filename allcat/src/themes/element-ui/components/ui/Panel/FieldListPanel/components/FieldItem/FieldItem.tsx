@@ -54,6 +54,8 @@ export default class FieldItem extends Vue {
                 .then(() => {
                   JsonField.removeField(table, field)
                 })
+            } else if (command === 'edit') {
+              this.$emit('showFieldItemPanel', field)
             }
           },
         }}>
