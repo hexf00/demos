@@ -1,6 +1,6 @@
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import { CreateElement } from 'vue'
-import style from './FieldPanel.module.scss'
+import style from './index.module.scss'
 import { TreeNode } from 'element-ui/types/tree'
 import FieldItem, { IFieldItem } from './components/FieldItem/FieldItem'
 import store from '@/store'

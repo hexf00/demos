@@ -2,7 +2,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator'
 import { CreateElement } from 'vue'
 import JsonTable, { IJSONTable } from '@/models/Table/Table'
 import { IView } from '@/models/View/View'
-import FieldPanel from '../Panel/FieldPanel/FieldPanel'
+import FieldListPanel from '../Panel/FieldListPanel/FieldListPanel'
 import style from './TableView.module.scss'
 import Clickoutside from '@/directives/clickoutside'
 import JsonRow from '@/models/Table/Row'
@@ -61,7 +61,7 @@ export default class extends Vue {
           placement="bottom-start"
           width="280"
           trigger="manual">
-          {this.isShowPopover && <FieldPanel table={table} view={view}
+          {this.isShowPopover && <FieldListPanel table={table} view={view}
             {...{ directives }}
           // 下面写法无效
           // directives={[{
