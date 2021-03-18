@@ -3,6 +3,7 @@ import { IViewFilter } from './ViewFilter'
 import { IJSONTable } from '../Table/Table'
 import libs from '@/libs'
 import Vue from 'vue'
+import store from '@/store'
 
 export interface IView {
   /** 视图主键 */
@@ -67,13 +68,21 @@ function generateViewName(table: IJSONTable): string {
 function addView(table: IJSONTable) {
   const index = table.viewsSorts.length + 1
 
+  //说明： 此处如果已经选择了一个视图，则基于当前视图复制，如果未选择，使用一个视图的配置复制。 上述复制均不含筛选条件、分组等。
+
+  let baseView = store.currentView
+
+  if (!baseView || !table.views[baseView.id]) {
+    baseView = table.views[table.viewsSorts[0]]
+  }
+
   const view: IView = {
     id: generateViewId(table),
     type: 'table',
     name: generateViewName(table),
     description: '',
-    fields: [],
-    rowsSorts: [],
+    fields: baseView ? JSON.parse(JSON.stringify(baseView.fields)) : [],
+    rowsSorts: baseView ? [...baseView.rowsSorts] : [],
     filters: [],
   }
   //需要通过Vue给不存在的属性添加响应式
