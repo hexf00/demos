@@ -12,7 +12,7 @@ import JsonField from '@/models/Table/TableField'
 
 
 @Component
-export default class extends Vue {
+export default class FieldListPanel extends Vue {
   @Prop(Object) table!: IJSONTable
   @Prop(Object) view!: IView
 
