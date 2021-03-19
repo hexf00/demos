@@ -6,6 +6,7 @@ import FieldListPanel from '../Panel/FieldListPanel/FieldListPanel'
 import style from './TableView.module.scss'
 import Clickoutside from '@/directives/clickoutside'
 import JsonRow from '@/models/Table/Row'
+import Icon from '../../base/Icon/Icon'
 
 
 @Component({
@@ -89,7 +90,12 @@ export default class extends Vue {
       <div>
         <el-table data={this.list} row-key="id">
           {this.cols.map(it => (
-            <el-table-column prop={it.id} label={it.name} width="180"></el-table-column>
+            <el-table-column prop={it.id} label={it.name} width="180">
+              <div slot="header" class={style.th}>
+                <Icon value={it.type}></Icon>
+                {it.name}
+              </div>
+            </el-table-column>
           ))}
         </el-table>
       </div>

@@ -1,5 +1,5 @@
 import { Component, Vue, Prop } from 'vue-property-decorator'
-import Icon from '../Icon/Icon'
+import Icon from '@/themes/element-ui/components/base/Icon/Icon'
 
 @Component
 export default class EyeSwitch extends Vue {

@@ -7,6 +7,7 @@ import EyeSwitch from '@/themes/element-ui/components/base/EyeSwitch/EyeSwitch'
 import { MessageBox } from 'element-ui'
 import JsonField, { IJSONTableField } from '@/models/Table/TableField'
 import { IJSONViewField } from '@/models/View/ViewField'
+import Icon from '@/themes/element-ui/components/base/Icon/Icon'
 
 export interface IFieldItem {
   /** 唯一标识符,可能el-tree会用来判断dom复用 */
@@ -31,10 +32,13 @@ export default class FieldItem extends Vue {
   }
 
   render(h: CreateElement) {
+
     const { label, viewField, table, field } = this.data
 
     return <div class={style.treeItem}>
       {/* 重命名 */}
+
+      <Icon value={field.type}></Icon>
       <div class={style.name}>
         {label}
       </div>

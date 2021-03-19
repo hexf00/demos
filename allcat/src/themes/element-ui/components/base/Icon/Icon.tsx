@@ -4,10 +4,10 @@ import icons from './icons'
 @Component
 export default class Icon extends Vue {
   @Prop(String)
-  name!: keyof typeof icons
+  value!: keyof typeof icons
 
   render(h: Vue.CreateElement) {
-    const { name } = this
-    return icons[name] ? icons[name](h) || <div></div> : <div></div>
+    const { value: name } = this
+    return icons[name] ? icons[name](h) || <span></span> : <span></span>
   }
 }
