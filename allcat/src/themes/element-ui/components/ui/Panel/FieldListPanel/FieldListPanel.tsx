@@ -21,7 +21,10 @@ export default class FieldListPanel extends Vue {
   showFieldItemPanel = false
 
   /** 当前编辑状态的字段Model */
-  fieldModel: IJSONTableField | null = null
+  fieldFormModel: IJSONTableField | null = null
+
+  /** 当前编辑状态的字段 */
+  currentField: IJSONTableField | null = null
 
   get list(): IFieldItem[] {
     console.count('list')
@@ -81,7 +84,8 @@ export default class FieldListPanel extends Vue {
         return <FieldItem on={{
           showFieldItemPanel: (field: IJSONTableField) => {
             this.showFieldItemPanel = true
-            this.fieldModel = field
+            this.currentField = field
+            this.fieldFormModel = { ...field }
           },
         }} data={data}></FieldItem>
       },
@@ -94,7 +98,19 @@ export default class FieldListPanel extends Vue {
         placement="right-start"
         visible-arrow={false}
         width="280">
-        {this.fieldModel && <FieldItemPanel field={this.fieldModel} ></FieldItemPanel>}
+        {this.fieldFormModel && <FieldItemPanel on={{
+          submit: (field: IJSONTableField) => {
+            Object.assign(this.currentField, this.fieldFormModel)
+            this.showFieldItemPanel = false
+            this.fieldFormModel = null
+            this.currentField = null
+          },
+          cancel: () => {
+            this.showFieldItemPanel = false
+            this.fieldFormModel = null
+            this.currentField = null
+          },
+        }} field={this.fieldFormModel} ></FieldItemPanel>}
         <div slot="reference"></div>
       </el-popover>
       <el-tree data={list}
