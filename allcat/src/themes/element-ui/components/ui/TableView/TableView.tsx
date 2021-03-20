@@ -90,6 +90,8 @@ export default class extends Vue {
       <div>
         <el-table data={this.list} row-key="id">
           {this.cols.map(it => (
+            // 添加固定key 或者 slot都会导致排序失效、响应丢失
+            // 随机key会导致其他值的变化也刷新dom
             <el-table-column prop={it.id} label={it.name} key={it.id + Math.random()} width="180">
               <div slot="header" class={style.th}>
                 <Icon value={it.type}></Icon>
