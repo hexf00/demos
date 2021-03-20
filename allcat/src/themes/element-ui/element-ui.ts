@@ -15,6 +15,7 @@ import {
   FormItem,
   Select,
   Option,
+  Switch,
 } from 'element-ui'
 
 Vue.use(Button)
@@ -31,3 +32,4 @@ Vue.use(Form)
 Vue.use(FormItem)
 Vue.use(Select)
 Vue.use(Option)
+Vue.use(Switch)

@@ -11,7 +11,9 @@ export interface IJSONTableField {
   /** 字段描述 */
   description: string
   /** 字段数据类型 */
-  type: 'text' | 'number' | 'select' | 'script'
+  type: 'text' | 'number' | 'select' | 'script' | 'relation'
+  /** 启用多选, 对select relation 有效 */
+  isMulti: boolean
   // /** 字段控件配置 */
   // control: IControl
 }
@@ -76,6 +78,7 @@ function addField(table: IJSONTable) {
   const field: IJSONTableField = {
     id: generateFieldId(table),
     name: generateFieldName(table),
+    isMulti: false,
     description: '',
     type: 'text',
   }
