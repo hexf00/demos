@@ -27,6 +27,14 @@ export default class FieldItemPanel extends Vue {
   }
 
   submit() {
+    if (this.field.type === 'select') {
+      if (!this.field.selectOptions) {
+        this.field.selectOptions = [] //赋初始值
+      }
+    } else {
+      delete this.field.selectOptions
+    }
+
     this.$emit('submit', this.field)
   }
 

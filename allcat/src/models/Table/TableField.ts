@@ -3,6 +3,7 @@ import { IJSONApp } from '../App/App'
 import { IControl } from '../Control/Control'
 import { IJSONTable } from './Table'
 import Vue from 'vue'
+
 export interface IJSONTableField {
   /** 字段主键 */
   id: string
@@ -13,7 +14,10 @@ export interface IJSONTableField {
   /** 字段数据类型 */
   type: 'text' | 'number' | 'select' | 'script' | 'relation'
   /** 启用多选, 对select relation 有效 */
-  isMulti: boolean
+  isMulti?: boolean
+  /** select 选项 */
+  selectOptions?: string[]
+
   // /** 字段控件配置 */
   // control: IControl
 }
@@ -78,7 +82,6 @@ function addField(table: IJSONTable) {
   const field: IJSONTableField = {
     id: generateFieldId(table),
     name: generateFieldName(table),
-    isMulti: false,
     description: '',
     type: 'text',
   }
