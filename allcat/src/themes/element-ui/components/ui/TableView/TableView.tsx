@@ -5,8 +5,10 @@ import { IView } from '@/models/View/View'
 import FieldListPanel from '../Panel/FieldListPanel/FieldListPanel'
 import style from './TableView.module.scss'
 import Clickoutside from '@/directives/clickoutside'
-import JsonRow from '@/models/Table/Row'
+import JsonRow, { IJSONRow } from '@/models/Table/Row'
 import Icon from '../../base/Icon/Icon'
+import TableCell from './components/TableCell/TableCell'
+import { TableColumn } from 'element-ui/types/table-column'
 
 
 @Component({
@@ -88,15 +90,27 @@ export default class extends Vue {
         }}>add Row</el-button>
       </div>
       <div>
-        <el-table data={this.list} row-key="id">
+        <el-table class={style.table} data={this.list} row-key="id" border={true}>
           {this.cols.map(it => (
             // 添加固定key 或者 slot都会导致排序失效、响应丢失
             // 随机key会导致其他值的变化也刷新dom
-            <el-table-column prop={it.id} label={it.name} key={it.id + Math.random()} width="180">
-              <div slot="header" class={style.th}>
-                <Icon value={it.type}></Icon>
-                {it.name}
-              </div>
+            <el-table-column prop={it.id} label={it.name} key={it.id + Math.random()} width="180"
+              {...{
+                scopedSlots: {
+                  default: ({ column, row }: { column: TableColumn; row: IJSONRow }) => {
+                    const field = table.fields[column.property]
+                    return <TableCell row={row} field={field}></TableCell>
+                  },
+                  header: () => {
+                    return <div class={style.th}>
+                      <Icon value={it.type}></Icon>
+                      {it.name}
+                    </div>
+                  },
+                },
+              }}
+            >
+
             </el-table-column>
           ))}
         </el-table>

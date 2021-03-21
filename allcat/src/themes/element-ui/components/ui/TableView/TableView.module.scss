@@ -4,6 +4,14 @@
   // 不能在popper本身使用overflow，会导致三角箭头遮挡丢失
   // overflow: auto;
 }
+:global {
+  .el-table {
+    td,
+    th {
+      padding: 0;
+    }
+  }
+}
 
 .th {
   display: flex;
