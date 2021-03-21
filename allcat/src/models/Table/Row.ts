@@ -35,7 +35,11 @@ function addRow(table: IJSONTable) {
 
   for (const fieldId in table.fields) {
     const field = table.fields[fieldId]
-    row[fieldId] = ''
+    if (field.isMulti) {
+      row[fieldId] = []
+    } else {
+      row[fieldId] = ''
+    }
   }
 
   //需要通过Vue给不存在的属性添加响应式
