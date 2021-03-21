@@ -23,6 +23,14 @@ export default class extends Vue {
   }
 
   isShowPopover = false
+
+  get colsWidth() {
+    const result: Record<string, number> = {}
+    this.view.fields.forEach(it => {
+      result[it.id] = it.width || 180
+    })
+    return result
+  }
   get cols() {
     return this.view.fields.filter(it => it.isShow).map(it => this.table.fields[it.id])
   }
@@ -112,11 +120,21 @@ export default class extends Vue {
               border: true,
             },
             on: {
+              /** 右键点击 */
               'row-contextmenu': (row: IJSONRow, column: TableColumn, event: MouseEvent) => {
                 event.preventDefault() //屏蔽系统右键菜单
               },
+              /** 选中项变化 */
               'selection-change': (rows: IJSONRow[]) => {
                 this.selected = rows
+              },
+              /** 列宽度改变 */
+              'header-dragend': (newWidth: number, oldWidth: number, column: TableColumn, event: MouseEvent) => {
+                // console.log(column.property, newWidth)
+                const viewField = this.view.fields.find(it => it.id === column.property)
+                if (viewField) {
+                  viewField.width = Math.ceil(newWidth)
+                }
               },
             },
           }}
@@ -128,8 +146,14 @@ export default class extends Vue {
           {this.cols.map(it => (
             // 添加固定key 或者 slot都会导致排序失效、响应丢失
             // 随机key会导致其他值的变化也刷新dom
-            <el-table-column prop={it.id} label={it.name} key={it.id + Math.random()} width="180"
+            <el-table-column
               {...{
+                props: {
+                  prop: it.id,
+                  label: it.name,
+                  key: it.id + Math.random(),
+                  width: this.colsWidth[it.id],
+                },
                 scopedSlots: {
                   default: (args: { column: TableColumn; row: IJSONRow }) => {
                     const { column, row } = args

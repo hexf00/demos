@@ -4,4 +4,6 @@ export interface IJSONViewField {
   id: string
   /** 视图是否显示该字段 */
   isShow: boolean
+  /** 视图宽度 */
+  width?: number
 }
