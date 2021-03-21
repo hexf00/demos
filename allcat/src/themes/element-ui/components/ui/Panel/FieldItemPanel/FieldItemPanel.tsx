@@ -65,7 +65,7 @@ export default class FieldItemPanel extends Vue {
               val.forEach(it => options.add(it))
             } else {
               const val = row[fieldId] as string
-              options.add(val)
+              val !== '' && options.add(val)
             }
           }
         }

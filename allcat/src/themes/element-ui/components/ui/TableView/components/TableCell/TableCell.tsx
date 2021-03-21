@@ -55,7 +55,7 @@ export default class TableCell extends Vue {
       const items = new Set(field.selectOptions?.map(it => it.value))
       const list = field.isMulti ? this.value as string[] : [this.value as string]
       list.forEach(it => {
-        if (!items.has(it)) {
+        if (it !== '' && !items.has(it)) {
           field.selectOptions?.push({
             value: it,
             color: '',
