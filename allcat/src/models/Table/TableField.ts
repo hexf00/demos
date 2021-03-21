@@ -4,6 +4,11 @@ import { IControl } from '../Control/Control'
 import { IJSONTable } from './Table'
 import Vue from 'vue'
 
+type selectOption = {
+  color: string
+  value: string
+}
+
 export interface IJSONTableField {
   /** 字段主键 */
   id: string
@@ -16,7 +21,7 @@ export interface IJSONTableField {
   /** 启用多选, 对select relation 有效 */
   isMulti?: boolean
   /** select 选项 */
-  selectOptions?: string[]
+  selectOptions?: selectOption[]
 
   // /** 字段控件配置 */
   // control: IControl
