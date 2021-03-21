@@ -51,9 +51,21 @@ function addRow(table: IJSONTable) {
   }
 }
 
+function removeRow(table: IJSONTable, rows: IJSONRow[]) {
+  rows.forEach(row => {
+    delete table.rows[row.id]
+    for (const viewId in table.views) {
+      const view = table.views[viewId]
+      const index = view.rowsSorts.findIndex(it => it === row.id)
+      index !== -1 && view.rowsSorts.splice(index, 1)
+    }
+  })
+}
+
 const JsonRow = {
   generateRowId,
   addRow,
+  removeRow,
 }
 
 export default JsonRow

@@ -18,6 +18,7 @@ export default class extends Vue {
   @Prop(Object) table!: IJSONTable
   @Prop(Object) view!: IView
 
+  selected: IJSONRow[] = []
   mounted() {
   }
 
@@ -60,6 +61,25 @@ export default class extends Vue {
     return <div>
       <div>{table.name} {view.name}</div>
       <div>
+        <el-button size="mini" on={{
+          click: () => {
+            JsonRow.addRow(this.table)
+          },
+        }}>Add Row</el-button>
+
+        <el-button  {...{
+          class: style.btn,
+          props: {
+            size: 'mini',
+            disabled: this.selected.length === 0,
+          },
+          on: {
+            click: () => {
+              JsonRow.removeRow(this.table, this.selected)
+            },
+          },
+        }}>Remove Rows</el-button>
+
         <el-popover
           value={this.isShowPopover}
           popper-class={style.popperClass}
@@ -76,21 +96,31 @@ export default class extends Vue {
           //   },
           // }]}
           />}
-          <el-button slot="reference" on={{
+          <el-button size="mini" slot="reference" on={{
             click: () => {
               this.isShowPopover = !this.isShowPopover
             },
           }}>Field Config</el-button>
         </el-popover>
-
-        <el-button on={{
-          click: () => {
-            JsonRow.addRow(this.table)
-          },
-        }}>add Row</el-button>
       </div>
       <div>
-        <el-table class={style.table} data={this.list} row-key="id" border={true}>
+        <el-table
+          {...{
+            props: {
+              data: this.list,
+              'row-key': 'id',
+              border: true,
+            },
+            on: {
+              'row-contextmenu': (row: IJSONRow, column: TableColumn, event: MouseEvent) => {
+                event.preventDefault() //屏蔽系统右键菜单
+              },
+              'selection-change': (rows: IJSONRow[]) => {
+                this.selected = rows
+              },
+            },
+          }}
+        >
           <el-table-column
             type="selection"
             width="36">
