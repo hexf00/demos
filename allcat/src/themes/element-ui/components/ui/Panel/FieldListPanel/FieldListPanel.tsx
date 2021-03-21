@@ -110,7 +110,7 @@ export default class FieldListPanel extends Vue {
             this.fieldFormModel = null
             this.currentField = null
           },
-        }} field={this.fieldFormModel} ></FieldItemPanel>}
+        }} field={this.fieldFormModel} table={this.table} ></FieldItemPanel>}
         <div slot="reference"></div>
       </el-popover>
       <el-tree data={list}

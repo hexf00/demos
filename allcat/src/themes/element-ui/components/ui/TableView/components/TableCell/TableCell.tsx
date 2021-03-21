@@ -22,7 +22,7 @@ export default class TableCell extends Vue {
   /** 是否处于编辑模式 */
   isEdit = false
   /** 编辑内容 */
-  value = ''
+  value: string | number | string[] = ''
 
   @Watch('isEdit', { immediate: true })
   onEdit(value: boolean) {
@@ -30,7 +30,7 @@ export default class TableCell extends Vue {
       const { row, field } = this
       const value = row[field.id]
       // 初始化value
-      this.value = value as string
+      this.value = value
 
       // 重置是否需要保存为需要
       this.isNeedSave = true
@@ -84,35 +84,40 @@ export default class TableCell extends Vue {
       } else if (field.type === 'select') {
 
         const selectOptions = field.selectOptions || []
-        return <el-select ref="select" vModel={this.value} size="mini"
-          on={{
-            clickoutside: () => {
-              this.isEdit = false
-            },
-          }}
-          nativeOn={{
-            click: (e: Event) => {
-              // e.stopPropagation()
-            },
-            keyup: (e: KeyboardEvent) => {
-              const { code } = e
-              if (code === 'Escape') {
-                // 取消保存
-                this.isNeedSave = false
-                this.isEdit = false
-              } else if (code === 'Enter') {
-                // 保存
-                this.submit()
-                this.isEdit = false
-              }
-            },
-          }}>
-          {selectOptions.map(item => <el-option
-            key={item}
-            label={item.value}
-            value={item.value}>
-          </el-option>)}
-        </el-select>
+        return <div class={style.select}>
+          <el-select ref="select" vModel={this.value} size="mini"
+            on={{
+              clickoutside: () => {
+                this.onBlur()
+              },
+            }}
+            filterable
+            allow-create
+            {...{ props: { multiple: field.isMulti } }}
+            nativeOn={{
+              click: (e: Event) => {
+                // e.stopPropagation()
+              },
+              keyup: (e: KeyboardEvent) => {
+                const { code } = e
+                if (code === 'Escape') {
+                  // 取消保存
+                  this.isNeedSave = false
+                  this.isEdit = false
+                } else if (code === 'Enter') {
+                  // 保存
+                  this.submit()
+                  this.isEdit = false
+                }
+              },
+            }}>
+            {selectOptions.map(item => <el-option
+              key={item.value}
+              label={item.value}
+              value={item.value}>
+            </el-option>)}
+          </el-select>
+        </div>
       } else {
         return <div>控件不全</div>
       }
@@ -123,7 +128,9 @@ export default class TableCell extends Vue {
         dblclick: () => {
           this.isEdit = true
         },
-      }}>{value}</div>
+      }}>
+        {field.isMulti ? (value as string[]).join(',') : value}
+      </div>
     }
   }
 }

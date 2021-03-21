@@ -97,7 +97,8 @@ export default class extends Vue {
             <el-table-column prop={it.id} label={it.name} key={it.id + Math.random()} width="180"
               {...{
                 scopedSlots: {
-                  default: ({ column, row }: { column: TableColumn; row: IJSONRow }) => {
+                  default: (args: { column: TableColumn; row: IJSONRow }) => {
+                    const { column, row } = args
                     const field = table.fields[column.property]
                     return <TableCell row={row} field={field}></TableCell>
                   },

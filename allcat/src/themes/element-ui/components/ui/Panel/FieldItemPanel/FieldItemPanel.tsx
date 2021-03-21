@@ -3,6 +3,8 @@ import { CreateElement } from 'vue'
 import { IJSONTableField } from '@/models/Table/TableField'
 import style from './index.module.scss'
 import { Input } from 'element-ui'
+import { IJSONTable } from '@/models/Table/Table'
+import { IJSONRow } from '@/models/Table/Row'
 
 
 @Component
@@ -12,6 +14,7 @@ export default class FieldItemPanel extends Vue {
   }
 
   @Prop(Object) field!: IJSONTableField
+  @Prop(Object) table!: IJSONTable
 
   mounted() {
 
@@ -27,12 +30,63 @@ export default class FieldItemPanel extends Vue {
   }
 
   submit() {
-    if (this.field.type === 'select') {
-      if (!this.field.selectOptions) {
-        this.field.selectOptions = [] //赋初始值
+    const { id: fieldId, type, isMulti, selectOptions } = this.field
+    const { isMulti: oldIsMulti } = this.table.fields[fieldId]
+
+
+    // 文本 -> 关联、 关联 -> 文本
+    // 多 -> 单、 单 -> 多
+
+    if (type === 'select') {
+
+      let convert
+      //多->选 会丢失数据 需要提示用户
+      if (oldIsMulti && !isMulti) {
+        convert = (row: IJSONRow) => {
+          const oldVal = row[fieldId] as string[]
+          const newVal = oldVal && oldVal.length > 0 ? oldVal[0] : ''
+          row[fieldId] = newVal
+        }
+      } else if (!oldIsMulti && isMulti) {
+        convert = (row: IJSONRow) => {
+          const oldVal = row[fieldId] as string
+          const newVal = oldVal !== '' ? [oldVal] : []
+          row[fieldId] = newVal
+        }
+      }
+
+      const options: Set<string> = new Set()
+      let addOptions
+      if (!selectOptions/** 需要初始化 */) {
+        addOptions = (row: IJSONRow) => {
+          if (!selectOptions) {
+            if (isMulti) {
+              const val = row[fieldId] as string[]
+              val.forEach(it => options.add(it))
+            } else {
+              const val = row[fieldId] as string
+              options.add(val)
+            }
+          }
+        }
+      }
+
+      for (const key in this.table.rows) {
+        const row = this.table.rows[key]
+        convert && convert(row)
+        addOptions && addOptions(row)
+      }
+
+      if (addOptions) {
+        //赋初始值
+        this.field.selectOptions = Array.from(options).map(it => ({
+          color: '',
+          value: it,
+        }))
       }
     } else {
-      delete this.field.selectOptions
+      //说明 此处没有使用delete 是因为外部使用的是Object.assign
+      this.field.selectOptions = undefined
     }
 
     this.$emit('submit', this.field)
