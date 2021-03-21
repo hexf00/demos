@@ -1,5 +1,11 @@
 import Vue from 'vue'
+import ElSelect from 'element-ui/lib/select'
 
+// ElSelect mixin添加clickoutside事件
+(ElSelect as any).methods.handleClose = function () {
+  this.visible = false
+  this.$emit('clickoutside')
+}
 import {
   Button,
   Dialog,
