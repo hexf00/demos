@@ -15,6 +15,7 @@ export default class TableCell extends Vue {
 
   @Prop(Object) row!: IJSONRow
   @Prop(Object) field!: IJSONTableField
+  @Prop(Number) width!: number
 
 
   /** 是否需要保存 */
@@ -99,6 +100,7 @@ export default class TableCell extends Vue {
         const selectOptions = field.selectOptions || []
         return <div class={style.select}>
           <el-select ref="select" vModel={this.value} size="mini"
+            style={{ width: `${this.width}px` }}
             on={{
               clickoutside: () => {
                 this.onBlur()

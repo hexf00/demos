@@ -158,7 +158,7 @@ export default class extends Vue {
                   default: (args: { column: TableColumn; row: IJSONRow }) => {
                     const { column, row } = args
                     const field = table.fields[column.property]
-                    return <TableCell row={row} field={field}></TableCell>
+                    return <TableCell row={row} field={field} width={this.colsWidth[it.id]}></TableCell>
                   },
                   header: () => {
                     return <div class={style.th}>
