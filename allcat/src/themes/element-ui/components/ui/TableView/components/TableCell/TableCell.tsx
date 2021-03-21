@@ -91,9 +91,16 @@ export default class TableCell extends Vue {
                 this.onBlur()
               },
             }}
-            filterable
             allow-create
-            {...{ props: { multiple: field.isMulti } }}
+            {...{
+              props: {
+                multiple: field.isMulti,
+                /** 单选情况下第一次需要多按一次方向键，element-ui bug */
+                'filterable': true,
+                /** 添加后按enter才能自动创建选项，但是单选情况存在bug */
+                'default-first-option': true,
+              },
+            }}
             nativeOn={{
               click: (e: Event) => {
                 // e.stopPropagation()
@@ -101,13 +108,18 @@ export default class TableCell extends Vue {
               keyup: (e: KeyboardEvent) => {
                 const { code } = e
                 if (code === 'Escape') {
+                  // el-select 事件失效了
                   // 取消保存
                   this.isNeedSave = false
                   this.isEdit = false
                 } else if (code === 'Enter') {
                   // 保存
-                  this.submit()
-                  this.isEdit = false
+                  if (field.isMulti) {
+                    //多选不关闭选框
+                  } else {
+                    this.submit()
+                    this.isEdit = false
+                  }
                 }
               },
             }}>
@@ -117,7 +129,7 @@ export default class TableCell extends Vue {
               value={item.value}>
             </el-option>)}
           </el-select>
-        </div>
+        </div >
       } else {
         return <div>控件不全</div>
       }
