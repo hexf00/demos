@@ -147,25 +147,22 @@ export default class extends Vue {
             // 添加固定key 或者 slot都会导致排序失效、响应丢失
             // 随机key会导致其他值的变化也刷新dom
             <el-table-column
-              {...{
-                props: {
-                  prop: it.id,
-                  label: it.name,
-                  key: it.id + Math.random(),
-                  width: this.colsWidth[it.id],
+              props={{
+                prop: it.id,
+                label: it.name,
+                width: this.colsWidth[it.id],
+              }}
+              scopedSlots={{
+                default: (args: { column: TableColumn; row: IJSONRow }) => {
+                  const { column, row } = args
+                  const field = table.fields[column.property]
+                  return <TableCell row={row} field={field} width={this.colsWidth[it.id]}></TableCell>
                 },
-                scopedSlots: {
-                  default: (args: { column: TableColumn; row: IJSONRow }) => {
-                    const { column, row } = args
-                    const field = table.fields[column.property]
-                    return <TableCell row={row} field={field} width={this.colsWidth[it.id]}></TableCell>
-                  },
-                  header: () => {
-                    return <div class={style.th}>
-                      <Icon value={it.type}></Icon>
-                      {it.name}
-                    </div>
-                  },
+                header: () => {
+                  return <div class={style.th}>
+                    <Icon value={it.type}></Icon>
+                    {it.name}
+                  </div>
                 },
               }}
             >
