@@ -144,8 +144,6 @@ export default class extends Vue {
             width="36">
           </el-table-column>
           {this.cols.map(it => (
-            // 添加固定key 或者 slot都会导致排序失效、响应丢失
-            // 随机key会导致其他值的变化也刷新dom
             <el-table-column
               props={{
                 prop: it.id,
