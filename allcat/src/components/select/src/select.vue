@@ -42,6 +42,7 @@
           :size="collapseTagSize"
           :hit="item.hitState"
           type="info"
+          :style="{ 'background-color': '#8ad88b', color: '#000' }"
           @close="deleteTag($event, item)"
           disable-transitions
         >

@@ -17,6 +17,7 @@ import {
   Option,
   Switch,
   Tag,
+  ColorPicker,
 } from 'element-ui'
 
 Vue.use(Button)
@@ -35,6 +36,7 @@ Vue.use(Select)
 Vue.use(Option)
 Vue.use(Switch)
 Vue.use(Tag)
+Vue.use(ColorPicker)
 
 import CustomSelect from '@/components/select/index'
 Vue.use(CustomSelect)

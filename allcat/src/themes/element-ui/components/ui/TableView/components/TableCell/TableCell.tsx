@@ -107,14 +107,12 @@ export default class TableCell extends Vue {
               },
             }}
             allow-create
-            {...{
-              props: {
-                multiple: field.isMulti,
-                /** 单选情况下第一次需要多按一次方向键，element-ui bug */
-                'filterable': true,
-                /** 添加后按enter才能自动创建选项，但是单选情况存在bug */
-                'default-first-option': true,
-              },
+            props={{
+              multiple: field.isMulti,
+              /** 单选情况下第一次需要多按一次方向键，element-ui bug */
+              'filterable': true,
+              /** 添加后按enter才能自动创建选项，但是单选情况存在bug */
+              'default-first-option': true,
             }}
             nativeOn={{
               click: (e: Event) => {
@@ -142,6 +140,10 @@ export default class TableCell extends Vue {
               key={item.value}
               label={item.value}
               value={item.value}>
+              <el-tag size="mini"
+                style={{ 'background-color': '#8ad88b', color: '#000' }}>
+                {item.value}
+              </el-tag>
             </el-option>)}
           </el-select>
         </div >
