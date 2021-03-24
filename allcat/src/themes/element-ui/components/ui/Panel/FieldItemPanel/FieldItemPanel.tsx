@@ -5,6 +5,7 @@ import style from './index.module.scss'
 import { Input } from 'element-ui'
 import { IJSONTable } from '@/models/Table/Table'
 import { IJSONRow } from '@/models/Table/Row'
+import OptionList from './components/OptionList/OptionList'
 
 
 @Component
@@ -74,7 +75,6 @@ export default class FieldItemPanel extends Vue {
       for (const key in this.table.rows) {
         const row = this.table.rows[key]
         convert && convert(row)
-        addOptions && addOptions(row)
       }
 
       if (addOptions) {
@@ -92,13 +92,40 @@ export default class FieldItemPanel extends Vue {
     this.$emit('submit', this.field)
   }
 
+  /** 从现有的value提取选项，不涉及转换 */
+  generateOptions() {
+    const { id: fieldId } = this.field
+    const { isMulti: oldIsMulti } = this.table.fields[fieldId]
+    const optionsMap: Set<string> = new Set()
+
+    const addOption = (row: IJSONRow) => {
+      const val = row[fieldId] as string
+      val !== '' && optionsMap.add(val)
+    }
+
+    const addMultiOption = (row: IJSONRow) => {
+      const val = row[fieldId] as string[]
+      val.forEach(it => optionsMap.add(it))
+    }
+
+    for (const key in this.table.rows) {
+      const row = this.table.rows[key]
+      oldIsMulti ? addMultiOption(row) : addOption(row)
+    }
+
+    return Array.from(optionsMap).map(it => ({
+      color: '',
+      value: it,
+    }))
+  }
+
   render(h: CreateElement) {
     if (!this.field) {
       return <div>加载中</div>
     }
 
     return <div class={style.panel}>
-      <el-form size="mini" label-position="top" label-width="80px" props={{ model: this.field }}>
+      <el-form size="mini" label-position="left" label-width="80px" props={{ model: this.field }}>
         <el-form-item label="名称" prop="name">
           <el-input ref="name" vModel={this.field.name} nativeOn={{
             keyup: (e: KeyboardEvent) => e.key === 'Enter' && this.submit(),
@@ -113,6 +140,9 @@ export default class FieldItemPanel extends Vue {
               if (!['select', 'relation'].includes(val)) {
                 this.field.isMulti = false
               }
+              if (['select'].includes(val) && !this.field.selectOptions) {
+                this.field.selectOptions = this.generateOptions()
+              }
             },
           }}>
             <el-option label="文本" value="text"></el-option>
@@ -123,6 +153,10 @@ export default class FieldItemPanel extends Vue {
         {['select', 'relation'].includes(this.field.type) && <el-form-item label="启用多选" prop="multi">
           <el-switch vModel={this.field.isMulti}></el-switch>
         </el-form-item>}
+        {
+          this.field.type === 'select' &&
+          <OptionList field={this.field}></OptionList>
+        }
         <el-form-item style="text-align: right;">
           <el-button on={{ click: () => { this.$emit('cancel') } }}>取消</el-button>
           <el-button type="primary" on={{ click: () => this.submit() }}>保存</el-button>
