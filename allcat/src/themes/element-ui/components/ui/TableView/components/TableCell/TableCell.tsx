@@ -72,6 +72,12 @@ export default class TableCell extends Vue {
     this.isEdit = false
   }
 
+  getColor(value: string) {
+    const { row, field } = this
+    const { selectOptions } = field
+    return selectOptions?.find(option => option.value === value)?.color
+  }
+
   render(h: CreateElement) {
     const { row, field } = this
     if (this.isEdit) {
@@ -158,7 +164,10 @@ export default class TableCell extends Vue {
           this.isEdit = true
         },
       }}>
-        {field.isMulti ? (value as string[]).join(',') : value}
+        {field.isMulti ? (value as string[]).map(item => <el-tag size="mini"
+          style={{ 'background-color': this.getColor(item), color: '#000' }}>
+          {item}
+        </el-tag>) : value}
       </div>
     }
   }
