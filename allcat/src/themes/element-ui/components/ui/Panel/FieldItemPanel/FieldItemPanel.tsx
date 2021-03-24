@@ -56,33 +56,9 @@ export default class FieldItemPanel extends Vue {
         }
       }
 
-      const options: Set<string> = new Set()
-      let addOptions
-      if (!selectOptions/** 需要初始化 */) {
-        addOptions = (row: IJSONRow) => {
-          if (!selectOptions) {
-            if (isMulti) {
-              const val = row[fieldId] as string[]
-              val.forEach(it => options.add(it))
-            } else {
-              const val = row[fieldId] as string
-              val !== '' && options.add(val)
-            }
-          }
-        }
-      }
-
       for (const key in this.table.rows) {
         const row = this.table.rows[key]
         convert && convert(row)
-      }
-
-      if (addOptions) {
-        //赋初始值
-        this.field.selectOptions = Array.from(options).map(it => ({
-          color: '',
-          value: it,
-        }))
       }
     } else {
       //说明 此处没有使用delete 是因为外部使用的是Object.assign
