@@ -42,7 +42,7 @@
           :size="collapseTagSize"
           :hit="item.hitState"
           type="info"
-          :style="{ 'background-color': '#8ad88b', color: '#000' }"
+          :style="{ 'background-color': getColor(item), color: '#000' }"
           @close="deleteTag($event, item)"
           disable-transitions
         >
@@ -939,6 +939,9 @@ export default {
       } else {
         return getValueByPath(item.value, this.valueKey);
       }
+    },
+    getColor(item) {
+      return item.$slots.default[0].data.style["background-color"];
     },
   },
 
