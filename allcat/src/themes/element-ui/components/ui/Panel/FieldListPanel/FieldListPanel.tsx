@@ -67,6 +67,10 @@ export default class FieldListPanel extends Vue {
 
       tragetIndex = pos === 'before' ? tragetIndex : tragetIndex + 1
 
+      if (index < tragetIndex) {
+        tragetIndex--
+      }
+
       fields.splice(index, 1)
       fields.splice(tragetIndex, 0, current)
     }
@@ -119,7 +123,7 @@ export default class FieldListPanel extends Vue {
               showFieldItemPanel: (field: IJSONTableField) => {
                 this.showFieldItemPanel = true
                 this.currentField = field
-                this.fieldFormModel = { ...field }
+                this.fieldFormModel = JSON.parse(JSON.stringify(field))
               },
             }} data={data}></FieldItem>
           },

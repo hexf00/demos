@@ -91,6 +91,10 @@ export default class extends Vue {
 
     tragetIndex = pos === 'before' ? tragetIndex : tragetIndex + 1
 
+    if (index < tragetIndex) {
+      tragetIndex--
+    }
+
     sorts.splice(index, 1)
     sorts.splice(tragetIndex, 0, id)
   }
