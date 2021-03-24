@@ -141,7 +141,7 @@ export default class TableCell extends Vue {
               label={item.value}
               value={item.value}>
               <el-tag size="mini"
-                style={{ 'background-color': '#8ad88b', color: '#000' }}>
+                style={{ 'background-color': item.color, color: '#000' }}>
                 {item.value}
               </el-tag>
             </el-option>)}
