@@ -79,18 +79,6 @@ export default class FieldListPanel extends Vue {
   render(h: CreateElement) {
     console.count('hmr count render FieldPanel')
     const { list } = this
-    const scopedSlots = {
-      default: ({ data }: { data: IFieldItem }) => {
-        return <FieldItem on={{
-          showFieldItemPanel: (field: IJSONTableField) => {
-            this.showFieldItemPanel = true
-            this.currentField = field
-            this.fieldFormModel = { ...field }
-          },
-        }} data={data}></FieldItem>
-      },
-    }
-
     return <div class={style.fieldPanel}>
       <el-popover
         value={this.showFieldItemPanel}
@@ -113,13 +101,29 @@ export default class FieldListPanel extends Vue {
         }} field={this.fieldFormModel} table={this.table} ></FieldItemPanel>}
         <div slot="reference"></div>
       </el-popover>
-      <el-tree data={list}
-        draggable={true} allow-drop={this.isAllowDrop}
+      <el-tree
+        props={{
+          data: list,
+          draggable: true,
+          'allow-drop': this.isAllowDrop,
+          'node-key': 'id',
+          class: style.tree,
+          'default-expand-all': true,
+        }}
         on={{
           'node-drop': this.dropSuccess,
         }}
-        {...{ scopedSlots }}
-        node-key="id" class={style.tree} default-expand-all />
+        scopedSlots={{
+          default: ({ data }: { data: IFieldItem }) => {
+            return <FieldItem on={{
+              showFieldItemPanel: (field: IJSONTableField) => {
+                this.showFieldItemPanel = true
+                this.currentField = field
+                this.fieldFormModel = { ...field }
+              },
+            }} data={data}></FieldItem>
+          },
+        }} />
       <el-button size="mini" on={{ click: () => this.addField() }}>新建字段</el-button>
     </div >
   }
