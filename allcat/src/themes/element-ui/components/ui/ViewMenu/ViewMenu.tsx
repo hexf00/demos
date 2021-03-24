@@ -116,18 +116,20 @@ export default class extends Vue {
     const currentNodeKey = store.currentView?.id
     return <div>
       <el-tree
-        data={list}
-        default-expanded-keys={expandedTableIds}
-        draggable={true}
-        allow-drop={this.isAllowDrop}
+        props={{
+          data: list,
+          defaultExpandedKeys: expandedTableIds,
+          draggable: true,
+          allowDrop: this.isAllowDrop,
+          nodeKey: 'id',
+          class: style.tree,
+          defaultExpandAll: true,
+          currentNodeKey: currentNodeKey,
+        }}
         on={{
           'node-drop': this.dropSuccess,
           'node-click': this.nodeClick,
         }}
-        node-key="id"
-        class={style.tree}
-        default-expand-all
-        current-node-key={currentNodeKey}
         scopedSlots={{
           default: ({ data }: { data: IMenuItem }) => {
             return <MenuItem data={data} viewMenuService={service} ></MenuItem>

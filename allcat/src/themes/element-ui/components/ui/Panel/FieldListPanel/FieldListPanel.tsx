@@ -105,10 +105,10 @@ export default class FieldListPanel extends Vue {
         props={{
           data: list,
           draggable: true,
-          'allow-drop': this.isAllowDrop,
-          'node-key': 'id',
+          allowDrop: this.isAllowDrop,
+          nodeKey: 'id',
           class: style.tree,
-          'default-expand-all': true,
+          defaultExpandAll: true,
         }}
         on={{
           'node-drop': this.dropSuccess,
