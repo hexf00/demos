@@ -35,7 +35,6 @@ export default class ColorPicker extends Vue {
         directives: [{
           name: 'Clickoutside',
           value: ({ mouseup, mousedown }: { mouseup: MouseEvent; mousedown: MouseEvent }) => {
-            console.log('')
             this.isShow = false
           },
         }],
