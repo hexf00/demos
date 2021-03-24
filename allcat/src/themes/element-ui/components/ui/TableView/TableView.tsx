@@ -156,7 +156,9 @@ export default class extends Vue {
                   const field = table.fields[column.property]
                   return <TableCell row={row} field={field} width={this.colsWidth[it.id]}></TableCell>
                 },
-                header: () => {
+                header: (args: { column: TableColumn }) => {
+                  // TODO 添加getter
+                  console.log(args.column.property)
                   return <div class={style.th}>
                     <Icon value={it.type}></Icon>
                     {it.name}
