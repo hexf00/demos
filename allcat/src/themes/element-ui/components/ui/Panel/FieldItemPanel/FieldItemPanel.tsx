@@ -96,28 +96,29 @@ export default class FieldItemPanel extends Vue {
   }
 
   render(h: CreateElement) {
-    if (!this.field) {
+    const field = this.field
+    if (!field) {
       return <div>加载中</div>
     }
 
     return <div class={style.panel}>
-      <el-form size="mini" label-position="left" label-width="80px" props={{ model: this.field }}>
+      <el-form size="mini" label-position="left" label-width="80px" props={{ model: field }}>
         <el-form-item label="名称" prop="name">
-          <el-input ref="name" vModel={this.field.name} nativeOn={{
+          <el-input ref="name" vModel={field.name} nativeOn={{
             keyup: (e: KeyboardEvent) => e.key === 'Enter' && this.submit(),
           }}></el-input>
         </el-form-item>
         <el-form-item label="描述" label-position="top" prop="description">
-          <el-input vModel={this.field.description}></el-input>
+          <el-input vModel={field.description}></el-input>
         </el-form-item>
         <el-form-item label="类型" prop="type">
-          <el-select vModel={this.field.type} on={{
+          <el-select vModel={field.type} on={{
             input: (val: string) => {
               if (!['select', 'relation'].includes(val)) {
-                this.field.isMulti = false
+                field.isMulti = false
               }
-              if (['select'].includes(val) && !this.field.selectOptions) {
-                this.field.selectOptions = this.generateOptions()
+              if (['select'].includes(val) && !field.selectOptions) {
+                field.selectOptions = this.generateOptions()
               }
             },
           }}>
@@ -126,12 +127,12 @@ export default class FieldItemPanel extends Vue {
             <el-option label="关联" value="relation"></el-option>
           </el-select>
         </el-form-item>
-        {['select', 'relation'].includes(this.field.type) && <el-form-item label="启用多选" prop="multi">
-          <el-switch vModel={this.field.isMulti}></el-switch>
+        {['select', 'relation'].includes(field.type) && <el-form-item label="启用多选" prop="multi">
+          <el-switch vModel={field.isMulti}></el-switch>
         </el-form-item>}
         {
-          this.field.type === 'select' &&
-          <OptionList field={this.field}></OptionList>
+          field.type === 'select' &&
+          <OptionList field={field}></OptionList>
         }
         <el-form-item style="text-align: right;">
           <el-button on={{ click: () => { this.$emit('cancel') } }}>取消</el-button>
