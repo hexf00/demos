@@ -4,9 +4,7 @@ import { IJSONTableField, TSelectOption } from '@/models/Table/TableField'
 import style from './index.module.scss'
 import { Input } from 'element-ui'
 import { TreeNode } from 'element-ui/types/tree'
-import Icon from '@/themes/element-ui/components/base/Icon/Icon'
 import OptionItem from '../OptionItem/OptionItem'
-import { debug } from 'webpack'
 
 
 @Component
@@ -26,6 +24,16 @@ export default class OptionList extends Vue {
     return true
   }
 
+  removeOptions(option: TSelectOption) {
+    const { selectOptions } = this.field
+    if (selectOptions) {
+      const index = selectOptions.indexOf(option)
+      if (index !== -1) {
+        selectOptions.splice(index, 1)
+      }
+    }
+  }
+
   render(h: CreateElement) {
     const list = this.field.selectOptions
     return <el-tree
@@ -39,7 +47,10 @@ export default class OptionList extends Vue {
       }}
       scopedSlots={{
         default: ({ data }: { data: TSelectOption }) => {
-          return <OptionItem data={data} />
+          return <OptionItem props={{
+            data,
+            onRemove: (option) => this.removeOptions(option),
+          }} />
         },
       }} />
   }
