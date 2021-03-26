@@ -95,6 +95,22 @@ export default class FieldItemPanel extends Vue {
     }))
   }
 
+  changeType(type: string) {
+    const field = this.field
+    //保留哪些属性，对哪些属性赋初始值
+    if (!['select', 'relation'].includes(type)) {
+      delete field.isMulti
+    } else {
+      field.isMulti = !!field.isMulti
+    }
+
+    if (['select'].includes(type) && !field.selectOptions) {
+      field.selectOptions = this.generateOptions()
+    }
+
+    this.$emit('update:field', JSON.parse(JSON.stringify(field)))
+  }
+
   render(h: CreateElement) {
     const field = this.field
     if (!field) {
@@ -113,14 +129,7 @@ export default class FieldItemPanel extends Vue {
         </el-form-item>
         <el-form-item label="类型" prop="type">
           <el-select vModel={field.type} on={{
-            input: (val: string) => {
-              if (!['select', 'relation'].includes(val)) {
-                field.isMulti = false
-              }
-              if (['select'].includes(val) && !field.selectOptions) {
-                field.selectOptions = this.generateOptions()
-              }
-            },
+            input: (type: string) => this.changeType(type),
           }}>
             <el-option label="文本" value="text"></el-option>
             <el-option label="选项" value="select"></el-option>

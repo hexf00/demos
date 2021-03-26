@@ -102,6 +102,9 @@ export default class FieldListPanel extends Vue {
             this.fieldFormModel = null
             this.currentField = null
           },
+          'update:field': (field: IJSONTableField) => {
+            this.fieldFormModel = field
+          },
         }} field={this.fieldFormModel} table={this.table} ></FieldItemPanel>}
         <div slot="reference"></div>
       </el-popover>
