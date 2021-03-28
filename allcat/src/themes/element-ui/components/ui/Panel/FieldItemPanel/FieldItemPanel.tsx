@@ -52,7 +52,9 @@ export default class FieldItemPanel extends Vue {
       } else if (!oldIsMulti && isMulti) {
         convert = (row: IJSONRow) => {
           const oldVal = row[fieldId] as string
-          const newVal = oldVal !== '' ? [oldVal] : []
+          const newVal = oldVal !== '' ? oldVal.split(',')
+            .map(it => it.trim())
+            .filter(it => it !== '') : []
           row[fieldId] = newVal
         }
       }
