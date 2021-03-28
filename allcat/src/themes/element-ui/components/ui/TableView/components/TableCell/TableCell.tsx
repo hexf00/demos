@@ -159,15 +159,22 @@ export default class TableCell extends Vue {
 
     } else {
       const value = row[field.id]
+      const { type, isMulti } = field
       return <div class={style.preview} on={{
         dblclick: () => {
           this.isEdit = true
         },
       }}>
-        {field.isMulti ? (value as string[]).map(item => <el-tag size="mini"
-          style={{ 'background-color': this.getColor(item), color: '#000' }}>
-          {item}
-        </el-tag>) : value}
+        {type === 'select'
+          ? isMulti
+            ? (value as string[]).map(item =>
+              <el-tag size="mini" style={{ 'background-color': this.getColor(item), color: '#000' }}>
+                {item}
+              </el-tag>)
+            : value && <el-tag size="mini" style={{ 'background-color': this.getColor(value as string), color: '#000' }}>
+              {value}
+            </el-tag>
+          : value}
       </div>
     }
   }
