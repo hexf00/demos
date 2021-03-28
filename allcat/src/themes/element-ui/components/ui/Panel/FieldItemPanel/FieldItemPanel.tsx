@@ -33,39 +33,51 @@ export default class FieldItemPanel extends Vue {
 
   submit() {
     const { id: fieldId, type, isMulti, selectOptions } = this.field
-    const { isMulti: oldIsMulti } = this.table.fields[fieldId]
+    const { isMulti: oldIsMulti, type: OldType } = this.table.fields[fieldId]
 
 
-    // 文本 -> 关联、 关联 -> 文本
+    // 文本 -> 关联、 关联 -> 文本  使用逗号分隔符尽可能无损转换
+
     // 多 -> 单、 单 -> 多
 
-    if (type === 'select') {
 
-      let convert
-      //多->选 会丢失数据 需要提示用户
-      if (oldIsMulti && !isMulti) {
+    let convert
+    //多->选 会丢失数据 需要提示用户
+    if (oldIsMulti && !isMulti /** 多转单 */) {
+      if (type === 'select' && OldType === 'select') {
+        //丢失多选项
         convert = (row: IJSONRow) => {
           const oldVal = row[fieldId] as string[]
           const newVal = oldVal && oldVal.length > 0 ? oldVal[0] : ''
           row[fieldId] = newVal
         }
-      } else if (!oldIsMulti && isMulti) {
+      } else {
         convert = (row: IJSONRow) => {
-          const oldVal = row[fieldId] as string
-          const newVal = oldVal !== '' ? oldVal.split(',')
-            .map(it => it.trim())
-            .filter(it => it !== '') : []
+          const oldVal = row[fieldId] as string[]
+          const newVal = oldVal.join(',')
           row[fieldId] = newVal
         }
       }
-
-      for (const key in this.table.rows) {
-        const row = this.table.rows[key]
-        convert && convert(row)
+    } else if (!oldIsMulti && isMulti /** 单转多 */) {
+      convert = (row: IJSONRow) => {
+        const oldVal = row[fieldId] as string
+        const newVal = oldVal !== '' ? oldVal.split(',')
+          .map(it => it.trim())
+          .filter(it => it !== '') : []
+        row[fieldId] = newVal
       }
-    } else {
+    }
+
+    for (const key in this.table.rows) {
+      const row = this.table.rows[key]
+      convert && convert(row)
+    }
+
+
+    if (type !== 'select') {
       //说明 此处没有使用delete 是因为外部使用的是Object.assign
       this.field.selectOptions = undefined
+      this.field.isMulti = undefined
     }
 
     this.$emit('submit', this.field)
