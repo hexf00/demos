@@ -2,7 +2,7 @@ import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import { CreateElement } from 'vue'
 import { IJSONTableField } from '@/models/Table/TableField'
 import style from './index.module.scss'
-import { Input } from 'element-ui'
+import { Input, Select } from 'element-ui'
 import { IJSONTable } from '@/models/Table/Table'
 import { IJSONRow } from '@/models/Table/Row'
 import OptionList from './components/OptionList/OptionList'
@@ -12,6 +12,7 @@ import OptionList from './components/OptionList/OptionList'
 export default class FieldItemPanel extends Vue {
   $refs!: {
     name: Input
+    typeSelect: Select
   }
 
   @Prop(Object) field!: IJSONTableField
@@ -128,8 +129,18 @@ export default class FieldItemPanel extends Vue {
           <el-input vModel={field.description}></el-input>
         </el-form-item>
         <el-form-item label="类型" prop="type">
-          <el-select vModel={field.type} on={{
+          <el-select ref="typeSelect" vModel={field.type} on={{
             input: (type: string) => this.changeType(type),
+            // 下拉框显示
+            visibleChange: (vis: boolean) => {
+              if (vis) {
+                this.$nextTick(() => {
+                  const vNode = this.$refs['typeSelect'].$refs['popper'] as Vue
+                  const el = vNode.$el as HTMLElement
+                  el.style.zIndex = '10000'
+                })
+              }
+            },
           }}>
             <el-option label="文本" value="text"></el-option>
             <el-option label="选项" value="select"></el-option>
