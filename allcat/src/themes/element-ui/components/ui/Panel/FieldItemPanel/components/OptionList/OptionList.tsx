@@ -36,22 +36,33 @@ export default class OptionList extends Vue {
 
   render(h: CreateElement) {
     const list = this.field.selectOptions
-    return <el-tree
-      props={{
-        data: list,
-        draggable: true,
-        allowDrop: this.isAllowDrop,
-        nodeKey: 'id',
-        class: style.tree,
-        defaultExpandAll: true,
-      }}
-      scopedSlots={{
-        default: ({ data }: { data: TSelectOption }) => {
-          return <OptionItem props={{
-            data,
-            onRemove: (option) => this.removeOptions(option),
-          }} />
+    return <div>
+      <el-button size="mini" on={{
+        click: () => {
+          const { selectOptions } = this.field
+          selectOptions?.push({
+            color: '',
+            value: '',
+          })
         },
-      }} />
+      }}>添加一个选项</el-button>
+      <el-tree
+        props={{
+          data: list,
+          draggable: true,
+          allowDrop: this.isAllowDrop,
+          nodeKey: 'id',
+          class: style.tree,
+          defaultExpandAll: true,
+        }}
+        scopedSlots={{
+          default: ({ data }: { data: TSelectOption }) => {
+            return <OptionItem props={{
+              data,
+              onRemove: (option) => this.removeOptions(option),
+            }} />
+          },
+        }} />
+    </div>
   }
 }
