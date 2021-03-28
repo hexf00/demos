@@ -132,7 +132,7 @@ export default class FieldItemPanel extends Vue {
           <el-select ref="typeSelect" vModel={field.type} on={{
             input: (type: string) => this.changeType(type),
             // 下拉框显示
-            visibleChange: (vis: boolean) => {
+            'visible-change': (vis: boolean) => {
               if (vis) {
                 this.$nextTick(() => {
                   const vNode = this.$refs['typeSelect'].$refs['popper'] as Vue
