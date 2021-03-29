@@ -12,8 +12,12 @@ import store from '@/store'
 
 @Component
 export default class extends Vue {
-  service: { app: IJSONApp } = new IndexService()
+  service = new IndexService()
   store = store
+
+  beforeDestroy() {
+    this.service.destroy()
+  }
 
   render(h: CreateElement) {
     const { name, description } = this.service.app

@@ -1,7 +1,6 @@
 import libs from '@/libs'
 import Vue from 'vue'
 import { IJSONTable } from './Table'
-
 export interface IJSONRow {
   /** 行主键 */
   id: string
@@ -49,6 +48,7 @@ function addRow(table: IJSONTable) {
     const view = table.views[viewId]
     view.rowsSorts.push(row.id)
   }
+  return row
 }
 
 function removeRow(table: IJSONTable, rows: IJSONRow[]) {
