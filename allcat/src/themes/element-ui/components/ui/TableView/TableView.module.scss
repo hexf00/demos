@@ -11,9 +11,9 @@
       padding: 0;
     }
   }
-  .el-table__body-wrapper{
-    overflow: auto;
-    max-height: 400px;
+  .cell{
+    max-height: 22px;
+    height: 22px;
   }
 }
 

@@ -118,6 +118,7 @@ export default class extends Vue {
               data: this.list,
               'row-key': 'id',
               border: true,
+              'max-height': '400', //流体高度
             },
             on: {
               /** 右键点击 */
@@ -142,6 +143,10 @@ export default class extends Vue {
           <el-table-column
             type="selection"
             width="36">
+          </el-table-column>
+          <el-table-column
+            type="index"
+            width="50">
           </el-table-column>
           {this.cols.map(it => (
             <el-table-column
