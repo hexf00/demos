@@ -174,7 +174,13 @@ export default class TableCell extends Vue {
             : value && <el-tag size="mini" style={{ 'background-color': this.getColor(value as string), color: '#000' }}>
               {value}
             </el-tag>
-          : value}
+          : <el-popover
+            placement="bottom-start"
+            width="280"
+            trigger="click">
+            <div>{value}</div>
+            <div class={style.cell} slot="reference">{value}</div>
+          </el-popover>}
       </div>
     }
   }
