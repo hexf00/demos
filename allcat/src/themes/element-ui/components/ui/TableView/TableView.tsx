@@ -73,7 +73,7 @@ export default class extends Vue {
           click: () => {
             JsonRow.addRow(this.table)
           },
-        }}>Add Row</el-button>
+        }}>新增行</el-button>
 
         <el-button  {...{
           class: style.btn,
@@ -86,7 +86,7 @@ export default class extends Vue {
               JsonRow.removeRow(this.table, this.selected)
             },
           },
-        }}>Remove Rows</el-button>
+        }}>删除行</el-button>
 
         <el-popover
           value={this.isShowPopover}
@@ -108,7 +108,7 @@ export default class extends Vue {
             click: () => {
               this.isShowPopover = !this.isShowPopover
             },
-          }}>Field Config</el-button>
+          }}>列配置</el-button>
         </el-popover>
       </div>
       <div>
