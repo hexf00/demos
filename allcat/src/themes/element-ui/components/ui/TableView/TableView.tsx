@@ -176,6 +176,9 @@ export default class extends Vue {
           ))}
         </el-table>
       </div>
+      <div class={style.log}>
+        <pre>{JSON.stringify(table, null, 2)}</pre>
+      </div>
     </div >
   }
 }

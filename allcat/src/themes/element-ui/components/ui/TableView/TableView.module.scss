@@ -27,3 +27,15 @@
 .btn {
   margin-right: 1em;
 }
+
+
+.log{
+  position:absolute;
+  bottom: 0;
+  width: 400px;
+  height: 140px;
+  overflow: auto;
+  background-color: #ddd;
+  margin-top: 10px;
+  z-index: 1000;
+}
