@@ -18,6 +18,9 @@ import {
   Switch,
   Tag,
   ColorPicker,
+  Radio,
+  RadioButton,
+  RadioGroup,
 } from 'element-ui'
 
 Vue.use(Button)
@@ -37,6 +40,9 @@ Vue.use(Option)
 Vue.use(Switch)
 Vue.use(Tag)
 Vue.use(ColorPicker)
+Vue.use(Radio)
+Vue.use(RadioButton)
+Vue.use(RadioGroup)
 
 import CustomSelect from '@/components/select/index'
 Vue.use(CustomSelect)

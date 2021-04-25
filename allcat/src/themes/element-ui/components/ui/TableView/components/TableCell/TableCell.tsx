@@ -158,8 +158,8 @@ export default class TableCell extends Vue {
       }
 
     } else {
-      const value = row[field.id]
       const { type, isMulti } = field
+      const value = isMulti ? row[field.id] || [] : row[field.id]
       return <div class={style.preview} on={{
         dblclick: () => {
           this.isEdit = true

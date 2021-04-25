@@ -4,6 +4,7 @@ import { IJSONTable } from '../Table/Table'
 import libs from '@/libs'
 import Vue from 'vue'
 import store from '@/store'
+import { IViewSorter } from './ViewSorter'
 
 export interface IView {
   /** 视图主键 */
@@ -20,6 +21,8 @@ export interface IView {
   rowsSorts: string[]
   /** 过滤器 */
   filters: IViewFilter[]
+  /** 排序器 */
+  sort: IViewSorter
 }
 
 /**
@@ -84,6 +87,7 @@ function addView(table: IJSONTable) {
     fields: baseView ? JSON.parse(JSON.stringify(baseView.fields)) : [],
     rowsSorts: baseView ? [...baseView.rowsSorts] : [],
     filters: [],
+    sort: { isAutoSort: false, rules: [] },
   }
   //需要通过Vue给不存在的属性添加响应式
   Vue.set(table.views, view.id, view)

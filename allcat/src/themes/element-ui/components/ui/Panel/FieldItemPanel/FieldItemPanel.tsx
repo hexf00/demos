@@ -91,7 +91,10 @@ export default class FieldItemPanel extends Vue {
 
     const addOption = (row: IJSONRow) => {
       const val = row[fieldId] as string
-      val !== '' && optionsMap.add(val)
+      val !== undefined && val !== '' && val.split(',')
+        .map(it => it.trim())
+        .filter(it => it !== '')
+        .forEach(it => optionsMap.add(it))
     }
 
     const addMultiOption = (row: IJSONRow) => {

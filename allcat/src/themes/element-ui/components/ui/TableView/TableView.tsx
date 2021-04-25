@@ -9,6 +9,9 @@ import JsonRow, { IJSONRow } from '@/models/Table/Row'
 import Icon from '../../base/Icon/Icon'
 import TableCell from './components/TableCell/TableCell'
 import { TableColumn } from 'element-ui/types/table-column'
+import SortPanel from '../Panel/SorterPanel/SortPanel'
+import SortPanelService from '../Panel/SorterPanel/SortPanel.service'
+import { IViewSorter } from '@/models/View/ViewSorter'
 
 
 @Component({
@@ -22,7 +25,24 @@ export default class extends Vue {
   mounted() {
   }
 
-  isShowPopover = false
+  /** 是否显示字段配置面板 */
+  isShowFieldPanelPopover = false
+  /** 是否显示排序面板 */
+  isShowSortPanelPopover = false
+
+  /** 排序面板 */
+  sortPanelService = new SortPanelService(
+    this.view.sort || { isAutoSort: false, rules: [] },
+    this.view,
+    this.table
+  )
+
+  constructor() {
+    super()
+    this.sortPanelService.bindSave((sort: IViewSorter) => {
+      this.view.sort = sort
+    })
+  }
 
   get colsWidth() {
     const result: Record<string, number> = {}
@@ -45,9 +65,9 @@ export default class extends Vue {
     const directives = [{
       name: 'Clickoutside',
       value: ({ mouseup, mousedown }: { mouseup: MouseEvent; mousedown: MouseEvent }) => {
-        if (!this.isShowPopover /** 未显示 */) {
-          return
-        }
+        // if (!this.isShowFieldPanelPopover /** 未显示 */) {
+        //   return
+        // }
 
         let parent: null | HTMLElement = mouseup.target as HTMLElement
         while (parent) {
@@ -62,7 +82,8 @@ export default class extends Vue {
           // console.log('Clickoutside', parent.classList)
           parent = parent.parentElement
         }
-        this.isShowPopover = false
+        this.isShowFieldPanelPopover = false
+        this.isShowSortPanelPopover = false
       },
     }]
 
@@ -89,27 +110,38 @@ export default class extends Vue {
         }}>删除行</el-button>
 
         <el-popover
-          value={this.isShowPopover}
+          value={this.isShowFieldPanelPopover}
           popper-class={style.popperClass}
           placement="bottom-start"
           width="280"
           trigger="manual">
-          {this.isShowPopover && <FieldListPanel table={table} view={view}
+          {this.isShowFieldPanelPopover && <FieldListPanel table={table} view={view}
             {...{ directives }}
-          // 下面写法无效
-          // directives={[{
-          //   name: 'Clickoutside',
-          //   value: () => {
-          //     this.isShowPopover = false
-          //   },
-          // }]}
           />}
-          <el-button size="mini" slot="reference" on={{
+          <el-button class={style.btn} size="mini" slot="reference" on={{
             click: () => {
-              this.isShowPopover = !this.isShowPopover
+              this.isShowFieldPanelPopover = !this.isShowFieldPanelPopover
             },
           }}>列配置</el-button>
         </el-popover>
+
+        <el-popover
+          value={this.isShowSortPanelPopover}
+          popper-class={style.popperClass}
+          placement="bottom-start"
+          width="280"
+          trigger="manual">
+          {
+            this.isShowSortPanelPopover
+            && <SortPanel service={this.sortPanelService} {...{ directives }} />
+          }
+          <el-button class={style.btn} size="mini" slot="reference" on={{
+            click: () => {
+              this.isShowSortPanelPopover = !this.isShowSortPanelPopover
+            },
+          }}>排序</el-button>
+        </el-popover>
+
       </div>
       <div>
         <el-table
