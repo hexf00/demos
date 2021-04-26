@@ -4,8 +4,6 @@ import { ISortRule, IViewSorter } from '@/models/View/ViewSorter'
 import { CreateElement, RenderContext } from 'vue'
 import style from './SortPanel.module.scss'
 import { TreeNode } from 'element-ui/types/tree'
-import { IRuleItem } from '@/models/View/ViewFilter'
-
 export interface ISortPanel {
   data: IViewSorter
   save: (sort: IViewSorter) => void
@@ -40,7 +38,7 @@ export default class FieldListPanel extends Vue {
         }
         }
         scopedSlots={{
-          default: ({ data }: { data: IRuleItem }) => {
+          default: ({ data }: { data: ISortRule }) => {
             const rule = data
             return <div class={style.row}>
               <el-select class={style.select} size="mini" vModel={rule.field}>
@@ -50,6 +48,14 @@ export default class FieldListPanel extends Vue {
                 <el-radio-button label="asc">升序</el-radio-button>
                 <el-radio-button label="desc">降序</el-radio-button>
               </el-radio-group>
+              <i class="el-icon-close" on={{
+                click() {
+                  const rules = service.data.rules
+                  const index = rules.indexOf(rule)
+                  index !== -1 && rules.splice(index, 1)
+                },
+              }}></i>
+
             </div>
           },
         }} />
