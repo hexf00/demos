@@ -48,7 +48,30 @@ export default class extends Vue {
     return this.view.fields.filter(it => it.isShow).map(it => this.table.fields[it.id])
   }
   get list() {
+    let sortRules
+    if (this.view?.sort?.rules) {
+      const rules = this.view.sort.rules.filter(it => it.field)
+
+      const data = this.view.rowsSorts.map(it => this.table.rows[it])
+
+      console.log('sort', rules)
+      rules.forEach(rule => {
+        const { field, type } = rule
+        data.sort((itemA, itemB) => {
+          const [a, b] = type === 'asc' ? [itemA, itemB] : [itemB, itemA]
+          if (typeof a === 'number' && typeof b === 'number') {
+            return a - b
+          } else {
+            return String(a[field]).localeCompare(String(b[field]))
+          }
+        })
+      })
+
+      return data
+    }
+
     return this.view.rowsSorts.map(it => this.table.rows[it])
+
   }
 
   render(h: CreateElement) {
