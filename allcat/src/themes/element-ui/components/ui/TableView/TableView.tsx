@@ -54,17 +54,20 @@ export default class extends Vue {
 
       const data = this.view.rowsSorts.map(it => this.table.rows[it])
 
-      console.log('sort', rules)
-      rules.forEach(rule => {
-        const { field, type } = rule
-        data.sort((itemA, itemB) => {
+      data.sort((itemA, itemB) => {
+        const result = rules.reduce((result, rule, index) => {
+          const { field, type } = rule
           const [a, b] = type === 'asc' ? [itemA, itemB] : [itemB, itemA]
           if (typeof a === 'number' && typeof b === 'number') {
-            return a - b
+            // TODO:确认规则是否准确
+            result += (rules.length - index) * (a > b ? 1 : -1)
           } else {
-            return String(a[field]).localeCompare(String(b[field]))
+            result += (rules.length - index) * (String(a[field]).localeCompare(String(b[field])))
           }
-        })
+          return result
+        }, 0)
+
+        return result
       })
 
       return data
