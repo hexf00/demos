@@ -47,8 +47,8 @@ export default class FieldListPanel extends Vue {
                 {service.getFields(rule.field).map(field => <el-option key={field.id} label={field.name} value={field.id}></el-option>)}
               </el-select>
               <el-radio-group size="mini" vModel={rule.type}>
-                <el-radio-button label="升序"></el-radio-button>
-                <el-radio-button label="降序"></el-radio-button>
+                <el-radio-button label="asc">升序</el-radio-button>
+                <el-radio-button label="desc">降序</el-radio-button>
               </el-radio-group>
             </div>
           },
