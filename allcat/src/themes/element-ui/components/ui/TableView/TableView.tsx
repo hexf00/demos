@@ -31,17 +31,10 @@ export default class extends Vue {
   isShowSortPanelPopover = false
 
   /** 排序面板 */
-  sortPanelService = new SortPanelService(
-    this.view.sort || { isAutoSort: false, rules: [] },
-    this.view,
-    this.table
-  )
+  sortPanelService: SortPanelService | null = null
 
   constructor() {
     super()
-    this.sortPanelService.bindSave((sort: IViewSorter) => {
-      this.view.sort = sort
-    })
   }
 
   get colsWidth() {
@@ -138,6 +131,17 @@ export default class extends Vue {
           }
           <el-button class={style.btn} size="mini" slot="reference" on={{
             click: () => {
+              // 初始化排序数据
+              const sortPanelService = new SortPanelService(
+                this.view.sort || { isAutoSort: false, rules: [] },
+                this.view,
+                this.table
+              )
+              sortPanelService.bindSave((sort: IViewSorter) => {
+                this.view.sort = sort
+              })
+              this.sortPanelService = sortPanelService
+
               this.isShowSortPanelPopover = !this.isShowSortPanelPopover
             },
           }}>排序</el-button>
