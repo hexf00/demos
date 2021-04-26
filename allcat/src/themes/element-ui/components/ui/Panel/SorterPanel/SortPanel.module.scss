@@ -1,7 +1,11 @@
-.row {
-  display: flex;
-  justify-content: space-between;
-  .select {
-    width: 150px;
+.box {
+  padding: 10px;
+  :global(.el-tree-node) {
+    margin-bottom: 8px;
+  }
+  .row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
   }
 }

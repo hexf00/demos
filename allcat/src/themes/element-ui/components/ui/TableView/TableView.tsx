@@ -115,9 +115,10 @@ export default class extends Vue {
           placement="bottom-start"
           width="280"
           trigger="manual">
-          {this.isShowFieldPanelPopover && <FieldListPanel table={table} view={view}
-            {...{ directives }}
-          />}
+          {
+            this.isShowFieldPanelPopover &&
+            <FieldListPanel table={table} view={view} {...{ directives }} />
+          }
           <el-button class={style.btn} size="mini" slot="reference" on={{
             click: () => {
               this.isShowFieldPanelPopover = !this.isShowFieldPanelPopover
