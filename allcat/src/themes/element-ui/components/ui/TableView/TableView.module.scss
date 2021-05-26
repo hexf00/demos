@@ -1,0 +1,6 @@
+.popperClass {
+  max-height: 300px;
+
+  // 不能在popper本身使用overflow，会导致三角箭头遮挡丢失
+  // overflow: auto;
+}

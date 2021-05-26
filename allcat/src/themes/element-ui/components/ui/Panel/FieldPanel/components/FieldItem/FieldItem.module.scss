@@ -1,0 +1,18 @@
+.treeItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1;
+
+  div.name {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 130px;
+  }
+
+  .opera {
+    display: flex;
+    align-items: center;
+  }
+}

@@ -1,0 +1,10 @@
+.fieldPanel {
+  padding: 10px;
+}
+.tree {
+  :global {
+    .el-tree-node.is-current > .el-tree-node__content {
+      background-color: #e8eaf6;
+    }
+  }
+}
