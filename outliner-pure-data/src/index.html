@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Demo</title>
+  <style>
+    html,
+    body {
+      width: 400px;
+      overflow-y: auto;
+    }
+    ul{
+      border-left: 1px solid #ddd;
+      padding-left: 2em;
+    }
+
+    div.refNode{
+      background-color: #f2f2f2;
+      margin-left: -2em;
+      position: relative;
+    }
+    
+    div.refNode .edit{
+      position:absolute;
+      right: 0;
+      top:0;
+      cursor: pointer;
+      z-index: 1;
+    }
+
+    li {
+      width: 100%;
+      display: block;
+      position: relative;
+    }
+
+    div.input::before{
+      content:"*";
+      position:absolute;
+      display:block;
+      left: -1em;
+    }
+    li > div {
+      /** 无内容时需要撑开div */
+      min-height: 1.3em;
+      word-wrap: break-word;
+      word-break: break-all;
+      outline: 1px solid transparent;
+      overflow-wrap: break-spaces;
+      vertical-align: top;
+      background-color: transparent;
+      letter-spacing: inherit;
+      border: none;
+      resize: none;
+      white-space: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app"></div>
+</body>
+
+</html>
