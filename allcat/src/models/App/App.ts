@@ -1,32 +1,32 @@
 import store from '@/store'
-import { ITable } from '../Table/Table'
+import { IJSONTable } from '../Table/Table'
 
-export interface IApp {
+export interface IJSONApp {
   /** App主键 */
-  _id: string
+  id: string
   /** App名称 */
   name: string
   /** App描述 */
   description: string
   /** App表配置 */
-  tables: Record<string, ITable>
+  tables: Record<string, IJSONTable>
   /** App表排序 */
   tableSorts: string[]
 }
 
 /** 获取表数据结构 */
-function get(appId = 'default_app'): IApp {
+function get(appId = 'default_app'): IJSONApp {
   if (store.apps[appId]) {
     return store.apps[appId]
   }
 
   const content = localStorage.getItem('app:' + appId)
   if (content) {
-    const app: IApp = JSON.parse(content)
+    const app: IJSONApp = JSON.parse(content)
     store.apps[appId] = app
   } else {
-    const app: IApp = {
-      _id: appId,
+    const app: IJSONApp = {
+      id: appId,
       name: '新App',
       description: '',
       tables: {},
@@ -45,13 +45,13 @@ function save(appId = 'default_app') {
   if (!store.apps[appId]) {
     return
   }
-  const { _id } = store.apps[appId]
+  const { id: _id } = store.apps[appId]
   localStorage.setItem('app:' + _id, JSON.stringify(store.apps[appId]))
 }
 
-const app = {
+const JsonApp = {
   get,
   save,
 }
 
-export default app
+export default JsonApp

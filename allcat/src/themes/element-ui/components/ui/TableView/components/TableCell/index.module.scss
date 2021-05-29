@@ -1,0 +1,27 @@
+.preview {
+  min-height: 28px;
+}
+.preview:hover,
+.preview:focus {
+  background-color: lightgray;
+}
+
+.select {
+  position: absolute;
+  background: #fff;
+  z-index: 1;
+  margin-left: -10px;
+}
+
+:global{
+  .el-tag.el-tag--info .el-tag__close {
+    color: inherit;
+    background-color: transparent;
+  }
+}
+
+.cell{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

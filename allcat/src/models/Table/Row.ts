@@ -1,16 +1,15 @@
 import libs from '@/libs'
 import Vue from 'vue'
-import { ITable } from './Table'
-
-export interface IRow {
+import { IJSONTable } from './Table'
+export interface IJSONRow {
   /** 行主键 */
-  _id: string
-  [key: string]: string | number
+  id: string
+  [key: string]: string | number | string[]
 }
 
 
 /** 获取一个表格唯一id */
-function generateRowId(table: ITable): string {
+function generateRowId(table: IJSONTable): string {
   let isUnique = false
   let id = libs.randomChar()
   while (!isUnique) {
@@ -24,32 +23,49 @@ function generateRowId(table: ITable): string {
   return id
 }
 
-function addRow(table: ITable) {
+function addRow(table: IJSONTable) {
 
 
-  const row: IRow = {
-    _id: generateRowId(table),
+  const row: IJSONRow = {
+    id: generateRowId(table),
   }
 
 
 
   for (const fieldId in table.fields) {
     const field = table.fields[fieldId]
-    row[fieldId] = ''
+    if (field.isMulti) {
+      row[fieldId] = []
+    } else {
+      row[fieldId] = ''
+    }
   }
 
   //需要通过Vue给不存在的属性添加响应式
-  Vue.set(table.rows, row._id, row)
+  Vue.set(table.rows, row.id, row)
 
   for (const viewId in table.views) {
     const view = table.views[viewId]
-    view.rowsSorts.push(row._id)
+    view.rowsSorts.push(row.id)
   }
+  return row
 }
 
-const row = {
+function removeRow(table: IJSONTable, rows: IJSONRow[]) {
+  rows.forEach(row => {
+    delete table.rows[row.id]
+    for (const viewId in table.views) {
+      const view = table.views[viewId]
+      const index = view.rowsSorts.findIndex(it => it === row.id)
+      index !== -1 && view.rowsSorts.splice(index, 1)
+    }
+  })
+}
+
+const JsonRow = {
   generateRowId,
   addRow,
+  removeRow,
 }
 
-export default row
+export default JsonRow

@@ -4,3 +4,37 @@
   // 不能在popper本身使用overflow，会导致三角箭头遮挡丢失
   // overflow: auto;
 }
+:global {
+  .el-table {
+    td,
+    th {
+      padding: 0;
+    }
+  }
+  .cell{
+    max-height: 22px;
+    height: 22px;
+  }
+}
+
+.th {
+  display: flex;
+  align-items: center;
+  color: #909399;
+  fill: #909399;
+}
+
+.btn {
+  margin-right: 1em;
+}
+
+
+.log{
+  position:absolute;
+  bottom: 0;
+  width: 400px;
+  height: 140px;
+  overflow: auto;
+  background-color: #ddd;
+  z-index: 1000;
+}

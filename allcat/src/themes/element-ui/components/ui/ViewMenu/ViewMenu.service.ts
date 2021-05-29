@@ -1,29 +1,29 @@
-import app, { IApp } from '@/models/App/App'
-import table, { ITable } from '@/models/Table/Table'
-import view, { IView } from '@/models/View/View'
+import JsonApp, { IJSONApp } from '@/models/App/App'
+import JsonTable, { IJSONTable } from '@/models/Table/Table'
+import JsonView, { IView } from '@/models/View/View'
 import store from '@/store'
 import { IViewMenuService } from './ViewMenu'
 
 export default class ViewMenuService implements IViewMenuService {
-  app: IApp
+  app: IJSONApp
 
   constructor() {
-    this.app = store.currentApp as IApp
+    this.app = store.currentApp as IJSONApp
   }
 
   createNewTable() {
-    table.addTable(this.app)
+    JsonTable.addTable(this.app)
   }
 
-  createNewView(table: ITable) {
-    view.addView(table)
+  createNewView(table: IJSONTable) {
+    JsonView.addView(table)
   }
 
-  deleteTable(tb: ITable) {
-    table.removeTable(this.app, tb)
+  removeTable(tb: IJSONTable) {
+    JsonTable.removeTable(this.app, tb)
   }
 
-  deleteView(tb: ITable, v: IView) {
-    view.removeView(tb, v)
+  removeView(tb: IJSONTable, v: IView) {
+    JsonView.removeView(tb, v)
   }
 }

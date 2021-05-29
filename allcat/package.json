@@ -6,6 +6,7 @@
   "dependencies": {
     "@babel/core": "^7.10.4",
     "@babel/preset-env": "^7.10.4",
+    "@types/papaparse": "^5.2.5",
     "@types/vue": "^2.0.0",
     "@vue/babel-helper-vue-jsx-merge-props": "^1.2.1",
     "@vue/babel-preset-jsx": "^1.2.4",
@@ -13,10 +14,12 @@
     "element-ui": "^2.15.0",
     "eslint": "^7.20.0",
     "html-webpack-plugin": "^4.3.0",
+    "papaparse": "^5.3.0",
     "qs": "^6.9.6",
     "ts-loader": "^7.0.5",
-    "vue": "^2.6.11",
+    "vue": "^2.6.12",
     "vue-class-component": "^7.2.3",
+    "vue-loader": "^15.9.6",
     "vue-property-decorator": "^9.0.0",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.12",
@@ -34,7 +37,8 @@
     "style-loader": "^2.0.0",
     "typescript": "^3.9.9",
     "vue-hot-reload-api": "^2.3.4",
-    "vue-jsx-hot-loader": "^1.4.1"
+    "vue-jsx-hot-loader": "^1.4.1",
+    "vue-template-compiler": "^2.6.12"
   },
   "scripts": {
     "start": "webpack-dev-server",

@@ -1,19 +1,22 @@
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import { CreateElement } from 'vue'
 import style from './FieldItem.module.scss'
-import tableModel, { ITable } from '@/models/Table/Table'
+import tableModel, { IJSONTable } from '@/models/Table/Table'
 import viewModel, { IView } from '@/models/View/View'
 import EyeSwitch from '@/themes/element-ui/components/base/EyeSwitch/EyeSwitch'
 import { MessageBox } from 'element-ui'
-import tableField, { ITableField } from '@/models/Table/TableField'
+import JsonField, { IJSONTableField } from '@/models/Table/TableField'
+import { IJSONViewField } from '@/models/View/ViewField'
+import Icon from '@/themes/element-ui/components/base/Icon/Icon'
 
 export interface IFieldItem {
   /** 唯一标识符,可能el-tree会用来判断dom复用 */
   id: string
+  viewField: IJSONViewField
   label: string
-  table: ITable
+  table: IJSONTable
   view: IView
-  field: ITableField
+  field: IJSONTableField
 }
 
 @Component
@@ -29,11 +32,13 @@ export default class FieldItem extends Vue {
   }
 
   render(h: CreateElement) {
-    const { label, table, field } = this.data
 
+    const { label, viewField, table, field } = this.data
 
     return <div class={style.treeItem}>
       {/* 重命名 */}
+
+      <Icon value={field.type}></Icon>
       <div class={style.name}>
         {label}
       </div>
@@ -42,7 +47,7 @@ export default class FieldItem extends Vue {
 
 
 
-        <EyeSwitch />
+        <EyeSwitch vModel={viewField.isShow} />
         <el-dropdown size="mini" trigger="click" on={{
           command: (command: string) => {
             if (command === 'remove') {
@@ -51,8 +56,10 @@ export default class FieldItem extends Vue {
                 confirmButtonText: '确认删除',
               })
                 .then(() => {
-                  tableField.removeField(table, field)
+                  JsonField.removeField(table, field)
                 })
+            } else if (command === 'edit') {
+              this.$emit('showFieldItemPanel', field)
             }
           },
         }}>

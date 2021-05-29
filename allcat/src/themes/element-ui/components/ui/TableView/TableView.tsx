@@ -1,29 +1,80 @@
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import { CreateElement } from 'vue'
-import table, { ITable } from '@/models/Table/Table'
+import JsonTable, { IJSONTable } from '@/models/Table/Table'
 import { IView } from '@/models/View/View'
-import FieldPanel from '../Panel/FieldPanel/FieldPanel'
+import FieldListPanel from '../Panel/FieldListPanel/FieldListPanel'
 import style from './TableView.module.scss'
 import Clickoutside from '@/directives/clickoutside'
-import row from '@/models/Table/Row'
+import JsonRow, { IJSONRow } from '@/models/Table/Row'
+import Icon from '../../base/Icon/Icon'
+import TableCell from './components/TableCell/TableCell'
+import { TableColumn } from 'element-ui/types/table-column'
+import SortPanel from '../Panel/SorterPanel/SortPanel'
+import SortPanelService from '../Panel/SorterPanel/SortPanel.service'
+import { IViewSorter } from '@/models/View/ViewSorter'
 
 
 @Component({
   directives: { Clickoutside },
 })
 export default class extends Vue {
-  @Prop(Object) table!: ITable
+  @Prop(Object) table!: IJSONTable
   @Prop(Object) view!: IView
 
+  selected: IJSONRow[] = []
   mounted() {
   }
 
-  isShowPopover = false
+  /** 是否显示字段配置面板 */
+  isShowFieldPanelPopover = false
+  /** 是否显示排序面板 */
+  isShowSortPanelPopover = false
+
+  /** 排序面板 */
+  sortPanelService: SortPanelService | null = null
+
+  constructor() {
+    super()
+  }
+
+  get colsWidth() {
+    const result: Record<string, number> = {}
+    this.view.fields.forEach(it => {
+      result[it.id] = it.width || 180
+    })
+    return result
+  }
   get cols() {
-    return this.view.fields.map(it => this.table.fields[it._id])
+    return this.view.fields.filter(it => it.isShow).map(it => this.table.fields[it.id])
   }
   get list() {
+    let sortRules
+    if (this.view?.sort?.rules) {
+      const rules = this.view.sort.rules.filter(it => it.field)
+
+      const data = this.view.rowsSorts.map(it => this.table.rows[it])
+
+      data.sort((itemA, itemB) => {
+        const result = rules.reduce((result, rule, index) => {
+          const { field, type } = rule
+          const [a, b] = type === 'asc' ? [itemA, itemB] : [itemB, itemA]
+          if (typeof a === 'number' && typeof b === 'number') {
+            // TODO:确认规则是否准确
+            result += (rules.length - index) * (a > b ? 1 : -1)
+          } else {
+            result += (rules.length - index) * (String(a[field]).localeCompare(String(b[field])))
+          }
+          return result
+        }, 0)
+
+        return result
+      })
+
+      return data
+    }
+
     return this.view.rowsSorts.map(it => this.table.rows[it])
+
   }
 
   render(h: CreateElement) {
@@ -33,14 +84,16 @@ export default class extends Vue {
     const directives = [{
       name: 'Clickoutside',
       value: ({ mouseup, mousedown }: { mouseup: MouseEvent; mousedown: MouseEvent }) => {
-        if (!this.isShowPopover /** 未显示 */) {
-          return
-        }
+        // if (!this.isShowFieldPanelPopover /** 未显示 */) {
+        //   return
+        // }
 
         let parent: null | HTMLElement = mouseup.target as HTMLElement
         while (parent) {
           if (parent.classList.contains('el-dropdown-menu') /** 下拉框 */
-            || parent.classList.contains('el-message-box__wrapper') /** 信息框的模态框 */) {
+            || parent.classList.contains('el-message-box__wrapper') /** 信息框的模态框 */
+            || parent.classList.contains('el-popper') /** 字段配置面板 */
+          ) {
             //下拉菜单的点击不关闭弹层
             return
           }
@@ -48,48 +101,146 @@ export default class extends Vue {
           // console.log('Clickoutside', parent.classList)
           parent = parent.parentElement
         }
-        this.isShowPopover = false
+        this.isShowFieldPanelPopover = false
+        this.isShowSortPanelPopover = false
       },
     }]
 
     return <div>
       <div>{table.name} {view.name}</div>
       <div>
+        <el-button size="mini" on={{
+          click: () => {
+            JsonRow.addRow(this.table)
+          },
+        }}>新增行</el-button>
+
+        <el-button  {...{
+          class: style.btn,
+          props: {
+            size: 'mini',
+            disabled: this.selected.length === 0,
+          },
+          on: {
+            click: () => {
+              JsonRow.removeRow(this.table, this.selected)
+            },
+          },
+        }}>删除行</el-button>
+
         <el-popover
-          value={this.isShowPopover}
+          value={this.isShowFieldPanelPopover}
           popper-class={style.popperClass}
           placement="bottom-start"
           width="280"
           trigger="manual">
-          {this.isShowPopover && <FieldPanel table={table} view={view}
-            {...{ directives }}
-          // 下面写法无效
-          // directives={[{
-          //   name: 'Clickoutside',
-          //   value: () => {
-          //     this.isShowPopover = false
-          //   },
-          // }]}
-          />}
-          <el-button slot="reference" on={{
+          {
+            this.isShowFieldPanelPopover &&
+            <FieldListPanel table={table} view={view} {...{ directives }} />
+          }
+          <el-button class={style.btn} size="mini" slot="reference" on={{
             click: () => {
-              this.isShowPopover = !this.isShowPopover
+              this.isShowFieldPanelPopover = !this.isShowFieldPanelPopover
             },
-          }}>Field Config</el-button>
+          }}>列配置</el-button>
         </el-popover>
 
-        <el-button on={{
-          click: () => {
-            row.addRow(this.table)
-          },
-        }}>add Row</el-button>
+        <el-popover
+          value={this.isShowSortPanelPopover}
+          popper-class={style.popperClass}
+          placement="bottom-start"
+          width="280"
+          trigger="manual">
+          {
+            this.isShowSortPanelPopover
+            && <SortPanel service={this.sortPanelService} {...{ directives }} />
+          }
+          <el-button class={style.btn} size="mini" slot="reference" on={{
+            click: () => {
+              // 初始化排序数据
+              const sortPanelService = new SortPanelService(
+                this.view.sort || { isAutoSort: false, rules: [] },
+                this.view,
+                this.table
+              )
+              sortPanelService.bindSave((sort: IViewSorter) => {
+                this.view.sort = sort
+              })
+              this.sortPanelService = sortPanelService
+
+              this.isShowSortPanelPopover = !this.isShowSortPanelPopover
+            },
+          }}>排序</el-button>
+        </el-popover>
+
       </div>
       <div>
-        <el-table data={this.list}>
+        <el-table
+          {...{
+            props: {
+              data: this.list,
+              'row-key': 'id',
+              border: true,
+              'max-height': '400', //流体高度
+            },
+            on: {
+              /** 右键点击 */
+              'row-contextmenu': (row: IJSONRow, column: TableColumn, event: MouseEvent) => {
+                event.preventDefault() //屏蔽系统右键菜单
+              },
+              /** 选中项变化 */
+              'selection-change': (rows: IJSONRow[]) => {
+                this.selected = rows
+              },
+              /** 列宽度改变 */
+              'header-dragend': (newWidth: number, oldWidth: number, column: TableColumn, event: MouseEvent) => {
+                // console.log(column.property, newWidth)
+                const viewField = this.view.fields.find(it => it.id === column.property)
+                if (viewField) {
+                  viewField.width = Math.ceil(newWidth)
+                }
+              },
+            },
+          }}
+        >
+          <el-table-column
+            type="selection"
+            width="36">
+          </el-table-column>
+          <el-table-column
+            type="index"
+            width="50">
+          </el-table-column>
           {this.cols.map(it => (
-            <el-table-column prop={it._id} label={it.name} width="180"></el-table-column>
+            <el-table-column
+              props={{
+                prop: it.id,
+                label: it.name,
+                width: this.colsWidth[it.id],
+              }}
+              scopedSlots={{
+                default: (args: { column: TableColumn; row: IJSONRow }) => {
+                  const { column, row } = args
+                  const field = table.fields[column.property]
+                  return <TableCell row={row} field={field} width={this.colsWidth[it.id]}></TableCell>
+                },
+                header: (args: { column: TableColumn }) => {
+                  // TODO 添加getter
+                  console.log(args.column.property)
+                  return <div class={style.th}>
+                    <Icon value={it.type}></Icon>
+                    {it.name}
+                  </div>
+                },
+              }}
+            >
+
+            </el-table-column>
           ))}
         </el-table>
+      </div>
+      <div class={style.log}>
+        <pre>{JSON.stringify(table, null, 2)}</pre>
       </div>
     </div >
   }

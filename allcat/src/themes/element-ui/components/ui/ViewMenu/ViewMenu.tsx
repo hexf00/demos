@@ -1,9 +1,9 @@
 import { Vue, Component } from 'vue-property-decorator'
 import { CreateElement } from 'vue'
 import ViewMenuService from './ViewMenu.service'
-import { IApp } from '@/models/App/App'
+import { IJSONApp } from '@/models/App/App'
 import style from './ViewMenu.module.scss'
-import { ITable } from '@/models/Table/Table'
+import { IJSONTable } from '@/models/Table/Table'
 import { IView } from '@/models/View/View'
 import MenuItem, { IMenuItem } from './components/MenuItem/MenuItem'
 import { TreeNode } from 'element-ui/types/tree'
@@ -11,17 +11,17 @@ import store from '@/store'
 import qs from 'qs'
 
 export interface IViewMenuService {
-  app: IApp
+  app: IJSONApp
   createNewTable: () => void
-  createNewView: (table: ITable) => void
-  deleteTable: (table: ITable) => void
-  deleteView: (table: ITable, view: IView) => void
+  createNewView: (table: IJSONTable) => void
+  removeTable: (table: IJSONTable) => void
+  removeView: (table: IJSONTable, view: IView) => void
 }
 
 export interface ITreeNode {
   id: string
   label: string
-  table: ITable
+  table: IJSONTable
   type: 'table' | 'view'
   view?: IView
   children?: ITreeNode[]
@@ -39,14 +39,14 @@ export default class extends Vue {
     return app.tableSorts.map(tableId => {
       const table = app.tables[tableId]
       return {
-        id: table._id,
+        id: table.id,
         label: table.name,
         table: table,
         type: 'table',
         children: table.viewsSorts.map(viewId => {
           const view = table.views[viewId]
           return {
-            id: view._id,
+            id: view.id,
             label: view.name,
             table: table,
             view: view,
@@ -91,6 +91,10 @@ export default class extends Vue {
 
     tragetIndex = pos === 'before' ? tragetIndex : tragetIndex + 1
 
+    if (index < tragetIndex) {
+      tragetIndex--
+    }
+
     sorts.splice(index, 1)
     sorts.splice(tragetIndex, 0, id)
   }
@@ -104,8 +108,8 @@ export default class extends Vue {
       const title = `${view?.name} - ${table.name}`
 
       const search = qs.stringify({
-        tableId: table._id,
-        viewId: view?._id,
+        tableId: table.id,
+        viewId: view?.id,
       })
       history.replaceState('', title, `/?${search}`)
     }
@@ -113,15 +117,23 @@ export default class extends Vue {
 
   render(h: CreateElement) {
     const { list, service, expandedTableIds } = this
-
+    const currentNodeKey = store.currentView?.id
     return <div>
-      <el-tree data={list} default-expanded-keys={expandedTableIds}
-        draggable={true} allow-drop={this.isAllowDrop}
+      <el-tree
+        props={{
+          data: list,
+          defaultExpandedKeys: expandedTableIds,
+          draggable: true,
+          allowDrop: this.isAllowDrop,
+          nodeKey: 'id',
+          class: style.tree,
+          defaultExpandAll: true,
+          currentNodeKey: currentNodeKey,
+        }}
         on={{
           'node-drop': this.dropSuccess,
           'node-click': this.nodeClick,
         }}
-        node-key="id" class={style.tree} default-expand-all
         scopedSlots={{
           default: ({ data }: { data: IMenuItem }) => {
             return <MenuItem data={data} viewMenuService={service} ></MenuItem>

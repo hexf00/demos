@@ -1,17 +1,28 @@
 import libs from '@/libs'
-import { IApp } from '../App/App'
+import { IJSONApp } from '../App/App'
 import { IControl } from '../Control/Control'
-import { ITable } from './Table'
+import { IJSONTable } from './Table'
 import Vue from 'vue'
-export interface ITableField {
+
+export type TSelectOption = {
+  color: string
+  value: string
+}
+
+export interface IJSONTableField {
   /** 字段主键 */
-  _id: string
+  id: string
   /** 字段名称 */
   name: string
   /** 字段描述 */
   description: string
   /** 字段数据类型 */
-  type: 'text' | 'number' | 'select' | 'script'
+  type: 'text' | 'number' | 'select' | 'script' | 'relation'
+  /** 启用多选, 对select relation 有效 */
+  isMulti?: boolean
+  /** select 选项 */
+  selectOptions?: TSelectOption[]
+
   // /** 字段控件配置 */
   // control: IControl
 }
@@ -19,7 +30,7 @@ export interface ITableField {
 
 
 /** 获取一个字段唯一id */
-function generateFieldId(table: ITable): string {
+function generateFieldId(table: IJSONTable): string {
   let isUnique = false
   let id = libs.randomChar()
   while (!isUnique) {
@@ -34,7 +45,7 @@ function generateFieldId(table: ITable): string {
 }
 
 /** 检查字段名称在table中是否存在 */
-function checkFieldNameIsExist(table: ITable, name: string): boolean {
+function checkFieldNameIsExist(table: IJSONTable, name: string): boolean {
   for (const fieldId in table.fields) {
     const field = table.fields[fieldId]
     if (field.name === name) {
@@ -45,7 +56,7 @@ function checkFieldNameIsExist(table: ITable, name: string): boolean {
 }
 
 /** 返回一个table中未被使用的字段名称 */
-function generateFieldName(table: ITable): string {
+function generateFieldName(table: IJSONTable): string {
   let isUnique = false
   let index = 1
   while (!isUnique) {
@@ -60,39 +71,39 @@ function generateFieldName(table: ITable): string {
 }
 
 /** 删除字段 */
-function removeField(table: ITable, field: ITableField) {
-  delete table.fields[field._id]
+function removeField(table: IJSONTable, field: IJSONTableField) {
+  delete table.fields[field.id]
 
   for (const viewId in table.views) {
     const view = table.views[viewId]
-    const index = view.fields.findIndex(it => it._id === field._id)
+    const index = view.fields.findIndex(it => it.id === field.id)
     if (index !== -1) {
       view.fields.splice(index, 1)
     }
   }
 }
 
-function addField(table: ITable) {
-  const field: ITableField = {
-    _id: generateFieldId(table),
+function addField(table: IJSONTable) {
+  const field: IJSONTableField = {
+    id: generateFieldId(table),
     name: generateFieldName(table),
     description: '',
     type: 'text',
   }
 
   //需要通过Vue给不存在的属性添加响应式
-  Vue.set(table.fields, field._id, field)
+  Vue.set(table.fields, field.id, field)
 
   for (const viewId in table.views) {
     const view = table.views[viewId]
-    view.fields.push({ _id: field._id, isShow: true })
+    view.fields.push({ id: field.id, isShow: true })
   }
 }
 
-const tableField = {
+const JsonField = {
   addField,
   removeField,
   checkFieldNameIsExist,
 }
 
-export default tableField
+export default JsonField

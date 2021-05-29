@@ -2,6 +2,7 @@
 const path = require('path')
 
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const { VueLoaderPlugin } = require('vue-loader')
 
 module.exports = function (env) {
   return {
@@ -27,9 +28,11 @@ module.exports = function (env) {
         /** 引入JS里面加入hash值 */
         hash: true,
       }),
+      new VueLoaderPlugin()
     ],
     module: {
       rules: [
+        { test: /\.vue$/, loader: 'vue-loader' },
         /** ts和tsx需要使用相同的loader, 否则出现ts中不引入element样式的问题 */
         {
           test: /\.ts$/,

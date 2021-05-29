@@ -1,4 +1,3 @@
-
 /** 过滤器规则 */
 export interface IRuleItem {
   /** 规则应用字段，字段id */
