@@ -3,7 +3,6 @@ import { CreateElement } from 'vue'
 import { IBlock } from '@/types/block'
 import Block from '@/components/Block/Block'
 
-
 @Component({
   name: 'BlockTree',
 })

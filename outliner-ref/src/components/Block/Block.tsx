@@ -5,7 +5,6 @@ import BlockTree from '@/components/BlockTree/BlockTree'
 import BlockEditor from '../BlockEditor/BlockEditor'
 import BlockViewer from '../BlockViewer/BlockViewer'
 
-
 @Component({
   name: 'Block',
 })

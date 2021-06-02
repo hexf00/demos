@@ -4,6 +4,8 @@
   "rules": {
     // 使用2个空格缩进
     "indent": [2, 2, { "SwitchCase": 1 }],
+    // 空行最多不能超过2行
+    "no-multiple-empty-lines": [1, { "max": 1 }],
     // 单引号
     "quotes": [2, "single"],
     // 逗号换行时在行尾

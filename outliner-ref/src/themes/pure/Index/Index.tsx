@@ -3,10 +3,8 @@ import { CreateElement } from 'vue'
 import { IBlock } from '@/types/block'
 import BlockTree from '@/components/BlockTree/BlockTree'
 
-
 @Component
 export default class extends Vue {
-
 
   data: Tree<IBlock>
   constructor() {
