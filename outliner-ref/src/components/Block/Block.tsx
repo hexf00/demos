@@ -2,6 +2,8 @@ import { Vue, Component, Prop } from 'vue-property-decorator'
 import { CreateElement } from 'vue'
 import { IBlock } from '@/types/block'
 import BlockTree from '@/components/BlockTree/BlockTree'
+import BlockEditor from '../BlockEditor/BlockEditor'
+import BlockViewer from '../BlockViewer/BlockViewer'
 
 
 @Component({
@@ -9,10 +11,14 @@ import BlockTree from '@/components/BlockTree/BlockTree'
 })
 export default class extends Vue {
   @Prop(Object) data!: TreeItem<IBlock>
+  /** 是否处于编辑模式 */
+  @Prop(Boolean) isEdit!: boolean
 
   render(h: CreateElement) {
     return <div>
-      {this.data.value}
+      {
+        this.isEdit ? <BlockEditor data={this.data} /> : <BlockViewer data={this.data} />
+      }
       <BlockTree data={this.data.children} />
     </div>
   }
