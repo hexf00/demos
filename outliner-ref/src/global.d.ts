@@ -11,7 +11,7 @@ namespace JSX {
   }
 
   interface ElementAttributesProperty {
-    $props: any // 设置类组件的类型检查属性
+    $props: any // 配置JSX中属性类型检查
   }
 }
 

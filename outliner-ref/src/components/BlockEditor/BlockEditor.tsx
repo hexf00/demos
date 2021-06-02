@@ -12,7 +12,7 @@ export interface IBlockEditorService {
   name: 'BlockEditor',
 })
 export default class extends Vue {
-  // 类型检查属性
+  // 配置JSX中属性类型检查
   $props!: {
     service: IBlockEditorService
   }
@@ -29,7 +29,7 @@ export default class extends Vue {
 
   render(h: CreateElement) {
     return <div>
-      <input ref="input" type="text" value={this.service.data.value} on={{
+      <input ref="input" type="text" vModel={this.service.data.value} on={{
         blur: () => this.service.hideEdit(),
       }} />
     </div>

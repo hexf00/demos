@@ -6,7 +6,7 @@ import Block, { IBlockService } from '@/components/Block/Block'
   name: 'BlockTree',
 })
 export default class extends Vue {
-  // 类型检查属性
+  // 配置JSX中属性类型检查
   $props!: {
     data: Tree<IBlockService>
   }

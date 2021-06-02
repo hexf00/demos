@@ -18,7 +18,7 @@ export interface IBlockService extends IBlockViewerService, IBlockEditorService 
   name: 'Block',
 })
 export default class extends Vue {
-  // 类型检查属性
+  // 配置JSX中属性类型检查
   $props!: {
     service: TreeItem<IBlockService>
   }
