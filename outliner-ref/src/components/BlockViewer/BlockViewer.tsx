@@ -1,12 +1,18 @@
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import { CreateElement } from 'vue'
 import { IBlock } from '@/types/block'
+import style from './index.module.scss'
+import BlockTree from '../BlockTree/BlockTree'
+import { IBlockService } from '../Block/Block'
 
 export interface IBlockViewerService {
   /** 数据 */
   data: TreeItem<IBlock>
   /** 进入编辑模式 */
   showEdit: () => void
+
+  /** 引用节点 */
+  refs: Tree<IBlockService>
 }
 @Component({
   name: 'BlockViewer',
@@ -27,6 +33,7 @@ export default class extends Vue {
       },
     }}>
       {this.service.data.value}
+      <BlockTree class={style.refs} data={this.service.refs} />
     </div>
   }
 }

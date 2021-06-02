@@ -8,6 +8,7 @@ namespace JSX {
   // 给组件增加属性
   interface IntrinsicAttributes {
     key?: string | number
+    class?: string | string[]
   }
 
   interface ElementAttributesProperty {

@@ -4,8 +4,6 @@ import { IBlock } from '@/types/block'
 import BlockTree from '@/components/BlockTree/BlockTree'
 import BlockEditor, { IBlockEditorService } from '../BlockEditor/BlockEditor'
 import BlockViewer, { IBlockViewerService } from '../BlockViewer/BlockViewer'
-import BlockService from '@/services/Block.service'
-
 export interface IBlockService extends IBlockViewerService, IBlockEditorService {
   /** 是否处于编辑模式 */
   isEdit: boolean

@@ -38,6 +38,11 @@ export default class extends Vue {
           },
         ],
       },
+      {
+        id: '引用节点测试',
+        value: '![[南京]]',
+        children: [],
+      },
     ]
 
     this.page = new PageService(this.data)
@@ -46,6 +51,10 @@ export default class extends Vue {
   render(h: CreateElement) {
     return <div>
       <BlockTree data={this.page.treeService} />
+
+      <pre>
+        {JSON.stringify(this.data, null, 2)}
+      </pre>
     </div>
   }
 }
