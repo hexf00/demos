@@ -16,7 +16,11 @@ export default class extends Vue {
   render(h: CreateElement) {
     return <div>
       {
-        this.isEdit ? <BlockEditor data={this.data} /> : <BlockViewer data={this.data} />
+        this.isEdit ? <BlockEditor data={this.data} /> : <BlockViewer data={this.data} on={{
+          showEditMode: () => {
+            this.$emit('showEditMode')
+          },
+        }} />
       }
       <BlockTree data={this.data.children} />
     </div>

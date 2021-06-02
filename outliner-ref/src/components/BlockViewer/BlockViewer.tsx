@@ -9,7 +9,11 @@ export default class extends Vue {
   @Prop(Object) data!: TreeItem<IBlock>
 
   render(h: CreateElement) {
-    return <div>
+    return <div on={{
+      click: () => {
+        this.$emit('showEditMode')
+      },
+    }}>
       {this.data.value}
     </div>
   }

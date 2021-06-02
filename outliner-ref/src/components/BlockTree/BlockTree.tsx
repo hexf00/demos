@@ -12,7 +12,11 @@ export default class extends Vue {
   render(h: CreateElement) {
     return <ul>
       {
-        this.data.map(item => <Block data={item} key={item.id} />)
+        this.data.map(item => <Block data={item} key={item.id} on={{
+          showEditMode: () => {
+            console.log(item.value, '希望进入编辑模式')
+          },
+        }} />)
       }
     </ul>
   }
