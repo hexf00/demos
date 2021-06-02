@@ -2,11 +2,15 @@ import { Vue, Component } from 'vue-property-decorator'
 import { CreateElement } from 'vue'
 import { IBlock } from '@/types/block'
 import BlockTree from '@/components/BlockTree/BlockTree'
+import PageService from '@/services/Page.service'
 
 @Component
 export default class extends Vue {
 
   data: Tree<IBlock>
+
+  page: PageService
+
   constructor() {
     super()
 
@@ -35,11 +39,13 @@ export default class extends Vue {
         ],
       },
     ]
+
+    this.page = new PageService(this.data)
   }
 
   render(h: CreateElement) {
     return <div>
-      <BlockTree data={this.data} />
+      <BlockTree data={this.page.treeService} />
     </div>
   }
 }

@@ -4,8 +4,14 @@ declare global {
 
 namespace JSX {
   interface IntrinsicElements { [key: string]: any }
+
+  // 给组件增加属性
+  interface IntrinsicAttributes {
+    key?: string | number
+  }
+
   interface ElementAttributesProperty {
-    $props: any
+    $props: any // 设置类组件的类型检查属性
   }
 }
 

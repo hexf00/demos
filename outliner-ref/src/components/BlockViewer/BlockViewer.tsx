@@ -2,19 +2,31 @@ import { Vue, Component, Prop } from 'vue-property-decorator'
 import { CreateElement } from 'vue'
 import { IBlock } from '@/types/block'
 
+export interface IBlockViewerService {
+  /** 数据 */
+  data: TreeItem<IBlock>
+  /** 进入编辑模式 */
+  showEdit: () => void
+}
 @Component({
   name: 'BlockViewer',
 })
 export default class extends Vue {
-  @Prop(Object) data!: TreeItem<IBlock>
+
+  // 类型检查属性
+  $props!: {
+    service: IBlockViewerService
+  }
+
+  @Prop(Object) service!: IBlockViewerService
 
   render(h: CreateElement) {
     return <div on={{
       click: () => {
-        this.$emit('showEditMode')
+        this.service.showEdit()
       },
     }}>
-      {this.data.value}
+      {this.service.data.value}
     </div>
   }
 }
