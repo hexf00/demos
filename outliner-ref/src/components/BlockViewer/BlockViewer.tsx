@@ -14,10 +14,8 @@ export interface IBlockViewerService {
   /** 引用节点 */
   refs: Tree<IBlockService>
 }
-@Component({
-  name: 'BlockViewer',
-})
-export default class extends Vue {
+@Component
+export default class BlockViewer extends Vue {
 
   // 配置JSX中属性类型检查
   $props!: {

@@ -12,10 +12,8 @@ export interface IBlockService extends IBlockViewerService, IBlockEditorService 
   data: TreeItem<IBlock>
 }
 
-@Component({
-  name: 'Block',
-})
-export default class extends Vue {
+@Component
+export default class Block extends Vue {
   // 配置JSX中属性类型检查
   $props!: {
     service: TreeItem<IBlockService>

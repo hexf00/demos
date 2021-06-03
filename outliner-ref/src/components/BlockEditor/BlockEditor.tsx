@@ -8,10 +8,8 @@ export interface IBlockEditorService {
   hideEdit: () => void
 }
 
-@Component({
-  name: 'BlockEditor',
-})
-export default class extends Vue {
+@Component
+export default class BlockEditor extends Vue {
   // 配置JSX中属性类型检查
   $props!: {
     service: IBlockEditorService

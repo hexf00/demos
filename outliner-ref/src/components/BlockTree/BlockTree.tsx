@@ -2,10 +2,8 @@ import { Vue, Component, Prop } from 'vue-property-decorator'
 import { CreateElement } from 'vue'
 import Block, { IBlockService } from '@/components/Block/Block'
 
-@Component({
-  name: 'BlockTree',
-})
-export default class extends Vue {
+@Component
+export default class BlockTree extends Vue {
   // 配置JSX中属性类型检查
   $props!: {
     data: Tree<IBlockService>
