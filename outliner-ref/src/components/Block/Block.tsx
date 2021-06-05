@@ -8,17 +8,17 @@ export interface IBlockService extends IBlockViewerService, IBlockEditorService 
   isEdit: boolean
 
   /** 数据 */
-  data: TreeItem<IBlock>
+  data: ITreeItem<IBlock>
 }
 
 @Component
 export default class Block extends Vue {
   // 配置JSX中属性类型检查
   $props!: {
-    service: TreeItem<IBlockService>
+    service: ITreeItem<IBlockService>
   }
 
-  @Prop(Object) service!: TreeItem<IBlockService>
+  @Prop(Object) service!: ITreeItem<IBlockService>
 
   render(h: CreateElement) {
     return <div>

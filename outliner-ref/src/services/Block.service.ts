@@ -12,7 +12,7 @@ export default class BlockService implements IBlockService {
   /** 需要显示引用的数据 */
   refs: BlockService[]
 
-  constructor(public data: TreeItem<IBlock>, public pageService: PageService) {
+  constructor(public data: ITreeItem<IBlock>, public pageService: PageService) {
     this.children = data.children.map(it => new BlockService(it, pageService))
     this.refs = this.calcRefs()
   }

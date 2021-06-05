@@ -3,21 +3,21 @@ import BlockService from './Block.service'
 
 export default class PageService {
 
-  treeService: TreeItem<BlockService>[]
+  treeService: ITreeItem<BlockService>[]
 
-  blockDict: Record<string, TreeItem<IBlock>> = {}
+  blockDict: Record<string, ITreeItem<IBlock>> = {}
 
-  constructor(public tree: TreeItem<IBlock>[]) {
+  constructor(public tree: ITreeItem<IBlock>[]) {
     this.blockDict = this.initBlockDict(tree)
     this.treeService = this.initService(tree)
   }
 
-  initService(tree: TreeItem<IBlock>[]): TreeItem<BlockService>[] {
+  initService(tree: ITreeItem<IBlock>[]): ITreeItem<BlockService>[] {
     return tree.map(it => new BlockService(it, this))
   }
 
-  initBlockDict(tree: TreeItem<IBlock>[]): Record<string, TreeItem<IBlock>> {
-    const map = (dict: Record<string, IBlock>, it: TreeItem<IBlock>) => {
+  initBlockDict(tree: ITreeItem<IBlock>[]): Record<string, ITreeItem<IBlock>> {
+    const map = (dict: Record<string, IBlock>, it: ITreeItem<IBlock>) => {
       dict[it.id] = it
       it.children.reduce(map, this.blockDict)
       return dict

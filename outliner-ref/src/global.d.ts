@@ -25,4 +25,4 @@ declare module '*.module.scss' {
 type FunctionalComponent<T> = (props: T | { props: T }) => void
 
 /** 树结构Item */
-type TreeItem<T> = T & { children: ITreeItem<T>[]; parent?: ITreeItem<T> }
+type ITreeItem<T> = T & { children: ITreeItem<T>[]; parent?: ITreeItem<T> }

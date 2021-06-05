@@ -3,7 +3,7 @@ import { CreateElement } from 'vue'
 import { IBlock } from '@/types/block'
 export interface IBlockEditorService {
   /** 数据 */
-  data: TreeItem<IBlock>
+  data: ITreeItem<IBlock>
   /** 退出编辑模式 */
   hideEdit: () => void
 }

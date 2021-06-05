@@ -6,12 +6,12 @@ import Block, { IBlockService } from '../Block/Block'
 
 export interface IBlockViewerService {
   /** 数据 */
-  data: TreeItem<IBlock>
+  data: ITreeItem<IBlock>
   /** 进入编辑模式 */
   showEdit: () => void
 
   /** 引用节点 */
-  refs: TreeItem<IBlockService>[]
+  refs: ITreeItem<IBlockService>[]
 }
 @Component
 export default class BlockViewer extends Vue {

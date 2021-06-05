@@ -8,7 +8,7 @@ import Block from '@/components/Block/Block'
 @Component
 export default class extends Vue {
 
-  data: TreeItem<IBlock>[]
+  data: ITreeItem<IBlock>[]
 
   page: PageService
 
