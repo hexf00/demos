@@ -1,7 +1,6 @@
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import { CreateElement } from 'vue'
 import { IBlock } from '@/types/block'
-import BlockTree from '@/components/BlockTree/BlockTree'
 import BlockEditor, { IBlockEditorService } from '../BlockEditor/BlockEditor'
 import BlockViewer, { IBlockViewerService } from '../BlockViewer/BlockViewer'
 export interface IBlockService extends IBlockViewerService, IBlockEditorService {
@@ -26,7 +25,9 @@ export default class Block extends Vue {
       {
         this.service.isEdit ? <BlockEditor service={this.service} /> : <BlockViewer service={this.service} />
       }
-      <BlockTree data={this.service.children} />
+      <ul>
+        {this.service.children.map(item => <Block service={item}></Block>)}
+      </ul>
     </div>
   }
 }

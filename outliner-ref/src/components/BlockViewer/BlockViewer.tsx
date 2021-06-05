@@ -2,8 +2,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator'
 import { CreateElement } from 'vue'
 import { IBlock } from '@/types/block'
 import style from './index.module.scss'
-import BlockTree from '../BlockTree/BlockTree'
-import { IBlockService } from '../Block/Block'
+import Block, { IBlockService } from '../Block/Block'
 
 export interface IBlockViewerService {
   /** 数据 */
@@ -12,7 +11,7 @@ export interface IBlockViewerService {
   showEdit: () => void
 
   /** 引用节点 */
-  refs: Tree<IBlockService>
+  refs: TreeItem<IBlockService>[]
 }
 @Component
 export default class BlockViewer extends Vue {
@@ -31,7 +30,9 @@ export default class BlockViewer extends Vue {
       },
     }}>
       {this.service.data.value}
-      <BlockTree class={style.refs} data={this.service.refs} />
+      <ul class={style.refs}>
+        {this.service.refs.map(item => <Block service={item}></Block>)}
+      </ul>
     </div>
   }
 }

@@ -3,11 +3,12 @@ import { CreateElement } from 'vue'
 import { IBlock } from '@/types/block'
 import BlockTree from '@/components/BlockTree/BlockTree'
 import PageService from '@/services/Page.service'
+import Block from '@/components/Block/Block'
 
 @Component
 export default class extends Vue {
 
-  data: Tree<IBlock>
+  data: TreeItem<IBlock>[]
 
   page: PageService
 
@@ -50,8 +51,9 @@ export default class extends Vue {
 
   render(h: CreateElement) {
     return <div>
-      <BlockTree data={this.page.treeService} />
-
+      <BlockTree data={this.page.treeService}>
+        {this.page.treeService.map(item => <Block service={item}></Block>)}
+      </BlockTree>
       <pre>
         {JSON.stringify(this.data, null, 2)}
       </pre>
