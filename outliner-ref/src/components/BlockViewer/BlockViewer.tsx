@@ -25,7 +25,9 @@ export default class BlockViewer extends Vue {
 
   render(h: CreateElement) {
     return <div on={{
-      click: () => {
+      click: (e: Event) => {
+        // 停止冒泡，引用节点内也需要编辑
+        e.stopPropagation()
         this.service.showEdit()
       },
     }}>

@@ -24,7 +24,14 @@ export default class Index extends Vue {
         {this.service.drag.dragInfo.pos}
       </pre>
       <pre>
-        {JSON.stringify(tree.data, null, 2)}
+        {JSON.stringify(tree.data, (key, val) => {
+          switch (key) {
+            case 'parent':
+              return undefined
+            default:
+              return val
+          }
+        }, 2)}
       </pre>
 
     </div>

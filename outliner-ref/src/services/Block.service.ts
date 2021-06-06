@@ -15,13 +15,16 @@ export default class BlockService implements IBlockService {
   /** 需要显示引用的数据 */
   refs: BlockService[] = []
 
-  constructor(public data: ITreeItem<IBlock>) {
+  constructor(public data: ITreeItem<IBlock>, public parent?: ITreeItem<BlockService>) {
     this.init()
   }
 
   @Already
   init() {
-    this.children = this.data.children.map(it => Concat(this, new BlockService(it)))
+    this.children = this.data.children.map(it => {
+      it.parent = this.data
+      return Concat(this, new BlockService(it, this))
+    })
     this.refs = this.calcRefs()
   }
 
@@ -37,7 +40,7 @@ export default class BlockService implements IBlockService {
       this.tree.blockDict[id] && ids.push(id)
     }
 
-    return ids.map(it => Concat(this, new BlockService(this.tree.blockDict[it])))
+    return ids.map(it => Concat(this, new BlockService(this.tree.blockDict[it], this)))
   }
 
   showEdit() {

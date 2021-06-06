@@ -46,8 +46,13 @@ export default class Block extends Vue {
     const target = this.service
     const { item } = dragInfo
 
+    if (!item) {
+      return
+    }
+
     // 说明：限制不能移动到自身、子节点上
-    if (item && isParent(target, item)) {
+    // 说明：以上条件也适用于引用节点中
+    if (isParent(target.data, item.data)) {
       dragInfo.pos = undefined
       return
     }
