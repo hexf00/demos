@@ -19,9 +19,10 @@ export default class DragService<T> {
     }
   }
 
-  //执行拖拽
+  /** 执行拖拽 */
   drag() {
     const { status, item, target, pos } = this.dragInfo
+    this.resetDragInfo()
     if (status && item && target && pos) {
       console.log('执行拖拽', this.dragInfo)
     }

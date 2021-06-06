@@ -7,7 +7,7 @@ import style from './style.module.scss'
 import classnames from 'classnames'
 import { IDragInfo } from '@/types/dragInfo'
 import { isParent } from '@/libs/TreeHelper'
-import { getOffset } from '@/libs/domHelper'
+import { findParent, getOffset } from '@/libs/domHelper'
 export interface IBlockService extends IBlockViewerService, IBlockEditorService {
   /** 是否处于编辑模式 */
   isEdit: boolean
@@ -28,11 +28,13 @@ export default class Block extends Vue {
 
   @Prop(Object) service!: ITreeItem<IBlockService>
 
+  /** 开始拖拽，更新被拖拽节点 */
   dragstart(e: DragEvent) {
     const dragInfo = this.service.getDragInfo()
     dragInfo.item = this.service
   }
 
+  /** 拖拽中，更新欲放置的位置 */
   dragover(e: DragEvent) {
     // 说明：这两句必须在return前执行
     // 说明：没有这句drop事件将不会被触发
@@ -54,6 +56,7 @@ export default class Block extends Vue {
     dragInfo.pos = this.calDropPosition(e)
   }
 
+  /** 本次拖拽事件有效，将会执行 */
   drop(e: DragEvent) {
     // 说明：事件应停止冒泡，否则会循环通知到父级
     e.stopPropagation()
@@ -62,19 +65,8 @@ export default class Block extends Vue {
     dragInfo.status = true
   }
 
+  /** 根据光标相对于节点DOM位置计算要放置具体位置 */
   calDropPosition(e: DragEvent) {
-
-    const findParent = (node: HTMLElement, condition: (node: HTMLElement) => boolean) => {
-      let parent: HTMLElement | null = node
-
-      while (parent && parent !== document.body) {
-        if (condition(parent)) {
-          return parent
-        }
-        parent = parent.parentElement
-      }
-    }
-
     const target = e.target as HTMLElement
     // 找到最近的可放置的父节点
     const li = findParent(target, (node) => !!node.getAttribute('droppable'))
@@ -105,19 +97,16 @@ export default class Block extends Vue {
     const dragInfo = this.service.getDragInfo()
     const { item, target, pos } = dragInfo
 
-    return <li droppable on={{
-      dragover: this.dragover,
-      drop: this.drop,
-    }} class={classnames(style.li,
-      item === this.service && style.ondrag,
-      target === this.service && pos && style.ondrop + ' ' + style[pos])}>
-      <span draggable class={style.draggable} on={{
-        dragstart: this.dragstart,
-      }}>O</span>
+    return <li droppable
+      on={{ dragover: this.dragover, drop: this.drop }}
+      class={classnames(style.li,
+        item === this.service && style.ondrag,
+        target === this.service && pos && style.ondrop + ' ' + style[pos])}>
+      <span draggable class={style.draggable} on={{ dragstart: this.dragstart }}>O</span>
       <div class={style.container}>
-        {
-          this.service.isEdit ? <BlockEditor service={this.service} /> : <BlockViewer service={this.service} />
-        }
+        {this.service.isEdit
+          ? <BlockEditor service={this.service} />
+          : <BlockViewer service={this.service} />}
         <ul>
           {this.service.children.map(item => <Block service={item}></Block>)}
         </ul>

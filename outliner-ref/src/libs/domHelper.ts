@@ -14,3 +14,15 @@ export function getOffset(el: HTMLElement, stopEl = document.body) {
     offsetTop,
   }
 }
+
+/** 找满足条件的父节点 */
+export function findParent(node: HTMLElement, condition: (node: HTMLElement) => boolean) {
+  let parent: HTMLElement | null = node
+
+  while (parent && parent !== document.body) {
+    if (condition(parent)) {
+      return parent
+    }
+    parent = parent.parentElement
+  }
+}

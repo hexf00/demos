@@ -9,16 +9,10 @@ export default class Index extends Vue {
 
   service = new PageService
 
-  dragend(e: DragEvent) {
-    const drag = this.service.drag
-    drag.drag()
-    drag.resetDragInfo()
-  }
-
   render(h: CreateElement) {
     const tree = this.service.tree
     return <div on={{
-      dragend: this.dragend,
+      dragend: () => this.service.drag.drag(),
     }}>
       <BlockTree>
         {tree.treeService.map(item => <Block service={item}></Block>)}

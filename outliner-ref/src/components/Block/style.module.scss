@@ -1,8 +1,12 @@
 $color: #fff;
 $activeColor: #3e96e7;
 
+// 拖拽把手
 .draggable {
-  cursor: move;
+  cursor: pointer;
+  &:hover {
+    font-weight: bold;
+  }
 }
 
 .li {
@@ -23,6 +27,7 @@ $activeColor: #3e96e7;
 }
 // 释放位置的样式
 .ondrop {
+  // 放置位置提示线
   &::before,
   &::after {
     content: " ";
