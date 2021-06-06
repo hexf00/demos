@@ -5,7 +5,7 @@ import TreeService from './Tree.service'
 import DragService from './Drag.service'
 @Service()
 export default class BlockService implements IBlockService {
-  @InjectRef(() => DragService) drag!: DragService<IBlockService>
+  @InjectRef(() => DragService) drag!: DragService
   @InjectRef(() => TreeService) tree!: TreeService
 
   isEdit = false

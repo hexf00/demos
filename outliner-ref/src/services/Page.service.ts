@@ -8,5 +8,5 @@ import TreeService from './Tree.service'
 @Service()
 export default class PageService {
   @Inject() tree!: TreeService
-  @Inject() drag!: DragService<IBlockService>
+  @Inject() drag!: DragService
 }
