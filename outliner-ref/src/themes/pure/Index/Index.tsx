@@ -27,6 +27,7 @@ export default class Index extends Vue {
         {JSON.stringify(tree.data, (key, val) => {
           switch (key) {
             case 'parent':
+            case 'useRefs':
               return undefined
             default:
               return val

@@ -12,7 +12,7 @@ export default class BlockService implements IBlockService {
 
   children: BlockService[] = []
 
-  /** 需要显示引用的数据 */
+  /** 引用了哪些数据需要展示 */
   refs: BlockService[] = []
 
   constructor(public data: ITreeItem<IBlock>, public parent?: ITreeItem<BlockService>) {
@@ -40,7 +40,11 @@ export default class BlockService implements IBlockService {
       this.tree.blockDict[id] && ids.push(id)
     }
 
-    return ids.map(it => Concat(this, new BlockService(this.tree.blockDict[it], this)))
+    return ids.map(id => {
+      const blockService = Concat(this, new BlockService(this.tree.blockDict[id], this))
+      this.tree.blockDict[id].useRefs.push(blockService)
+      return blockService
+    })
   }
 
   showEdit() {

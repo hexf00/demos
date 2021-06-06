@@ -108,6 +108,8 @@ export default class Block extends Vue {
         item === this.service && style.ondrag,
         target === this.service && pos && style.ondrop + ' ' + style[pos])}>
       <span draggable class={style.draggable} on={{ dragstart: this.dragstart }}>O</span>
+      {this.service.data.useRefs.length > 0
+        && <span class="useRefs">{this.service.data.useRefs.length}</span>}
       <div class={style.container}>
         {this.service.isEdit
           ? <BlockEditor service={this.service} />
