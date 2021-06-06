@@ -1,3 +1,7 @@
-.refs{
+.refs {
   background: #ddd;
+  li::before,
+  li::after {
+    border-color: #ddd;
+  }
 }

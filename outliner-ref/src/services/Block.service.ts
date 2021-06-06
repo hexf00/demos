@@ -2,8 +2,10 @@ import { IBlock } from '@/types/block'
 import { IBlockService } from '@/components/Block/Block'
 import { Already, Concat, Inject, InjectRef, Service } from 'ioc-di'
 import TreeService from './Tree.service'
+import DragService from './Drag.service'
 @Service()
 export default class BlockService implements IBlockService {
+  @InjectRef(() => DragService) drag!: DragService<IBlockService>
   @InjectRef(() => TreeService) tree!: TreeService
 
   isEdit = false
@@ -49,6 +51,10 @@ export default class BlockService implements IBlockService {
   hideEdit() {
     this.isEdit = false
     this.refs = this.calcRefs()
+  }
+
+  getDragInfo() {
+    return this.drag.dragInfo
   }
 
 }
