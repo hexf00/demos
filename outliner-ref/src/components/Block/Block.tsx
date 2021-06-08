@@ -74,7 +74,12 @@ export default class Block extends Vue {
   calDropPosition(e: DragEvent) {
     const target = e.target as HTMLElement
     // 找到最近的可放置的父节点
-    const li = findParent(target, (node) => !!node.getAttribute('droppable'))
+    const li = findParent({
+      node: target,
+      parentKey: 'parentElement',
+      findCondition: (node) => !!node.getAttribute('droppable'),
+      breakCondition: (node) => node === document.body,
+    })
     if (!li) {
       return
     }

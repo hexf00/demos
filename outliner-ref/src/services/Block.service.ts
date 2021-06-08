@@ -15,6 +15,9 @@ export default class BlockService implements IBlockService {
   /** 引用了哪些数据需要展示 */
   refs: BlockService[] = []
 
+  /** ref父节点 */
+  refParent?: BlockService
+
   constructor(public data: ITreeItem<IBlock>, public parent?: ITreeItem<BlockService>) {
     this.init()
   }
@@ -30,6 +33,13 @@ export default class BlockService implements IBlockService {
 
   /** 计算引用的块 */
   calcRefs(): BlockService[] {
+    // 解除已有的引用关系，避免无效引用
+    // 注意：外部循环使用请先做浅拷贝
+    this.refs.forEach(it => {
+      const index = it.data.useRefs.indexOf(it)
+      index !== -1 && it.data.useRefs.splice(index, 1)
+    })
+
     const match = this.data.value.matchAll(/!\[\[([\u4e00-\u9fa5a-zA-Z0-9]+?)\]\]/g)
 
     const ids: string[] = []
@@ -42,6 +52,7 @@ export default class BlockService implements IBlockService {
 
     return ids.map(id => {
       const blockService = Concat(this, new BlockService(this.tree.blockDict[id], this))
+      blockService.refParent = this
       this.tree.blockDict[id].useRefs.push(blockService)
       return blockService
     })
@@ -52,9 +63,9 @@ export default class BlockService implements IBlockService {
   }
 
   /**
-     * 退出编辑模式
-     * 如果用户修改了数据，需要刷新引用的块
-     */
+   * 退出编辑模式
+   * 如果用户修改了数据，需要刷新引用的块
+   */
   hideEdit() {
     this.isEdit = false
     this.refs = this.calcRefs()

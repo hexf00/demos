@@ -15,14 +15,35 @@ export function getOffset(el: HTMLElement, stopEl = document.body) {
   }
 }
 
-/** 找满足条件的父节点 */
-export function findParent(node: HTMLElement, condition: (node: HTMLElement) => boolean) {
-  let parent: HTMLElement | null = node
+/** 
+ * 找满足条件的父节点 
+ * 说明：可选与必选undefined的类型是不同类型
+ */
+export function findParent<T extends { [key in K]?: T | null | undefined }, K extends string>(
+  { node, parentKey, findCondition, breakCondition }
+    : {
+      /** 要查找的节点 */
+      node: T
+      /** 父节点key */
+      parentKey: K
+      /** 查找条件 */
+      findCondition: (node: T) => boolean
+      /** 中止条件 */
+      breakCondition?: (node: T) => boolean
+    }
+) {
+  let parent: T | null | undefined = node
 
-  while (parent && parent !== document.body) {
-    if (condition(parent)) {
+  while (parent) {
+
+    if (breakCondition && breakCondition(parent)) {
+      // 条件满足时 中断循环
+      break
+    }
+    if (findCondition(parent)) {
+      // 条件满足时 返回当前节点作为Parent
       return parent
     }
-    parent = parent.parentElement
+    parent = parent[parentKey]
   }
 }

@@ -1,3 +1,4 @@
+import { findParent } from '@/libs/domHelper'
 import { moveItem } from '@/libs/TreeHelper'
 import { IBlock, IJsonBlock } from '@/types/block'
 import { Already, Concat, GetContainer, Root, Service } from 'ioc-di'
@@ -50,6 +51,11 @@ export default class TreeService {
         value: '![[南京]]',
         children: [],
       },
+      {
+        id: '引用节点测试2',
+        value: '![[南京]]',
+        children: [],
+      },
     ]
 
     this.blockDict = this.initBlockDict(blockData)
@@ -78,7 +84,44 @@ export default class TreeService {
   move({ item, target, pos }: { item: ITreeItem<BlockService>; target: ITreeItem<BlockService>; pos: 'before' | 'after' | 'inner' }) {
     // 移动数据树 dom不更新
     moveItem({ item: item.data, target: target.data, rootDataList: this.data, pos })
+
+    // TODO:如果操作的是引用树的节点，则先转化为真实树的节点
+
+    //item如果移入引用  target/target.parent是新增 target.refParent/target.parent.refParent需要reCalc
+    //item如果移出引用  item.parent是删除 item.refParent需要reCalc
+
+    const oldRefParent = findParent({
+      node: item,
+      parentKey: 'parent',
+      findCondition: (node) => node.data.useRefs.length > 0,
+    })
+
+    //item可能被移出引用 需要reCalc item.refParent
+    oldRefParent?.data.useRefs.slice().forEach(it => {
+      if (it.refParent) {
+        it.refParent.refs = it.refParent.calcRefs()
+      }
+    })
+
     // 移动service树会漏掉引用
-    // moveItem({ item: item, target: target, rootDataList: this.treeService, pos })
+    moveItem({ item: item, target: target, rootDataList: this.treeService, pos })
+
+    const newParent = (pos === 'before' || pos === 'after') ? target.parent : target
+    if (newParent) {
+      //找target最近存在引用节点的父级节点
+      const newRefParent = findParent({
+        node: newParent,
+        parentKey: 'parent',
+        findCondition: (node) => node.data.useRefs.length > 0,
+      })
+
+      //释放位置新增
+      newRefParent?.data.useRefs.slice().forEach(it => {
+        if (it.refParent) {
+          it.refParent.refs = it.refParent.calcRefs()
+        }
+      })
+    }
+
   }
 }
