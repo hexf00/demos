@@ -10,6 +10,9 @@ export default class BlockService implements IBlockService {
 
   isEdit = false
 
+  /** 是否被拖拽中 */
+  isDrag = false
+
   children: BlockService[] = []
 
   /** 引用了哪些数据需要展示 */
