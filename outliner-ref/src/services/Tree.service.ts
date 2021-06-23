@@ -3,7 +3,17 @@ import { moveItem } from '@/libs/TreeHelper'
 import { IBlock, IJsonBlock } from '@/types/block'
 import { Already, Concat, GetContainer, Root, Service } from 'ioc-di'
 import BlockService from './Block.service'
+import data from './test-data/ref'
 
+function mapper<T>(it: IFakeTreeItem<T>) {
+  if (it.children) {
+    it.children = it.children.map(mapper)
+  } else {
+    it.children = [] as ITreeItem<T>[]
+  }
+
+  return it as ITreeItem<T>
+}
 @Service()
 export default class TreeService {
 
@@ -20,43 +30,7 @@ export default class TreeService {
   @Already
   init() {
 
-    const blockData: ITreeItem<IJsonBlock>[] = [
-      {
-        id: '上海',
-        value: '上海',
-        children: [],
-      },
-      {
-        id: '江苏',
-        value: '江苏',
-        children: [
-          {
-            id: '南京',
-            value: '南京',
-            children: [{
-              id: '秦淮', value: '秦淮', children: [],
-            }, {
-              id: '雨花台', value: '雨花台', children: [],
-            }],
-          },
-          {
-            id: '苏州',
-            value: '苏州',
-            children: [],
-          },
-        ],
-      },
-      {
-        id: '引用节点测试',
-        value: '![[南京]]',
-        children: [],
-      },
-      {
-        id: '引用节点测试2',
-        value: '![[南京]]',
-        children: [],
-      },
-    ]
+    const blockData: ITreeItem<IJsonBlock>[] = data.map(mapper)
 
     this.blockDict = this.initBlockDict(blockData)
     // TODO:此处代码是为了给序列化数据转换为运行时数据，应该重构下

@@ -26,3 +26,6 @@ type FunctionalComponent<T> = (props: T | { props: T }) => void
 
 /** 树结构Item */
 type ITreeItem<T> = T & { children: ITreeItem<T>[]; parent?: ITreeItem<T> }
+
+/** 树结构Item */
+type IFakeTreeItem<T> = T & { children?: IFakeTreeItem<T>[] }
