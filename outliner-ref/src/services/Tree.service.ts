@@ -3,7 +3,7 @@ import { moveItem } from '@/libs/TreeHelper'
 import { IBlock, IJsonBlock } from '@/types/block'
 import { Already, Concat, GetContainer, Root, Service } from 'ioc-di'
 import BlockService from './Block.service'
-import data from './test-data/ref'
+import data from './test-data/regions'
 
 function mapper<T>(it: IFakeTreeItem<T>) {
   if (it.children) {

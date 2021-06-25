@@ -15,7 +15,7 @@ export default class Index extends Vue {
       dragend: () => this.service.drag.drag(),
     }}>
       <BlockTree>
-        {tree.treeService.map(item => <Block service={item}></Block>)}
+        {tree.treeService.map(item => <Block key={item.data.id} service={item}></Block>)}
       </BlockTree>
 
       <pre>

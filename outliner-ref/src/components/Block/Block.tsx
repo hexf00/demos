@@ -19,6 +19,9 @@ export interface IBlockService extends IBlockViewerService, IBlockEditorService 
   /** 是否出于被拖拽的状态 */
   isDrag: boolean
 
+  /** 是否出于可放置的状态 */
+  isDrop: boolean
+
   /** 数据 */
   data: ITreeItem<IBlock>
 
@@ -37,6 +40,9 @@ export default class Block extends Vue {
 
   /** 开始拖拽，更新被拖拽节点 */
   dragstart(e: DragEvent) {
+    // 说明：事件应停止冒泡，否则会递归通知到父级
+    e.stopPropagation()
+
     console.log('dragstart', e)
     const dragInfo = this.service.getDragInfo()
     dragInfo.item = this.service
@@ -45,14 +51,13 @@ export default class Block extends Vue {
 
   /** 拖拽结束 */
   dragend(e: DragEvent) {
-    const dragInfo = this.service.getDragInfo()
     console.log('dragend', e)
-    dragInfo.item && (dragInfo.item.isDrag = false)
+    this.service.isDrag = false
   }
 
   /** 拖拽中，更新欲放置的位置 */
   dragover(e: DragEvent) {
-    // console.log('dragover', e)
+    console.log('dragover', e)
     // 说明：这两句必须在return前执行
     // 说明：没有这句drop事件将不会被触发
     e.preventDefault()
@@ -74,6 +79,7 @@ export default class Block extends Vue {
       return
     }
 
+    this.service.isDrop = true
     dragInfo.target = this.service
     dragInfo.pos = this.calDropPosition(e)
   }
@@ -84,16 +90,21 @@ export default class Block extends Vue {
     // 说明：事件应停止冒泡，否则会循环通知到父级
     e.stopPropagation()
 
+    this.service.isDrop = false
+
     const dragInfo = this.service.getDragInfo()
     dragInfo.status = true
   }
 
   /** 拖拽结束时间 */
   dragleave(e: DragEvent) {
+    e.preventDefault()
     // 说明：事件应停止冒泡，否则会递归通知到父级
     e.stopPropagation()
 
     console.log('dragleave', e)
+
+    this.service.isDrop = false
   }
 
   /** 根据光标相对于节点DOM位置计算要放置具体位置 */
@@ -130,14 +141,14 @@ export default class Block extends Vue {
   }
 
   render(h: CreateElement) {
-    const dragInfo = this.service.getDragInfo()
-    const { item, target, pos } = dragInfo
-
+    console.count('render')
+    // const { pos } = dragInfo
+    const pos = 'after'
     return <li droppable
       on={{ dragover: this.dragover, drop: this.drop, dragleave: this.dragleave }}
       class={classnames(style.li,
-        item?.isDrag && style.ondrag,
-        target === this.service && pos && style.ondrop + ' ' + style[pos])}>
+        this.service.isDrag && style.ondrag,
+        this.service.isDrop && style.ondrop + ' ' + style[pos])}>
       <span draggable class={style.draggable} on={{ dragstart: this.dragstart, dragend: this.dragend }}>O</span>
       {this.service.data.useRefs.length > 0
         && <span class="useRefs">{this.service.data.useRefs.length}</span>}
@@ -146,7 +157,7 @@ export default class Block extends Vue {
           ? <BlockEditor service={this.service} />
           : <BlockViewer service={this.service} />}
         <ul>
-          {this.service.children.map(item => <Block service={item}></Block>)}
+          {this.service.children.map(item => <Block key={this.service.data.id} service={item}></Block>)}
         </ul>
       </div>
     </li>
