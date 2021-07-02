@@ -4,9 +4,10 @@ import style from './index.module.scss'
 import { TreeNode } from 'element-ui/types/tree'
 import FieldItem, { IFieldItem } from './components/FieldItem/FieldItem'
 import store from '@/store'
-import { IJSONTable } from '@/models/Table/Table'
+import { IJSONTable } from '@/models/Table/IJSONTable'
 import { IView } from '@/models/View/View'
-import JsonField, { IJSONTableField } from '@/models/Table/TableField'
+import fieldHelper from '@/models/Table/fieldHelper'
+import { IJSONTableField } from '@/models/Table/IJSONTableField'
 import FieldItemPanel from '../FieldItemPanel/FieldItemPanel'
 
 
@@ -76,7 +77,7 @@ export default class FieldListPanel extends Vue {
   }
 
   addField () {
-    JsonField.addField(this.table)
+    fieldHelper.addField(this.table)
   }
 
   render (h: CreateElement) {

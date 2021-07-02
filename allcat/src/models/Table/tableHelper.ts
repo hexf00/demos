@@ -1,30 +1,13 @@
 import libs from '@/libs'
 import { IJSONApp } from '../App/App'
-import JsonView, { IView } from '../View/View'
-import { IJSONTableField } from './TableField'
-import { IJSONRow } from './Row'
+import JsonView from '../View/View'
+import fieldHelper from './fieldHelper'
 import Vue from 'vue'
+import { IJSONTable } from './IJSONTable'
 
-
-export interface IJSONTable {
-  /** 表主键 */
-  id: string
-  /** 表名称 */
-  name: string
-  /** 表描述 */
-  description: string
-  /** 表字段配置 */
-  fields: Record<string, IJSONTableField>
-  /** 表数据 */
-  rows: Record<string, IJSONRow>
-  /** 表视图 */
-  views: Record<string, IView>
-  /** 表视图排序 */
-  viewsSorts: string[]
-}
 
 /** 获取一个表格唯一id */
-function generateTableId(app: IJSONApp): string {
+function generateTableId (app: IJSONApp): string {
   let isUnique = false
   let id = libs.randomChar()
   while (!isUnique) {
@@ -39,7 +22,7 @@ function generateTableId(app: IJSONApp): string {
 }
 
 /** 检查表名称在app中是否存在 */
-function checkTableNameIsExist(app: IJSONApp, name: string): boolean {
+function checkTableNameIsExist (app: IJSONApp, name: string): boolean {
   for (const tableId in app.tables) {
     const table = app.tables[tableId]
     if (table.name === name) {
@@ -50,7 +33,7 @@ function checkTableNameIsExist(app: IJSONApp, name: string): boolean {
 }
 
 /** 返回一个app中未被使用的表名称 */
-function generateTableName(app: IJSONApp): string {
+function generateTableName (app: IJSONApp): string {
   let isUnique = false
   let index = app.tableSorts.length + 1
   while (!isUnique) {
@@ -65,7 +48,7 @@ function generateTableName(app: IJSONApp): string {
 }
 
 
-function addTable(app: IJSONApp) {
+function addTable (app: IJSONApp) {
   const table: IJSONTable = {
     id: generateTableId(app),
     name: generateTableName(app),
@@ -79,12 +62,14 @@ function addTable(app: IJSONApp) {
   //添加默认视图
   JsonView.addView(table)
 
+  fieldHelper.addField(table)
+
   //需要通过Vue给不存在的属性添加响应式
   Vue.set(app.tables, table.id, table)
   app.tableSorts.push(table.id)
 }
 
-function removeTable(app: IJSONApp, table: IJSONTable) {
+function removeTable (app: IJSONApp, table: IJSONTable) {
   delete app.tables[table.id]
 
   const index = app.tableSorts.indexOf(table.id)
@@ -93,10 +78,10 @@ function removeTable(app: IJSONApp, table: IJSONTable) {
   }
 }
 
-const JsonTable = {
+const tableHelper = {
   addTable,
   removeTable,
   checkTableNameIsExist,
 }
 
-export default JsonTable
+export default tableHelper

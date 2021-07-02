@@ -1,10 +1,12 @@
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import { CreateElement } from 'vue'
-import { IJSONTableField, TSelectOption } from '@/models/Table/TableField'
+import { TSelectOption } from '@/models/Table/fieldHelper'
+
 import style from './index.module.scss'
 import { Input } from 'element-ui'
 import { TreeNode } from 'element-ui/types/tree'
 import OptionItem from '../OptionItem/OptionItem'
+import { IJSONTableField } from '@/models/Table/IJSONTableField'
 
 
 @Component

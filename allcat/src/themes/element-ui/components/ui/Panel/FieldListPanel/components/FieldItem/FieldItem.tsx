@@ -1,11 +1,12 @@
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import { CreateElement } from 'vue'
 import style from './FieldItem.module.scss'
-import { IJSONTable } from '@/models/Table/Table'
+import { IJSONTable } from '@/models/Table/IJSONTable'
 import { IView } from '@/models/View/View'
 import EyeSwitch from '@/themes/element-ui/components/base/EyeSwitch/EyeSwitch'
 import { MessageBox } from 'element-ui'
-import JsonField, { IJSONTableField } from '@/models/Table/TableField'
+import fieldHelper from '@/models/Table/fieldHelper'
+import { IJSONTableField } from '@/models/Table/IJSONTableField'
 import { IJSONViewField } from '@/models/View/ViewField'
 import Icon from '@/themes/element-ui/components/base/Icon/Icon'
 
@@ -56,7 +57,7 @@ export default class FieldItem extends Vue {
                 confirmButtonText: '确认删除',
               })
                 .then(() => {
-                  JsonField.removeField(table, field)
+                  fieldHelper.removeField(table, field)
                 })
             } else if (command === 'edit') {
               this.$emit('showFieldItemPanel', field)

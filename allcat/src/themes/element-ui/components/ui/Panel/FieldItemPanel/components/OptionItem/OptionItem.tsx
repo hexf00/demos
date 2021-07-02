@@ -1,5 +1,5 @@
 import { CreateElement, RenderContext } from 'vue'
-import { TSelectOption } from '@/models/Table/TableField'
+import { TSelectOption } from '@/models/Table/fieldHelper'
 import style from './index.module.scss'
 import Icon from '@/themes/element-ui/components/base/Icon/Icon'
 import ColorPicker from '../ColorPicker/ColorPicker'
@@ -14,7 +14,7 @@ const OptionsItem = {
     onRemove: Function,
   },
   functional: true,
-  render(h: CreateElement, { props, parent }: RenderContext<Props>) {
+  render (h: CreateElement, { props, parent }: RenderContext<Props>) {
     const { data, onRemove: onRemove } = props
     return <div class={style.item} >
       <Icon value="dragHandler" style="cursor: move;"></Icon>

@@ -2,7 +2,8 @@ import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import { CreateElement } from 'vue'
 import { IViewMenuService } from '../../ViewMenu'
 import style from './MenuItem.module.scss'
-import tableModel, { IJSONTable } from '@/models/Table/Table'
+import tableModel from '@/models/Table/tableHelper'
+import { IJSONTable } from '@/models/Table/IJSONTable'
 import viewModel, { IView } from '@/models/View/View'
 import { Input, MessageBox } from 'element-ui'
 
@@ -34,7 +35,7 @@ export default class MenuItem extends Vue {
   label = ''
 
   @Watch('isEdit', { immediate: true })
-  onEdit(value: boolean) {
+  onEdit (value: boolean) {
     if (value === true) {
       // 重置是否需要保存为需要
       this.isNeedSave = true
@@ -44,7 +45,7 @@ export default class MenuItem extends Vue {
     }
   }
 
-  changeName() {
+  changeName () {
     const name = this.label
     const { label, table, view, type } = this.data
 
@@ -76,7 +77,7 @@ export default class MenuItem extends Vue {
     }
   }
 
-  render(h: CreateElement) {
+  render (h: CreateElement) {
     const { label, table, view, type } = this.data
     const service = this.viewMenuService
 
@@ -113,7 +114,7 @@ export default class MenuItem extends Vue {
         <div class={style.opera}>
           {type === 'table'
             && <el-button on={{
-              click(event: Event) {
+              click (event: Event) {
                 service.createNewView(table)
                 event.stopPropagation()
               },
@@ -142,7 +143,7 @@ export default class MenuItem extends Vue {
             },
           }}>
             <el-button on={{
-              click(event: Event) {
+              click (event: Event) {
                 event.stopPropagation()
               },
             }} type="text" size="mini">

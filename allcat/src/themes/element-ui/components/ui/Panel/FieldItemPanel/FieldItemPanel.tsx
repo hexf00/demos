@@ -1,10 +1,10 @@
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import { CreateElement } from 'vue'
-import { IJSONTableField } from '@/models/Table/TableField'
+import { IJSONTableField } from '@/models/Table/IJSONTableField'
 import style from './index.module.scss'
 import { Input, Select } from 'element-ui'
-import { IJSONTable } from '@/models/Table/Table'
-import { IJSONRow } from '@/models/Table/Row'
+import { IJSONTable } from '@/models/Table/IJSONTable'
+import { IJSONRow } from '@/models/Table/IJSONRow'
 import OptionList from './components/OptionList/OptionList'
 
 

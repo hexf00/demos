@@ -1,6 +1,6 @@
 import { IJSONViewField } from './ViewField'
 import { IViewFilter } from './ViewFilter'
-import { IJSONTable } from '../Table/Table'
+import { IJSONTable } from '../Table/IJSONTable'
 import libs from '@/libs'
 import Vue from 'vue'
 import store from '@/store'

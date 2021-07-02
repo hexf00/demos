@@ -1,15 +1,9 @@
 import libs from '@/libs'
 import Vue from 'vue'
-import { IJSONTable } from './Table'
-export interface IJSONRow {
-  /** 行主键 */
-  id: string
-  [key: string]: string | number | string[]
-}
-
-
+import { IJSONRow } from '@/models/Table/IJSONRow'
+import { IJSONTable } from './IJSONTable'
 /** 获取一个表格唯一id */
-function generateRowId(table: IJSONTable): string {
+function generateRowId (table: IJSONTable): string {
   let isUnique = false
   let id = libs.randomChar()
   while (!isUnique) {
@@ -23,7 +17,7 @@ function generateRowId(table: IJSONTable): string {
   return id
 }
 
-function addRow(table: IJSONTable) {
+function addRow (table: IJSONTable) {
 
 
   const row: IJSONRow = {
@@ -51,7 +45,7 @@ function addRow(table: IJSONTable) {
   return row
 }
 
-function removeRow(table: IJSONTable, rows: IJSONRow[]) {
+function removeRow (table: IJSONTable, rows: IJSONRow[]) {
   rows.forEach(row => {
     delete table.rows[row.id]
     for (const viewId in table.views) {
@@ -62,10 +56,10 @@ function removeRow(table: IJSONTable, rows: IJSONRow[]) {
   })
 }
 
-const JsonRow = {
+const rowHelper = {
   generateRowId,
   addRow,
   removeRow,
 }
 
-export default JsonRow
+export default rowHelper

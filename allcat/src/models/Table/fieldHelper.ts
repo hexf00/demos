@@ -1,31 +1,12 @@
 import libs from '@/libs'
-import { IJSONTable } from './Table'
+import { IJSONTable } from '@/models/Table/IJSONTable'
 import Vue from 'vue'
+import { IJSONTableField } from '@/models/Table/IJSONTableField'
 
 export type TSelectOption = {
   color: string
   value: string
 }
-
-export interface IJSONTableField {
-  /** 字段主键 */
-  id: string
-  /** 字段名称 */
-  name: string
-  /** 字段描述 */
-  description: string
-  /** 字段数据类型 */
-  type: 'text' | 'number' | 'select' | 'script' | 'relation'
-  /** 启用多选, 对select relation 有效 */
-  isMulti?: boolean
-  /** select 选项 */
-  selectOptions?: TSelectOption[]
-
-  // /** 字段控件配置 */
-  // control: IControl
-}
-
-
 
 /** 获取一个字段唯一id */
 function generateFieldId (table: IJSONTable): string {
@@ -98,10 +79,10 @@ function addField (table: IJSONTable) {
   }
 }
 
-const JsonField = {
+const fieldHelper = {
   addField,
   removeField,
   checkFieldNameIsExist,
 }
 
-export default JsonField
+export default fieldHelper

@@ -1,5 +1,5 @@
 import JsonApp, { IJSONApp } from '@/models/App/App'
-import JsonRow from '@/models/Table/Row'
+import rowHelper from '@/models/Table/rowHelper'
 import store from '@/store'
 import qs from 'qs'
 import papaparse from 'papaparse'
@@ -22,7 +22,7 @@ export default class IndexService {
   }
 
   /** 粘贴处理 */
-  onPaste(e: Event) {
+  onPaste (e: Event) {
     const event = e as ClipboardEvent
     const csvText = event.clipboardData?.getData('Text')
     const currentTable = store.currentTable
@@ -38,7 +38,7 @@ export default class IndexService {
       const result: papaparse.ParseResult<string[]> = papaparse.parse(csvText)
       const csvRows = result.data
       csvRows.forEach(csvRow => {
-        const row = JsonRow.addRow(currentTable)
+        const row = rowHelper.addRow(currentTable)
         currentView.fields.forEach((field, index) => {
           row[field.id] = csvRow[index] || ''
         })
@@ -46,12 +46,12 @@ export default class IndexService {
     }
   }
 
-  destroy() {
+  destroy () {
     window.onbeforeunload = null
     window.removeEventListener('paste', this.onPaste)
   }
 
-  routerInit() {
+  routerInit () {
     store.search = qs.parse(location.search.substr(1)) as Record<string, string>
     const { tableId, viewId } = store.search
     if (tableId) {

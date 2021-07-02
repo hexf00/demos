@@ -1,11 +1,12 @@
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import { CreateElement } from 'vue'
-import { IJSONTable } from '@/models/Table/Table'
+import { IJSONTable } from '@/models/Table/IJSONTable'
 import { IView } from '@/models/View/View'
 import FieldListPanel from '../Panel/FieldListPanel/FieldListPanel'
 import style from './TableView.module.scss'
 import Clickoutside from '@/directives/clickoutside'
-import JsonRow, { IJSONRow } from '@/models/Table/Row'
+import rowHelper from '@/models/Table/rowHelper'
+import { IJSONRow } from '@/models/Table/IJSONRow'
 import Icon from '../../base/Icon/Icon'
 import TableCell from './components/TableCell/TableCell'
 import { TableColumn } from 'element-ui/types/table-column'
@@ -110,7 +111,7 @@ export default class extends Vue {
       <div>
         <el-button size="mini" on={{
           click: () => {
-            JsonRow.addRow(this.table)
+            rowHelper.addRow(this.table)
           },
         }}>新增行</el-button>
 
@@ -122,7 +123,7 @@ export default class extends Vue {
           },
           on: {
             click: () => {
-              JsonRow.removeRow(this.table, this.selected)
+              rowHelper.removeRow(this.table, this.selected)
             },
           },
         }}>删除行</el-button>
