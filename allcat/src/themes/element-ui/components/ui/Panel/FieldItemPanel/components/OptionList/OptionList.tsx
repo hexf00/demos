@@ -1,4 +1,4 @@
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
+import { Vue, Component, Prop } from 'vue-property-decorator'
 import { CreateElement } from 'vue'
 import { IJSONTableField, TSelectOption } from '@/models/Table/TableField'
 import style from './index.module.scss'
@@ -16,7 +16,7 @@ export default class OptionList extends Vue {
   @Prop(Object) field!: IJSONTableField
 
   /** 判断拖拽是否允许放下 */
-  isAllowDrop(raggingNode: TreeNode<string, TSelectOption>, dropNode: TreeNode<string, TSelectOption>, pos: 'prev' | 'inner' | 'next') {
+  isAllowDrop (raggingNode: TreeNode<string, TSelectOption>, dropNode: TreeNode<string, TSelectOption>, pos: 'prev' | 'inner' | 'next') {
     if (pos === 'inner') {
       return false
     }
@@ -24,7 +24,7 @@ export default class OptionList extends Vue {
     return true
   }
 
-  removeOptions(option: TSelectOption) {
+  removeOptions (option: TSelectOption) {
     const { selectOptions } = this.field
     if (selectOptions) {
       const index = selectOptions.indexOf(option)
@@ -34,7 +34,7 @@ export default class OptionList extends Vue {
     }
   }
 
-  render(h: CreateElement) {
+  render (h: CreateElement) {
     const list = this.field.selectOptions
     return <div>
       <el-button size="mini" on={{

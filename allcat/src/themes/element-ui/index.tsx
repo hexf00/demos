@@ -7,7 +7,6 @@ import TableView from '@/themes/element-ui/components/ui/TableView/TableView'
 
 import style from './index.module.scss'
 import IndexService from './index.service'
-import { IJSONApp } from '@/models/App/App'
 import store from '@/store'
 
 @Component
@@ -15,11 +14,11 @@ export default class extends Vue {
   service = new IndexService()
   store = store
 
-  beforeDestroy() {
+  beforeDestroy () {
     this.service.destroy()
   }
 
-  render(h: CreateElement) {
+  render (h: CreateElement) {
     const { name, description } = this.service.app
     const { currentTable, currentView } = this.store
 

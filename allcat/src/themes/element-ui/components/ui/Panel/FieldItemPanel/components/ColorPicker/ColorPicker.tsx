@@ -1,6 +1,5 @@
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
+import { Vue, Component, Prop } from 'vue-property-decorator'
 import { CreateElement } from 'vue'
-import style from './index.module.scss'
 import Clickoutside from '@/directives/clickoutside'
 
 @Component({
@@ -12,7 +11,7 @@ export default class ColorPicker extends Vue {
 
   isShow = false
 
-  render(h: CreateElement) {
+  render (h: CreateElement) {
     const value = this.value
     const predefineColors = [
       '#ff4500',

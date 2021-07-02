@@ -28,7 +28,7 @@ export interface IView {
 /**
  * 获取一个视图唯一id
  */
-function generateViewId(table: IJSONTable): string {
+function generateViewId (table: IJSONTable): string {
   let isUnique = false
   let id = libs.randomChar()
   while (!isUnique) {
@@ -43,7 +43,7 @@ function generateViewId(table: IJSONTable): string {
 }
 
 /** 检查视图名称在table中是否存在 */
-function checkViewNameIsExist(table: IJSONTable, name: string): boolean {
+function checkViewNameIsExist (table: IJSONTable, name: string): boolean {
   for (const viewId in table.views) {
     const view = table.views[viewId]
     if (view.name === name) {
@@ -54,7 +54,7 @@ function checkViewNameIsExist(table: IJSONTable, name: string): boolean {
 }
 
 /** 获取一个视图唯一标题 */
-function generateViewName(table: IJSONTable): string {
+function generateViewName (table: IJSONTable): string {
   let isUnique = false
   let index = table.viewsSorts.length + 1
   while (!isUnique) {
@@ -68,8 +68,7 @@ function generateViewName(table: IJSONTable): string {
   return `表格视图 ${index}`
 }
 
-function addView(table: IJSONTable) {
-  const index = table.viewsSorts.length + 1
+function addView (table: IJSONTable) {
 
   //说明： 此处如果已经选择了一个视图，则基于当前视图复制，如果未选择，使用一个视图的配置复制。 上述复制均不含筛选条件、分组等。
 
@@ -94,7 +93,7 @@ function addView(table: IJSONTable) {
   table.viewsSorts.push(view.id)
 }
 
-function removeView(table: IJSONTable, view: IView) {
+function removeView (table: IJSONTable, view: IView) {
   delete table.views[view.id]
 
   const index = table.viewsSorts.indexOf(view.id)

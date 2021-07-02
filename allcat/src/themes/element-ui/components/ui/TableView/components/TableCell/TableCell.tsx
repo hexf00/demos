@@ -1,6 +1,6 @@
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import { CreateElement } from 'vue'
-import { Input, MessageBox, Select } from 'element-ui'
+import { Input, Select } from 'element-ui'
 import { IJSONRow } from '@/models/Table/Row'
 import { IJSONTableField } from '@/models/Table/TableField'
 import style from './index.module.scss'
@@ -26,7 +26,7 @@ export default class TableCell extends Vue {
   value: string | number | string[] = ''
 
   @Watch('isEdit', { immediate: true })
-  onEdit(value: boolean) {
+  onEdit (value: boolean) {
     if (value === true) {
       const { row, field } = this
       const value = row[field.id]
@@ -49,7 +49,7 @@ export default class TableCell extends Vue {
     }
   }
 
-  submit() {
+  submit () {
     const { row, field } = this
     //检查是否有新选项
     if (field.type === 'select') {
@@ -67,18 +67,18 @@ export default class TableCell extends Vue {
     row[field.id] = this.value
   }
 
-  onBlur() {
+  onBlur () {
     this.submit()
     this.isEdit = false
   }
 
-  getColor(value: string) {
-    const { row, field } = this
+  getColor (value: string) {
+    const { field } = this
     const { selectOptions } = field
     return selectOptions?.find(option => option.value === value)?.color
   }
 
-  render(h: CreateElement) {
+  render (h: CreateElement) {
     const { row, field } = this
     if (this.isEdit) {
       if (field.type === 'text') {

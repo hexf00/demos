@@ -1,6 +1,6 @@
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import { CreateElement } from 'vue'
-import JsonTable, { IJSONTable } from '@/models/Table/Table'
+import { IJSONTable } from '@/models/Table/Table'
 import { IView } from '@/models/View/View'
 import FieldListPanel from '../Panel/FieldListPanel/FieldListPanel'
 import style from './TableView.module.scss'
@@ -22,7 +22,7 @@ export default class extends Vue {
   @Prop(Object) view!: IView
 
   selected: IJSONRow[] = []
-  mounted() {
+  mounted () {
   }
 
   /** 是否显示字段配置面板 */
@@ -37,18 +37,17 @@ export default class extends Vue {
     super()
   }
 
-  get colsWidth() {
+  get colsWidth () {
     const result: Record<string, number> = {}
     this.view.fields.forEach(it => {
       result[it.id] = it.width || 180
     })
     return result
   }
-  get cols() {
+  get cols () {
     return this.view.fields.filter(it => it.isShow).map(it => this.table.fields[it.id])
   }
-  get list() {
-    let sortRules
+  get list () {
     if (this.view?.sort?.rules) {
       const rules = this.view.sort.rules.filter(it => it.field)
 
@@ -77,7 +76,7 @@ export default class extends Vue {
 
   }
 
-  render(h: CreateElement) {
+  render (h: CreateElement) {
     const { table, view } = this
 
 

@@ -27,7 +27,7 @@ class WsManager {
     this.initEventHandler(this.ws)
   }
 
-  initEventHandler(ws: WebSocket) {
+  initEventHandler (ws: WebSocket) {
     const { heartCheck } = this
     ws.onopen = function () {
       console.log('ws:连接已建立...')
@@ -65,14 +65,14 @@ class WsManager {
     }
   }
 
-  emit(event: string, data: any) {
+  emit (event: string, data: any) {
     this.ws.send(JSON.stringify({
       event,
       data,
     }))
   }
 
-  reconnect() {
+  reconnect () {
     clearTimeout(this.heartCheck.timeoutObj)
     this.heartCheck.isStart = false
     setTimeout(() => {
@@ -84,7 +84,7 @@ class WsManager {
   /**
    * 监听
    */
-  on(actionName: string, fn: () => void) {
+  on (actionName: string, fn: () => void) {
     if (!actionName || !fn) {
       throw new Error('WsProxy监听注册 入参错误')
     }
@@ -102,7 +102,7 @@ class WsManager {
   /**
      * 注销
      */
-  off(actionName: string, fn: () => void) {
+  off (actionName: string, fn: () => void) {
     if (!actionName || !fn) {
       throw new Error('WsProxy监听注销 入参错误')
     }

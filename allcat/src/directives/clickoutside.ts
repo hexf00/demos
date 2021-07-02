@@ -2,12 +2,6 @@ import Vue, { VNode, VNodeDirective } from 'vue'
 import { on } from 'element-ui/src/utils/dom'
 const ctx = '@@clickoutsideContext'
 
-type state = {
-  id: number
-  documentHandler: typeof createDocumentHandler
-  methodName: any
-  bindingFn: any
-}
 
 type customNode = {
   [ctx]: any
@@ -28,7 +22,7 @@ let seed = 0
     nodeList.forEach(node => (node as customNode)[ctx].documentHandler(e, startClick))
   })
 
-function createDocumentHandler(el: HTMLElement, binding: VNodeDirective, vnode: VNode) {
+function createDocumentHandler (el: HTMLElement, binding: VNodeDirective, vnode: VNode) {
   return function (mouseup: MouseEvent | Record<string, never> = {}, mousedown: MouseEvent | Record<string, never> = {}) {
     if (
       !vnode ||
@@ -60,7 +54,7 @@ function createDocumentHandler(el: HTMLElement, binding: VNodeDirective, vnode: 
  * ```
  */
 export default {
-  bind(el: HTMLElement, binding: VNodeDirective, vnode: VNode) {
+  bind (el: HTMLElement, binding: VNodeDirective, vnode: VNode) {
     // console.log(arguments)
     nodeList.push(el)
     const id = seed++
@@ -72,14 +66,14 @@ export default {
     }
   },
 
-  update(el: HTMLElement, binding: VNodeDirective, vnode: VNode) {
+  update (el: HTMLElement, binding: VNodeDirective, vnode: VNode) {
 
     (el as customNode)[ctx].documentHandler = createDocumentHandler(el, binding, vnode);
     (el as customNode)[ctx].methodName = binding.expression;
     (el as customNode)[ctx].bindingFn = binding.value
   },
 
-  unbind(el: HTMLElement) {
+  unbind (el: HTMLElement) {
     const len = nodeList.length
 
     for (let i = 0; i < len; i++) {

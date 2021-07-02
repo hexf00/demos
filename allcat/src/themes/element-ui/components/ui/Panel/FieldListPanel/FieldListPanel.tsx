@@ -4,7 +4,6 @@ import style from './index.module.scss'
 import { TreeNode } from 'element-ui/types/tree'
 import FieldItem, { IFieldItem } from './components/FieldItem/FieldItem'
 import store from '@/store'
-import { IJSONApp } from '@/models/App/App'
 import { IJSONTable } from '@/models/Table/Table'
 import { IView } from '@/models/View/View'
 import JsonField, { IJSONTableField } from '@/models/Table/TableField'
@@ -26,7 +25,7 @@ export default class FieldListPanel extends Vue {
   /** 当前编辑状态的字段 */
   currentField: IJSONTableField | null = null
 
-  get list(): IFieldItem[] {
+  get list (): IFieldItem[] {
     console.count('list')
     const { table, view } = this
 
@@ -45,7 +44,7 @@ export default class FieldListPanel extends Vue {
 
 
   /** 判断拖拽是否允许放下 */
-  isAllowDrop(raggingNode: TreeNode<string, IFieldItem>, dropNode: TreeNode<string, IFieldItem>, pos: 'prev' | 'inner' | 'next') {
+  isAllowDrop (raggingNode: TreeNode<string, IFieldItem>, dropNode: TreeNode<string, IFieldItem>, pos: 'prev' | 'inner' | 'next') {
     if (pos === 'inner') {
       return false
     }
@@ -54,7 +53,7 @@ export default class FieldListPanel extends Vue {
   }
 
   /** 拖拽成功时候触发 */
-  dropSuccess(raggingNode: TreeNode<string, IFieldItem>, dropNode: TreeNode<string, IFieldItem>, pos: 'before' | 'after') {
+  dropSuccess (raggingNode: TreeNode<string, IFieldItem>, dropNode: TreeNode<string, IFieldItem>, pos: 'before' | 'after') {
     const { id } = raggingNode.data
     const targetId = dropNode.data.id
     const fields = store.currentView?.fields
@@ -76,11 +75,11 @@ export default class FieldListPanel extends Vue {
     }
   }
 
-  addField() {
+  addField () {
     JsonField.addField(this.table)
   }
 
-  render(h: CreateElement) {
+  render (h: CreateElement) {
     console.count('hmr count render FieldPanel')
     const { list } = this
     return <div class={style.fieldPanel}>

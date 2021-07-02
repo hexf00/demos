@@ -1,7 +1,5 @@
 import { ISortRule } from '@/models/View/ViewSorter'
 import { CreateElement, RenderContext } from 'vue'
-import style from './index.module.scss'
-
 
 type Props = {
   service: ISortRule
@@ -12,8 +10,7 @@ const SortItem = {
     service: Object,
   },
   functional: true,
-  render(h: CreateElement, { props, parent }: RenderContext<Props>) {
-    const { service } = props
+  render (h: CreateElement, ctx: RenderContext<Props>) {
     return <div>
 
     </div>

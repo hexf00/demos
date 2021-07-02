@@ -1,4 +1,4 @@
-import JsonApp, { IJSONApp } from '@/models/App/App'
+import { IJSONApp } from '@/models/App/App'
 import JsonTable, { IJSONTable } from '@/models/Table/Table'
 import JsonView, { IView } from '@/models/View/View'
 import store from '@/store'
@@ -11,19 +11,19 @@ export default class ViewMenuService implements IViewMenuService {
     this.app = store.currentApp as IJSONApp
   }
 
-  createNewTable() {
+  createNewTable () {
     JsonTable.addTable(this.app)
   }
 
-  createNewView(table: IJSONTable) {
+  createNewView (table: IJSONTable) {
     JsonView.addView(table)
   }
 
-  removeTable(tb: IJSONTable) {
+  removeTable (tb: IJSONTable) {
     JsonTable.removeTable(this.app, tb)
   }
 
-  removeView(tb: IJSONTable, v: IView) {
+  removeView (tb: IJSONTable, v: IView) {
     JsonView.removeView(tb, v)
   }
 }

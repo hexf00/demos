@@ -1,8 +1,8 @@
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
+import { Vue, Component, Prop } from 'vue-property-decorator'
 import { CreateElement } from 'vue'
 import style from './FieldItem.module.scss'
-import tableModel, { IJSONTable } from '@/models/Table/Table'
-import viewModel, { IView } from '@/models/View/View'
+import { IJSONTable } from '@/models/Table/Table'
+import { IView } from '@/models/View/View'
 import EyeSwitch from '@/themes/element-ui/components/base/EyeSwitch/EyeSwitch'
 import { MessageBox } from 'element-ui'
 import JsonField, { IJSONTableField } from '@/models/Table/TableField'
@@ -23,15 +23,15 @@ export interface IFieldItem {
 export default class FieldItem extends Vue {
   @Prop(Object) data!: IFieldItem
 
-  created() {
+  created () {
     console.log('hmr count created', this.data.label)
   }
 
-  destroyed() {
+  destroyed () {
     console.log('hmr count destroyed', this.data.label)
   }
 
-  render(h: CreateElement) {
+  render (h: CreateElement) {
 
     const { label, viewField, table, field } = this.data
 
@@ -64,7 +64,7 @@ export default class FieldItem extends Vue {
           },
         }}>
           <el-button on={{
-            click(event: Event) {
+            click (event: Event) {
               event.stopPropagation()
             },
           }} type="text" size="mini">

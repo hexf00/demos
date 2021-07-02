@@ -18,12 +18,12 @@ export default class FieldItemPanel extends Vue {
   @Prop(Object) field!: IJSONTableField
   @Prop(Object) table!: IJSONTable
 
-  mounted() {
+  mounted () {
 
   }
 
   @Watch('field', { immediate: true })
-  onEdit(value: boolean) {
+  onEdit (value: boolean) {
     if (this.field) {
       this.$nextTick(() => {
         this.$refs.name.select()
@@ -31,8 +31,8 @@ export default class FieldItemPanel extends Vue {
     }
   }
 
-  submit() {
-    const { id: fieldId, type, isMulti, selectOptions } = this.field
+  submit () {
+    const { id: fieldId, type, isMulti } = this.field
     const { isMulti: oldIsMulti, type: OldType } = this.table.fields[fieldId]
 
 
@@ -84,7 +84,7 @@ export default class FieldItemPanel extends Vue {
   }
 
   /** 从现有的value提取选项，不涉及转换 */
-  generateOptions() {
+  generateOptions () {
     const { id: fieldId } = this.field
     const { isMulti: oldIsMulti } = this.table.fields[fieldId]
     const optionsMap: Set<string> = new Set()
@@ -113,7 +113,7 @@ export default class FieldItemPanel extends Vue {
     }))
   }
 
-  changeType(type: string) {
+  changeType (type: string) {
     const field = this.field
     //保留哪些属性，对哪些属性赋初始值
     if (!['select', 'relation'].includes(type)) {
@@ -129,7 +129,7 @@ export default class FieldItemPanel extends Vue {
     this.$emit('update:field', JSON.parse(JSON.stringify(field)))
   }
 
-  render(h: CreateElement) {
+  render (h: CreateElement) {
     const field = this.field
     if (!field) {
       return <div>加载中</div>
