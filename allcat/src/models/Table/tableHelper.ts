@@ -53,6 +53,7 @@ function addTable (app: IJSONApp) {
     id: generateTableId(app),
     name: generateTableName(app),
     description: '',
+    primaryField: '',
     fields: {},
     rows: {},
     views: {},
@@ -62,7 +63,8 @@ function addTable (app: IJSONApp) {
   //添加默认视图
   JsonView.addView(table)
 
-  fieldHelper.addField(table)
+  const primaryField = fieldHelper.addField(table)
+  table.primaryField = primaryField.id
 
   //需要通过Vue给不存在的属性添加响应式
   Vue.set(app.tables, table.id, table)

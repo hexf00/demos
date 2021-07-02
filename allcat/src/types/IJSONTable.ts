@@ -13,6 +13,8 @@ export interface IJSONTable {
   description: string
   /** 表字段配置 */
   fields: Record<string, IJSONTableField>
+  /** 主要字段，不可删除，不可隐藏 */
+  primaryField: string
   /** 表数据 */
   rows: Record<string, IJSONRow>
   /** 表视图 */

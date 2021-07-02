@@ -62,7 +62,7 @@ function removeField (table: IJSONTable, field: IJSONTableField) {
   }
 }
 
-function addField (table: IJSONTable) {
+function addField (table: IJSONTable): IJSONTableField {
   const field: IJSONTableField = {
     id: generateFieldId(table),
     name: generateFieldName(table),
@@ -77,6 +77,8 @@ function addField (table: IJSONTable) {
     const view = table.views[viewId]
     view.fields.push({ id: field.id, isShow: true })
   }
+
+  return field
 }
 
 const fieldHelper = {
