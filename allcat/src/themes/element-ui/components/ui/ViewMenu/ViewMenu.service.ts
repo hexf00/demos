@@ -1,6 +1,6 @@
 import { IJSONApp } from '@/models/App/App'
 import tableHelper from '@/models/Table/tableHelper'
-import { IJSONTable } from '@/models/Table/IJSONTable'
+import { IJSONTable } from '@/types/IJSONTable'
 import JsonView, { IView } from '@/models/View/View'
 import store from '@/store'
 import { IViewMenuService } from './ViewMenu'

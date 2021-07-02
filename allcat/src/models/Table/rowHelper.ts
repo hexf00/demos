@@ -1,7 +1,7 @@
 import libs from '@/libs'
 import Vue from 'vue'
-import { IJSONRow } from '@/models/Table/IJSONRow'
-import { IJSONTable } from './IJSONTable'
+import { IJSONRow } from '@/types/IJSONRow'
+import { IJSONTable } from '../../types/IJSONTable'
 /** 获取一个表格唯一id */
 function generateRowId (table: IJSONTable): string {
   let isUnique = false

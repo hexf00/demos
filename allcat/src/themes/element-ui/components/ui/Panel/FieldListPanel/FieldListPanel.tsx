@@ -4,10 +4,10 @@ import style from './index.module.scss'
 import { TreeNode } from 'element-ui/types/tree'
 import FieldItem, { IFieldItem } from './components/FieldItem/FieldItem'
 import store from '@/store'
-import { IJSONTable } from '@/models/Table/IJSONTable'
+import { IJSONTable } from '@/types/IJSONTable'
 import { IView } from '@/models/View/View'
 import fieldHelper from '@/models/Table/fieldHelper'
-import { IJSONTableField } from '@/models/Table/IJSONTableField'
+import { IJSONTableField } from '@/types/IJSONTableField'
 import FieldItemPanel from '../FieldItemPanel/FieldItemPanel'
 
 

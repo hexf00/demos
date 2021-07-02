@@ -1,6 +1,6 @@
-import { IJSONTable } from './IJSONTable'
+import { IJSONTable } from '../../types/IJSONTable'
 
-class TableClass {
+export default class TableClass {
   constructor(public table: IJSONTable) {
   }
 

@@ -1,5 +1,5 @@
 import { IJSONApp } from '@/models/App/App'
-import { IJSONTable } from '@/models/Table/IJSONTable'
+import { IJSONTable } from '@/types/IJSONTable'
 import { IView } from '@/models/View/View'
 
 export interface IStore {

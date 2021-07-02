@@ -1,4 +1,4 @@
-import { IView } from '../View/View'
+import { IView } from '../models/View/View'
 import { IJSONTableField } from './IJSONTableField'
 import { IJSONRow } from './IJSONRow'
 

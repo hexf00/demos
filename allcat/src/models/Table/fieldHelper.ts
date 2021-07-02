@@ -1,7 +1,7 @@
 import libs from '@/libs'
-import { IJSONTable } from '@/models/Table/IJSONTable'
+import { IJSONTable } from '@/types/IJSONTable'
 import Vue from 'vue'
-import { IJSONTableField } from '@/models/Table/IJSONTableField'
+import { IJSONTableField } from '@/types/IJSONTableField'
 
 export type TSelectOption = {
   color: string

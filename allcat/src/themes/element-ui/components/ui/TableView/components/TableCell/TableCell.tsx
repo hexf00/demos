@@ -1,8 +1,8 @@
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import { CreateElement } from 'vue'
 import { Input, Select } from 'element-ui'
-import { IJSONRow } from '@/models/Table/IJSONRow'
-import { IJSONTableField } from '@/models/Table/IJSONTableField'
+import { IJSONRow } from '@/types/IJSONRow'
+import { IJSONTableField } from '@/types/IJSONTableField'
 import style from './index.module.scss'
 
 

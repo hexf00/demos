@@ -6,7 +6,7 @@ import style from './index.module.scss'
 import { Input } from 'element-ui'
 import { TreeNode } from 'element-ui/types/tree'
 import OptionItem from '../OptionItem/OptionItem'
-import { IJSONTableField } from '@/models/Table/IJSONTableField'
+import { IJSONTableField } from '@/types/IJSONTableField'
 
 
 @Component

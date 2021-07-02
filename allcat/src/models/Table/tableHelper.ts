@@ -3,7 +3,7 @@ import { IJSONApp } from '../App/App'
 import JsonView from '../View/View'
 import fieldHelper from './fieldHelper'
 import Vue from 'vue'
-import { IJSONTable } from './IJSONTable'
+import { IJSONTable } from '../../types/IJSONTable'
 
 
 /** 获取一个表格唯一id */

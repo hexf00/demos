@@ -3,7 +3,7 @@ import { CreateElement } from 'vue'
 import { IViewMenuService } from '../../ViewMenu'
 import style from './MenuItem.module.scss'
 import tableModel from '@/models/Table/tableHelper'
-import { IJSONTable } from '@/models/Table/IJSONTable'
+import { IJSONTable } from '@/types/IJSONTable'
 import viewModel, { IView } from '@/models/View/View'
 import { Input, MessageBox } from 'element-ui'
 

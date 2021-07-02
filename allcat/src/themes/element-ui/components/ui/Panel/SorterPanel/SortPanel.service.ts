@@ -1,4 +1,4 @@
-import { IJSONTable } from '@/models/Table/IJSONTable'
+import { IJSONTable } from '@/types/IJSONTable'
 import { IView } from '@/models/View/View'
 import { IViewSorter } from '@/models/View/ViewSorter'
 import { ISortPanel } from './SortPanel'

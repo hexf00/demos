@@ -1,4 +1,4 @@
-import { TSelectOption } from './fieldHelper'
+import { TSelectOption } from '../models/Table/fieldHelper'
 
 
 export interface IJSONTableField {

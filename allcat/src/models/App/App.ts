@@ -1,5 +1,5 @@
 import store from '@/store'
-import { IJSONTable } from '../Table/IJSONTable'
+import { IJSONTable } from '../../types/IJSONTable'
 
 export interface IJSONApp {
   /** App主键 */

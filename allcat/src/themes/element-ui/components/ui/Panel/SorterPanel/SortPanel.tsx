@@ -1,5 +1,5 @@
 import { Vue, Component, Prop } from 'vue-property-decorator'
-import { IJSONTableField } from '@/models/Table/IJSONTableField'
+import { IJSONTableField } from '@/types/IJSONTableField'
 import { ISortRule, IViewSorter } from '@/models/View/ViewSorter'
 import { CreateElement } from 'vue'
 import style from './SortPanel.module.scss'
