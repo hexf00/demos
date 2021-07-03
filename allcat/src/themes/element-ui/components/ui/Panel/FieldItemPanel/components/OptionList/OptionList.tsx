@@ -6,8 +6,7 @@ import style from './index.module.scss'
 import { Input } from 'element-ui'
 import { TreeNode } from 'element-ui/types/tree'
 import OptionItem from '../OptionItem/OptionItem'
-import { IJSONTableField } from '@/types/IJSONTableField'
-
+import { IJSONSelectField } from '@/types/IJSONTableField'
 
 @Component
 export default class OptionList extends Vue {
@@ -15,7 +14,7 @@ export default class OptionList extends Vue {
     name: Input
   }
 
-  @Prop(Object) field!: IJSONTableField
+  @Prop(Object) field!: IJSONSelectField
 
   /** 判断拖拽是否允许放下 */
   isAllowDrop (raggingNode: TreeNode<string, TSelectOption>, dropNode: TreeNode<string, TSelectOption>, pos: 'prev' | 'inner' | 'next') {

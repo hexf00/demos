@@ -1,5 +1,4 @@
 import { TSelectOption } from '@/models/Table/fieldHelper'
-import { IJSONTableField } from '@/types/IJSONTableField'
 import BaseCellService from '../BaseCell/service'
 
 export default class SelectCellService extends BaseCellService {
@@ -9,8 +8,8 @@ export default class SelectCellService extends BaseCellService {
   /** 选项 */
   selectOptions: TSelectOption[] = []
 
-  constructor(field: IJSONTableField) {
-    super(field)
-    this.isMulti = !!field.isMulti
+  constructor(field: { isMulti: boolean }) {
+    super()
+    this.isMulti = field.isMulti
   }
 }

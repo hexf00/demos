@@ -10,8 +10,6 @@ import fieldHelper from '@/models/Table/fieldHelper'
 import { IJSONTableField } from '@/types/IJSONTableField'
 import FieldItemPanel from '../FieldItemPanel/FieldItemPanel'
 
-
-
 @Component
 export default class FieldListPanel extends Vue {
   @Prop(Object) table!: IJSONTable
@@ -42,7 +40,6 @@ export default class FieldListPanel extends Vue {
       }
     })
   }
-
 
   /** 判断拖拽是否允许放下 */
   isAllowDrop (raggingNode: TreeNode<string, IFieldItem>, dropNode: TreeNode<string, IFieldItem>, pos: 'prev' | 'inner' | 'next') {

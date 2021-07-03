@@ -19,16 +19,14 @@ function generateRowId (table: IJSONTable): string {
 
 function addRow (table: IJSONTable) {
 
-
   const row: IJSONRow = {
     id: generateRowId(table),
   }
 
-
-
+  // 新行设置默认值
   for (const fieldId in table.fields) {
     const field = table.fields[fieldId]
-    if (field.isMulti) {
+    if ((field.type === 'select' || field.type === 'relation') && field.isMulti) {
       row[fieldId] = []
     } else {
       row[fieldId] = ''

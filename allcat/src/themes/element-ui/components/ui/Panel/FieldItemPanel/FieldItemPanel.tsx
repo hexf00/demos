@@ -1,6 +1,5 @@
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import { CreateElement } from 'vue'
-import { IJSONTableField } from '@/types/IJSONTableField'
 import style from './index.module.scss'
 import { Input, Select } from 'element-ui'
 import { IJSONTable } from '@/types/IJSONTable'
@@ -14,7 +13,7 @@ export default class FieldItemPanel extends Vue {
     typeSelect: Select
   }
 
-  @Prop(Object) field!: IJSONTableField
+  @Prop(Object) field!: any
   @Prop(Object) table!: IJSONTable
 
   mounted () {
@@ -32,12 +31,20 @@ export default class FieldItemPanel extends Vue {
 
   submit () {
     const { id: fieldId, type, isMulti } = this.field
-    const { isMulti: oldIsMulti, type: OldType } = this.table.fields[fieldId]
+    const oldField = this.table.fields[fieldId]
+    const { type: OldType } = this.table.fields[fieldId]
 
-    // 文本 -> 关联、 关联 -> 文本  使用逗号分隔符尽可能无损转换
-    // 关联 -> 关联
+    const oldIsMulti = (oldField.type === 'select' || oldField.type === 'relation') && oldField.isMulti
 
-    // 多 -> 单、 单 -> 多
+    // 无（文本）  单|多(选择、关联)
+    // 多 -> 单 丢弃多余项
+    // 单 -> 多 结构变数组
+    // 无 -> 单 不变
+    // 无 -> 多 逗号切割，增加选项
+    // 多 -> 无 逗号合并
+    // 单 -> 无 不变
+    // 文本、选择 -> 关联 明文变id(不存在新增或丢弃)
+    // 关联 -> 选择、文本 id变明文  
 
     let convert
     //多->选 会丢失数据 需要提示用户
@@ -83,7 +90,9 @@ export default class FieldItemPanel extends Vue {
   /** 从现有的value提取选项，不涉及转换 */
   generateOptions () {
     const { id: fieldId } = this.field
-    const { isMulti: oldIsMulti } = this.table.fields[fieldId]
+    const oldField = this.table.fields[fieldId]
+    const oldIsMulti = (oldField.type === 'select' || oldField.type === 'relation') && oldField.isMulti
+
     const optionsMap: Set<string> = new Set()
 
     const addOption = (row: IJSONRow) => {
