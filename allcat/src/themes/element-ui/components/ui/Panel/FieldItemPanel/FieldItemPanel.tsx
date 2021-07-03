@@ -1,14 +1,16 @@
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import { CreateElement } from 'vue'
 import style from './index.module.scss'
-import { Input, Select } from 'element-ui'
+import { Form, Input, Select } from 'element-ui'
 import { IJSONTable } from '@/types/IJSONTable'
 import { IJSONRow } from '@/types/IJSONRow'
 import OptionList from './components/OptionList/OptionList'
+import store from '@/store'
 
 @Component
 export default class FieldItemPanel extends Vue {
   $refs!: {
+    form: Form
     name: Input
     typeSelect: Select
   }
@@ -29,7 +31,20 @@ export default class FieldItemPanel extends Vue {
     }
   }
 
-  submit () {
+  /** 表单校验 */
+  async validate () {
+    return new Promise((resolve) => {
+      this.$refs.form.validate((valid) => {
+        resolve(valid)
+      })
+    })
+  }
+
+  async submit () {
+    if (!await this.validate()) {
+      return
+    }
+
     const { id: fieldId, type, isMulti } = this.field
     const oldField = this.table.fields[fieldId]
     const { type: OldType } = this.table.fields[fieldId]
@@ -142,7 +157,7 @@ export default class FieldItemPanel extends Vue {
     }
 
     return <div class={style.panel}>
-      <el-form size="mini" label-position="left" label-width="80px" props={{ model: field }}>
+      <el-form ref="form" size="mini" label-position="left" label-width="80px" props={{ model: field }}>
         <el-form-item label="名称" prop="name">
           <el-input ref="name" vModel={field.name} nativeOn={{
             keyup: (e: KeyboardEvent) => e.key === 'Enter' && this.submit(),
@@ -173,6 +188,31 @@ export default class FieldItemPanel extends Vue {
         {['select', 'relation'].includes(field.type) && <el-form-item label="启用多选" prop="multi">
           <el-switch vModel={field.isMulti}></el-switch>
         </el-form-item>}
+
+        {
+          field.type === 'relation' && <el-form-item label="引用表" prop="relationTo" required>
+            <el-select ref="typeSelect" vModel={field.relationTo} on={{
+              input: (type: string) => this.changeType(type),
+              // 下拉框显示 hack
+              'visible-change': (vis: boolean) => {
+                if (vis) {
+                  this.$nextTick(() => {
+                    const vNode = this.$refs['typeSelect'].$refs['popper'] as Vue
+                    const el = vNode.$el as HTMLElement
+                    el.style.zIndex = '10000'
+                  })
+                }
+              },
+            }}>
+              {
+                store.currentApp?.tableSorts.map(it => {
+                  const table = store.currentApp!.tables[it]
+                  return <el-option label={table.name} value={table.id} key={table.id}></el-option>
+                })}
+            </el-select>
+          </el-form-item>
+        }
+
         {
           field.type === 'select' &&
           <OptionList field={field}></OptionList>

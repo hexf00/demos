@@ -11,7 +11,7 @@ export default class BaseCell extends Vue {
   /** 初始化model值 */
   @Watch('value', { immediate: true })
   initLocalValue (value: unknown) {
-    this.localValue = JSON.parse(JSON.stringify(value))
+    this.localValue = value && JSON.parse(JSON.stringify(value))
   }
 
   /** 是否处于编辑模式 */

@@ -42,6 +42,7 @@ module.exports = function (env) {
               loader: 'babel-loader',
               options: {
                 presets: ['@babel/preset-env'],
+                plugins: ["@babel/plugin-transform-runtime"]
               },
             },
             'ts-loader',
@@ -55,6 +56,7 @@ module.exports = function (env) {
               loader: 'babel-loader',
               options: {
                 presets: ['@babel/preset-env'],
+                plugins: ["@babel/plugin-transform-runtime"]
               },
             },
             {
