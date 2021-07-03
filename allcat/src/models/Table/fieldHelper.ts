@@ -4,8 +4,12 @@ import Vue from 'vue'
 import { IJSONTableField } from '@/types/IJSONTableField'
 
 export type TSelectOption = {
+  /** 选项颜色 */
   color: string
+  /** 选项值 */
   value: string
+  /** 选项文字 */
+  label: string
 }
 
 /** 获取一个字段唯一id */

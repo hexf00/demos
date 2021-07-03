@@ -44,6 +44,7 @@ export default class OptionList extends Vue {
           selectOptions?.push({
             color: '',
             value: '',
+            label: '',
           })
         },
       }}>添加一个选项</el-button>

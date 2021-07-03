@@ -85,11 +85,11 @@ export default class SelectCell<T extends string | string[]> extends Mixins(Base
           }}>
           {selectOptions.map(item => <el-option
             key={item.value}
-            label={item.value}
+            label={item.label}
             value={item.value}>
             <el-tag size="mini"
               style={{ 'background-color': item.color, color: '#000' }}>
-              {item.value}
+              {item.label}
             </el-tag>
           </el-option>)}
         </el-select>
@@ -103,10 +103,10 @@ export default class SelectCell<T extends string | string[]> extends Mixins(Base
         {this.service.isMulti
           ? (this.value as string[]).map(item =>
             <el-tag size="mini" style={{ 'background-color': this.getColor(item), color: '#000' }}>
-              {item}
+              {this.service.toText(item)}
             </el-tag>)
           : this.value && <el-tag size="mini" style={{ 'background-color': this.getColor(this.value as string), color: '#000' }}>
-            {this.value}
+            {this.service.toText(this.value as string)}
           </el-tag>}
       </div>
     }

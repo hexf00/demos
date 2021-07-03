@@ -12,4 +12,8 @@ export default class SelectCellService extends BaseCellService {
     super()
     this.isMulti = field.isMulti
   }
+
+  toText (value: string) {
+    return value
+  }
 }
