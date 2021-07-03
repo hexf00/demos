@@ -1,6 +1,5 @@
 import { TSelectOption } from '../models/Table/fieldHelper'
 
-
 export interface IJSONTableField {
   /** 字段主键 */
   id: string

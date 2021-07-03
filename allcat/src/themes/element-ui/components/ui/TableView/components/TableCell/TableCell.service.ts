@@ -1,0 +1,3 @@
+class TableCellService {
+  getData () { }
+}

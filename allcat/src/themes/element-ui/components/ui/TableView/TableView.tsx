@@ -8,12 +8,11 @@ import Clickoutside from '@/directives/clickoutside'
 import rowHelper from '@/models/Table/rowHelper'
 import { IJSONRow } from '@/types/IJSONRow'
 import Icon from '../../base/Icon/Icon'
-import TableCell from './components/TableCell/TableCell'
+import TableCell from './components/TableCell'
 import { TableColumn } from 'element-ui/types/table-column'
 import SortPanel from '../Panel/SorterPanel/SortPanel'
 import SortPanelService from '../Panel/SorterPanel/SortPanel.service'
 import { IViewSorter } from '@/models/View/ViewSorter'
-
 
 @Component({
   directives: { Clickoutside },
@@ -79,7 +78,6 @@ export default class extends Vue {
 
   render (h: CreateElement) {
     const { table, view } = this
-
 
     const directives = [{
       name: 'Clickoutside',
