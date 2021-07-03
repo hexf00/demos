@@ -62,10 +62,10 @@ function removeField (table: IJSONTable, field: IJSONTableField) {
   }
 }
 
-function addField (table: IJSONTable): IJSONTableField {
+function addField (table: IJSONTable, fieldDefault: Partial<IJSONTableField> = {}): IJSONTableField {
   const field: IJSONTableField = {
     id: generateFieldId(table),
-    name: generateFieldName(table),
+    name: fieldDefault.name || generateFieldName(table),
     description: '',
     type: 'text',
   }
