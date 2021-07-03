@@ -7,7 +7,6 @@ import { IJSONTable } from '@/types/IJSONTable'
 import { IJSONRow } from '@/types/IJSONRow'
 import OptionList from './components/OptionList/OptionList'
 
-
 @Component
 export default class FieldItemPanel extends Vue {
   $refs!: {
@@ -35,11 +34,10 @@ export default class FieldItemPanel extends Vue {
     const { id: fieldId, type, isMulti } = this.field
     const { isMulti: oldIsMulti, type: OldType } = this.table.fields[fieldId]
 
-
     // 文本 -> 关联、 关联 -> 文本  使用逗号分隔符尽可能无损转换
+    // 关联 -> 关联
 
     // 多 -> 单、 单 -> 多
-
 
     let convert
     //多->选 会丢失数据 需要提示用户
@@ -72,7 +70,6 @@ export default class FieldItemPanel extends Vue {
       const row = this.table.rows[key]
       convert && convert(row)
     }
-
 
     if (type !== 'select') {
       //说明 此处没有使用delete 是因为外部使用的是Object.assign
