@@ -2,7 +2,7 @@ import libs from '@/libs'
 import { IJSONTable } from '@/types/IJSONTable'
 import Vue from 'vue'
 import { IJSONTableField } from '@/types/IJSONTableField'
-import { EFieldType } from '@/types/EFieldType'
+import { EFieldType } from '@/types/EType'
 
 export type TSelectOption = {
   /** 选项颜色 */

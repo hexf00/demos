@@ -1,7 +1,7 @@
 import { Vue, Component } from 'vue-property-decorator'
 import { CreateElement } from 'vue'
 import ViewMenuService from './ViewMenu.service'
-import { IJSONApp } from '@/models/App/App'
+import { IJSONApp } from '@/models/App'
 import style from './ViewMenu.module.scss'
 import { IJSONTable } from '@/types/IJSONTable'
 import { IView } from '@/models/View/View'
@@ -57,7 +57,6 @@ export default class extends Vue {
     })
   }
 
-
   /** 判断拖拽是否允许放下 */
   isAllowDrop (raggingNode: TreeNode<string, ITreeNode>, dropNode: TreeNode<string, ITreeNode>, pos: 'prev' | 'inner' | 'next') {
     if (pos === 'inner') {
@@ -87,16 +86,16 @@ export default class extends Vue {
     }
 
     const index = sorts.indexOf(id)
-    let tragetIndex = sorts.indexOf(targetId)
+    let targetIndex = sorts.indexOf(targetId)
 
-    tragetIndex = pos === 'before' ? tragetIndex : tragetIndex + 1
+    targetIndex = pos === 'before' ? targetIndex : targetIndex + 1
 
-    if (index < tragetIndex) {
-      tragetIndex--
+    if (index < targetIndex) {
+      targetIndex--
     }
 
     sorts.splice(index, 1)
-    sorts.splice(tragetIndex, 0, id)
+    sorts.splice(targetIndex, 0, id)
   }
 
   /** 树节点被点击 */

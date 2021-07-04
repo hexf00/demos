@@ -1,5 +1,5 @@
 import store from '@/store'
-import { IJSONTable } from '../../types/IJSONTable'
+import { IJSONTable } from '../types/IJSONTable'
 
 export interface IJSONApp {
   /** App主键 */
@@ -37,8 +37,6 @@ function get (appId = 'default_app'): IJSONApp {
 
   return store.apps[appId]
 }
-
-
 
 /** 缓存表结构 */
 function save (appId = 'default_app') {

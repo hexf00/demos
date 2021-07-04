@@ -1,5 +1,5 @@
 import { TSelectOption } from '../models/Table/fieldHelper'
-import { EFieldType } from './EFieldType'
+import { EFieldType } from './EType'
 export interface IJSONBase {
   /** 字段主键 */
   id: string

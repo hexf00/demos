@@ -1,10 +1,9 @@
 import libs from '@/libs'
-import { IJSONApp } from '../App/App'
+import { IJSONApp } from '../App'
 import JsonView from '../View/View'
 import fieldHelper from './fieldHelper'
 import Vue from 'vue'
 import { IJSONTable } from '../../types/IJSONTable'
-
 
 /** 获取一个表格唯一id */
 function generateTableId (app: IJSONApp): string {
@@ -46,7 +45,6 @@ function generateTableName (app: IJSONApp): string {
   }
   return `未命名数据表 ${index}`
 }
-
 
 function addTable (app: IJSONApp) {
   const table: IJSONTable = {

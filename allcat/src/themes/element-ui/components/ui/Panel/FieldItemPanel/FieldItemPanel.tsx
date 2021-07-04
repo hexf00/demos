@@ -60,6 +60,7 @@ export default class FieldItemPanel extends Vue {
     // 单 -> 无 不变
     // 文本、选择 -> 关联 明文变id(不存在新增或丢弃)
     // 关联 -> 选择、文本 id变明文  
+    // 关联类型 还会在 目标表 创建反向关联字段
 
     let convert
     //多->选 会丢失数据 需要提示用户
