@@ -2,6 +2,7 @@ import libs from '@/libs'
 import { IJSONTable } from '@/types/IJSONTable'
 import Vue from 'vue'
 import { IJSONTableField } from '@/types/IJSONTableField'
+import { EFieldType } from '@/types/EFieldType'
 
 export type TSelectOption = {
   /** 选项颜色 */
@@ -71,7 +72,7 @@ function addField (table: IJSONTable, fieldDefault: Partial<IJSONTableField> = {
     id: generateFieldId(table),
     name: fieldDefault.name || generateFieldName(table),
     description: '',
-    type: 'text',
+    type: EFieldType.text,
   }
 
   //需要通过Vue给不存在的属性添加响应式
