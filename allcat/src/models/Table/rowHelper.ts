@@ -23,16 +23,6 @@ function addRow (table: IJSONTable) {
     id: generateRowId(table),
   }
 
-  // 新行设置默认值
-  for (const fieldId in table.fields) {
-    const field = table.fields[fieldId]
-    if ((field.type === 'select' || field.type === 'relation') && field.isMulti) {
-      row[fieldId] = []
-    } else {
-      row[fieldId] = ''
-    }
-  }
-
   //需要通过Vue给不存在的属性添加响应式
   Vue.set(table.rows, row.id, row)
 
