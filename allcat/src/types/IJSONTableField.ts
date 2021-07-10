@@ -37,7 +37,11 @@ export interface IJSONSelectField extends IJSONBase {
   selectOptions?: TSelectOption[]
 }
 
-/** 关联字段类型 */
+/** 
+ * 关联字段类型
+ * 关联引用类型 本质上与 关联字段类型相同，数据结构相同，数据相同，交互相同，仅是序列化时节省控件
+ * 所以删除了IJSONRelationReferenceField，考虑用其它方式来进行区分
+ **/
 export interface IJSONRelationField extends IJSONBase {
   type: EFieldType.relation
   /** 启用多选, 对select relation 有效 */
@@ -46,21 +50,8 @@ export interface IJSONRelationField extends IJSONBase {
   relationTo: string
 }
 
-/** 
- * 关联引用类型
- * 关联类型联动建立，不可删除，不可编辑
- * 说明 其id非随机， relationFieldId + _reference
- */
-export interface IJSONRelationReferenceField extends IJSONBase {
-  type: EFieldType.relationReference
-  /** 固定支持多选 */
-  isMulti: true
-  /** 映射表id */
-  relationTo: string
-}
+// export interface IJSONScriptField extends IJSONBase {
+//   type: EFieldType.script
+// }
 
-export interface IJSONScriptField extends IJSONBase {
-  type: EFieldType.script
-}
-
-export type IJSONTableField = IJSONTextField | IJSONNumberField | IJSONSelectField | IJSONRelationField | IJSONScriptField | IJSONRelationReferenceField
+export type IJSONTableField = IJSONTextField | IJSONNumberField | IJSONSelectField | IJSONRelationField

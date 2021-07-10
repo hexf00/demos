@@ -1,17 +1,10 @@
-import { IConverter } from '@/types/IConverterFactory'
 import { IJSONTextField } from '@/types/IJSONTableField'
+import BaseConverter from './BaseConverter'
 
-export default class TextConverter implements IConverter {
+export default class TextConverter extends BaseConverter {
 
   constructor(public field: IJSONTextField) {
-
+    super(field)
   }
 
-  init () {
-
-  }
-
-  toText (target: IJSONTextField) {
-
-  }
 }
