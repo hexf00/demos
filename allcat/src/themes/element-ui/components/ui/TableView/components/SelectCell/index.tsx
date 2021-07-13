@@ -100,14 +100,14 @@ export default class SelectCell<T extends string | string[]> extends Mixins(Base
           this.isEdit = true
         },
       }}>
-        {this.service.isMulti
+        {this.value !== undefined && (this.service.isMulti
           ? (this.value as string[]).map(item =>
             <el-tag size="mini" style={{ 'background-color': this.getColor(item), color: '#000' }}>
               {this.service.toText(item)}
             </el-tag>)
           : this.value && <el-tag size="mini" style={{ 'background-color': this.getColor(this.value as string), color: '#000' }}>
             {this.service.toText(this.value as string)}
-          </el-tag>}
+          </el-tag>)}
       </div>
     }
   }
