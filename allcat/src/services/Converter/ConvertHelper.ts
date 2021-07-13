@@ -20,3 +20,12 @@ export function ConverterFactory (source: IJSONTableField) {
     case EFieldType.relation: return new RelationConverter(source)
   }
 }
+
+/** 判断是否需要转换 */
+export function checkIsNeedConvert (oldField: IJSONTableField, field: IJSONTableField): boolean {
+  // 文本和数字类型不变化的时候不需要转换
+  if (oldField.type === field.type && (field.type === EFieldType.text || field.type === EFieldType.number)) {
+    return false
+  }
+  return true
+}

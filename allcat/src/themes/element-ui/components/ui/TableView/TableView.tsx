@@ -13,6 +13,7 @@ import { TableColumn } from 'element-ui/types/table-column'
 import SortPanel from '../Panel/SorterPanel/SortPanel'
 import SortPanelService from '../Panel/SorterPanel/SortPanel.service'
 import { IViewSorter } from '@/models/View/ViewSorter'
+import FieldListPanelService from '../Panel/FieldListPanel/service'
 
 @Component({
   directives: { Clickoutside },
@@ -25,8 +26,8 @@ export default class extends Vue {
   mounted () {
   }
 
-  /** 是否显示字段配置面板 */
-  isShowFieldPanelPopover = false
+  fieldListPanelService = new FieldListPanelService()
+
   /** 是否显示排序面板 */
   isShowSortPanelPopover = false
 
@@ -82,9 +83,6 @@ export default class extends Vue {
     const directives = [{
       name: 'Clickoutside',
       value: ({ mouseup, mousedown }: { mouseup: MouseEvent; mousedown: MouseEvent }) => {
-        // if (!this.isShowFieldPanelPopover /** 未显示 */) {
-        //   return
-        // }
 
         let parent: null | HTMLElement = mouseup.target as HTMLElement
         while (parent) {
@@ -99,7 +97,9 @@ export default class extends Vue {
           // console.log('Clickoutside', parent.classList)
           parent = parent.parentElement
         }
-        this.isShowFieldPanelPopover = false
+
+        this.fieldListPanelService.close()
+
         this.isShowSortPanelPopover = false
       },
     }]
@@ -127,18 +127,18 @@ export default class extends Vue {
         }}>删除行</el-button>
 
         <el-popover
-          value={this.isShowFieldPanelPopover}
+          value={this.fieldListPanelService.isShow}
           popper-class={style.popperClass}
           placement="bottom-start"
           width="280"
           trigger="manual">
           {
-            this.isShowFieldPanelPopover &&
-            <FieldListPanel table={table} view={view} {...{ directives }} />
+            this.fieldListPanelService.isShow &&
+            <FieldListPanel service={this.fieldListPanelService} table={table} view={view} {...{ directives }} />
           }
           <el-button class={style.btn} size="mini" slot="reference" on={{
             click: () => {
-              this.isShowFieldPanelPopover = !this.isShowFieldPanelPopover
+              this.fieldListPanelService.open()
             },
           }}>列配置</el-button>
         </el-popover>

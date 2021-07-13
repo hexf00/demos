@@ -41,11 +41,11 @@ export default class OptionList extends Vue {
       <el-button size="mini" on={{
         click: () => {
           const { selectOptions } = this.field
-          selectOptions?.push({
+          const option: TSelectOption = {
             color: '',
             value: '',
-            label: '',
-          })
+          }
+          selectOptions.push(option)
         },
       }}>添加一个选项</el-button>
       <el-tree

@@ -9,14 +9,19 @@ import { IView } from '@/models/View/View'
 import fieldHelper from '@/models/Table/fieldHelper'
 import { IJSONTableField } from '@/types/IJSONTableField'
 import FieldItemPanel from '../FieldItemPanel/FieldItemPanel'
+import { checkIsNeedConvert, ConverterFactory } from '@/services/Converter/ConvertHelper'
+import FieldListPanelService from './service'
 
 @Component
 export default class FieldListPanel extends Vue {
+  $props!: {
+    service: FieldListPanelService
+    table: IJSONTable
+    view: IView
+  }
+  @Prop(Object) service!: FieldListPanelService
   @Prop(Object) table!: IJSONTable
   @Prop(Object) view!: IView
-
-  /** 是否显示字段配置面板 */
-  showFieldItemPanel = false
 
   /** 当前编辑状态的字段Model */
   fieldFormModel: IJSONTableField | null = null
@@ -82,20 +87,33 @@ export default class FieldListPanel extends Vue {
     const { list } = this
     return <div class={style.fieldPanel}>
       <el-popover
-        value={this.showFieldItemPanel}
+        value={this.service.isShowFieldItemPanel}
         trigger="manual"
         placement="right-start"
         visible-arrow={false}
         width="280">
         {this.fieldFormModel && <FieldItemPanel on={{
           submit: (field: IJSONTableField) => {
+            const oldField = this.currentField!
+
+            if (checkIsNeedConvert(oldField, field)) {
+              const converter = ConverterFactory(oldField)
+              // 数据转换
+              Object.values(this.table.rows).forEach(row => {
+                const oldVal = row[oldField.id]
+                if (oldVal !== undefined) {
+                  row[oldField.id] = converter.convert(oldVal, field)
+                }
+              })
+            }
+
             Object.assign(this.currentField, this.fieldFormModel)
-            this.showFieldItemPanel = false
+            this.service.isShowFieldItemPanel = false
             this.fieldFormModel = null
             this.currentField = null
           },
           cancel: () => {
-            this.showFieldItemPanel = false
+            this.service.isShowFieldItemPanel = false
             this.fieldFormModel = null
             this.currentField = null
           },
@@ -121,7 +139,7 @@ export default class FieldListPanel extends Vue {
           default: ({ data }: { data: IFieldItem }) => {
             return <FieldItem on={{
               showFieldItemPanel: (field: IJSONTableField) => {
-                this.showFieldItemPanel = true
+                this.service.isShowFieldItemPanel = true
                 this.currentField = field
                 this.fieldFormModel = JSON.parse(JSON.stringify(field))
               },

@@ -31,10 +31,10 @@ export interface IJSONNumberField extends IJSONBase {
  */
 export interface IJSONSelectField extends IJSONBase {
   type: EFieldType.select
-  /** 启用多选, 对select relation 有效 */
+  /** 是否启用多选 */
   isMulti: boolean
   /** select 选项 */
-  selectOptions?: TSelectOption[]
+  selectOptions: TSelectOption[]
 }
 
 /** 
@@ -44,7 +44,7 @@ export interface IJSONSelectField extends IJSONBase {
  **/
 export interface IJSONRelationField extends IJSONBase {
   type: EFieldType.relation
-  /** 启用多选, 对select relation 有效 */
+  /** 是否启用多选 */
   isMulti: boolean
   /** 映射表id */
   relationTo: string

@@ -1,16 +1,14 @@
 import libs from '@/libs'
 import { IJSONTable } from '@/types/IJSONTable'
 import Vue from 'vue'
-import { IJSONTableField } from '@/types/IJSONTableField'
-import { EFieldType } from '@/types/EType'
+import { IJSONSelectField, IJSONTableField } from '@/types/IJSONTableField'
+import { EFieldType, IMultiValue } from '@/types/EType'
 
 export type TSelectOption = {
   /** 选项颜色 */
   color: string
   /** 选项值 */
   value: string
-  /** 选项文字 */
-  label: string
 }
 
 /** 获取一个字段唯一id */
@@ -84,6 +82,23 @@ function addField (table: IJSONTable, fieldDefault: Partial<IJSONTableField> = {
   }
 
   return field
+}
+
+/** 检查选项是否存在，如果不存在添加 */
+export function checkOptionsIsNotExistAdd (field: IJSONSelectField, newOptions: IMultiValue) {
+  const items = new Set(field.selectOptions.map(it => it.value))
+
+  newOptions.forEach(it => {
+    if (it !== '' && !items.has(it)) {
+      items.add(it)
+      const newOption: TSelectOption = {
+        value: it,
+        // 默认无颜色
+        color: '',
+      }
+      field.selectOptions.push(newOption)
+    }
+  })
 }
 
 const fieldHelper = {

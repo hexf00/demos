@@ -8,6 +8,8 @@ import TextCellService from '../TextCell/service'
 import SelectCellService from '../SelectCell/service'
 import store from '@/store'
 import RelationCellService from '../RelationCell/service'
+import { EFieldType, IMultiValue, ISelectValue, ISingleValue } from '@/types/EType'
+import { checkOptionsIsNotExistAdd } from '@/models/Table/fieldHelper'
 
 @Component
 export default class TableCell extends Vue {
@@ -23,34 +25,26 @@ export default class TableCell extends Vue {
 
     const field = this.field
 
-    if (field.type === 'text') {
+    if (field.type === EFieldType.text) {
       const service = new TextCellService()
       return <TextCell value={this.row[this.field.id] as string} service={service} oninput={val => {
-        this.$set(this.row, field.id, val)
+        this.$set(this.row, field.id, val || undefined)
       }} />
-    } else if (field.type === 'select') {
+    } else if (field.type === EFieldType.number) {
+      const service = new TextCellService()
+      return <TextCell value={this.row[this.field.id] as string} service={service} oninput={val => {
+        this.$set(this.row, field.id, val && val.trim().length > 0 ? Number(val.trim()) : undefined)
+      }} />
+    } else if (field.type === EFieldType.select) {
       const service = new SelectCellService(field)
       service.selectOptions = field.selectOptions || []
-      return <SelectCell value={this.row[this.field.id] as string[] | string} service={service} oninput={(val) => {
+      return <SelectCell value={this.row[this.field.id] as ISelectValue} service={service} oninput={(val) => {
         // 赋值，因为有attr校验，所以不能使用v-model
         this.$set(this.row, field.id, val)
-
-        // 检查是否有新选项，如果有新选项加入到选项中
-        const items = new Set(service.selectOptions.map(it => it.value))
-
-        const list = field.isMulti ? val as string[] : [val as string]
-        list.forEach(it => {
-          if (it !== '' && !items.has(it)) {
-            field.selectOptions?.push({
-              value: it,
-              label: it,
-              // 默认无颜色
-              color: '',
-            })
-          }
-        })
+        const list = field.isMulti ? val as IMultiValue : [val as ISingleValue]
+        checkOptionsIsNotExistAdd(field, list)
       }} />
-    } else if (this.field.type === 'relation') {
+    } else if (this.field.type === EFieldType.relation) {
       const service = new RelationCellService(this.field)
       // 关联与select 区别 是数据的来源有所不同
 
