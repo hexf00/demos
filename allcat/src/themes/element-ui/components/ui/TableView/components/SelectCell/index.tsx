@@ -85,11 +85,11 @@ export default class SelectCell<T extends string | string[]> extends Mixins(Base
           }}>
           {selectOptions.map(item => <el-option
             key={item.value}
-            label={item.value}
+            label={item.label}
             value={item.value}>
             <el-tag size="mini"
               style={{ 'background-color': item.color, color: '#000' }}>
-              {item.value}
+              {item.label}
             </el-tag>
           </el-option>)}
         </el-select>

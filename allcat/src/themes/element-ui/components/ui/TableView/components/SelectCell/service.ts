@@ -1,4 +1,4 @@
-import { TSelectOption } from '@/models/Table/fieldHelper'
+import { ISelectOption } from '@/models/Table/fieldHelper'
 import BaseCellService from '../BaseCell/service'
 
 export default class SelectCellService extends BaseCellService {
@@ -6,7 +6,7 @@ export default class SelectCellService extends BaseCellService {
   isMulti = false
 
   /** 选项 */
-  selectOptions: TSelectOption[] = []
+  selectOptions: ISelectOption[] = []
 
   constructor(field: { isMulti: boolean }) {
     super()

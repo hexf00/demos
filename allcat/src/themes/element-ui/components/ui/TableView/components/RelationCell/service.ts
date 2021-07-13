@@ -1,4 +1,4 @@
-import { TSelectOption } from '@/models/Table/fieldHelper'
+import { ISelectOption } from '@/models/Table/fieldHelper'
 import store from '@/store'
 import { IJSONRelationField } from '@/types/IJSONTableField'
 import BaseCellService from '../BaseCell/service'
@@ -8,7 +8,7 @@ export default class RelationCellService extends BaseCellService {
   isMulti = false
 
   /** 选项 */
-  selectOptions: TSelectOption[] = []
+  selectOptions: ISelectOption[] = []
 
   constructor(public field: IJSONRelationField) {
     super()

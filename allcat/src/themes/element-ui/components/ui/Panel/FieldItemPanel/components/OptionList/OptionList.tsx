@@ -1,6 +1,6 @@
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import { CreateElement } from 'vue'
-import { TSelectOption } from '@/models/Table/fieldHelper'
+import { ISelectOption } from '@/models/Table/fieldHelper'
 
 import style from './index.module.scss'
 import { Input } from 'element-ui'
@@ -17,7 +17,7 @@ export default class OptionList extends Vue {
   @Prop(Object) field!: IJSONSelectField
 
   /** 判断拖拽是否允许放下 */
-  isAllowDrop (raggingNode: TreeNode<string, TSelectOption>, dropNode: TreeNode<string, TSelectOption>, pos: 'prev' | 'inner' | 'next') {
+  isAllowDrop (raggingNode: TreeNode<string, ISelectOption>, dropNode: TreeNode<string, ISelectOption>, pos: 'prev' | 'inner' | 'next') {
     if (pos === 'inner') {
       return false
     }
@@ -25,7 +25,7 @@ export default class OptionList extends Vue {
     return true
   }
 
-  removeOptions (option: TSelectOption) {
+  removeOptions (option: ISelectOption) {
     const { selectOptions } = this.field
     if (selectOptions) {
       const index = selectOptions.indexOf(option)
@@ -41,8 +41,9 @@ export default class OptionList extends Vue {
       <el-button size="mini" on={{
         click: () => {
           const { selectOptions } = this.field
-          const option: TSelectOption = {
+          const option: ISelectOption = {
             color: '',
+            label: '',
             value: '',
           }
           selectOptions.push(option)
@@ -58,7 +59,7 @@ export default class OptionList extends Vue {
           defaultExpandAll: true,
         }}
         scopedSlots={{
-          default: ({ data }: { data: TSelectOption }) => {
+          default: ({ data }: { data: ISelectOption }) => {
             return <OptionItem props={{
               data,
               onRemove: (option) => this.removeOptions(option),

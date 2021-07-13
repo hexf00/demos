@@ -1,12 +1,12 @@
 import { CreateElement, RenderContext } from 'vue'
-import { TSelectOption } from '@/models/Table/fieldHelper'
+import { ISelectOption } from '@/models/Table/fieldHelper'
 import style from './index.module.scss'
 import Icon from '@/themes/element-ui/components/base/Icon/Icon'
 import ColorPicker from '../ColorPicker/ColorPicker'
 
 type Props = {
-  data: TSelectOption
-  onRemove?: (item: TSelectOption) => void
+  data: ISelectOption
+  onRemove?: (item: ISelectOption) => void
 }
 const OptionsItem = {
   props: {

@@ -4,11 +4,13 @@ import Vue from 'vue'
 import { IJSONSelectField, IJSONTableField } from '@/types/IJSONTableField'
 import { EFieldType, IMultiValue } from '@/types/EType'
 
-export type TSelectOption = {
+export type ISelectOption = {
   /** 选项颜色 */
   color: string
   /** 选项值 */
   value: string
+  /** 选项显示内容 */
+  label: string
 }
 
 /** 获取一个字段唯一id */
@@ -91,8 +93,9 @@ export function checkOptionsIsNotExistAdd (field: IJSONSelectField, newOptions: 
   newOptions.forEach(it => {
     if (it !== '' && !items.has(it)) {
       items.add(it)
-      const newOption: TSelectOption = {
+      const newOption: ISelectOption = {
         value: it,
+        label: it,
         // 默认无颜色
         color: '',
       }

@@ -1,4 +1,4 @@
-import { TSelectOption } from '../models/Table/fieldHelper'
+import { ISelectOption } from '../models/Table/fieldHelper'
 import { EFieldType } from './EType'
 export interface IJSONBase {
   /** 字段主键 */
@@ -34,7 +34,7 @@ export interface IJSONSelectField extends IJSONBase {
   /** 是否启用多选 */
   isMulti: boolean
   /** select 选项 */
-  selectOptions: TSelectOption[]
+  selectOptions: ISelectOption[]
 }
 
 /** 

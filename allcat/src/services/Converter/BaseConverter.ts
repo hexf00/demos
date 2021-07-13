@@ -1,4 +1,4 @@
-import { TSelectOption } from '@/models/Table/fieldHelper'
+import { ISelectOption } from '@/models/Table/fieldHelper'
 import { EFieldType, IFieldValue, INumberValue, IRelationValue, ISelectValue, ISingleValue, ITextValue } from '@/types/EType'
 import { IJSONTable } from '@/types/IJSONTable'
 import { IJSONNumberField, IJSONRelationField, IJSONSelectField, IJSONTableField, IJSONTextField } from '@/types/IJSONTableField'
@@ -52,7 +52,7 @@ export default class BaseConverter {
    * 获取所有的选项  用于选项类型面板中的选项预览
    * Base中只考虑string情况
    */
-  getSelectOptions (table: IJSONTable, target: IJSONSelectField): TSelectOption[] {
+  getSelectOptions (table: IJSONTable, target: IJSONSelectField): ISelectOption[] {
     const { id: fieldId } = this.field
     const optionsMap: Set<string> = new Set()
 
@@ -73,6 +73,7 @@ export default class BaseConverter {
 
     return Array.from(optionsMap).map(it => ({
       color: '',
+      label: it,
       value: it,
     }))
   }
