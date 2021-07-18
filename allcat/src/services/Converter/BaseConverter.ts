@@ -1,6 +1,7 @@
+import libs from '@/libs'
 import { IJSONApp } from '@/models/appHelper'
 import { ISelectOption } from '@/models/Table/fieldHelper'
-import { EFieldType, IFieldValue, INumberValue, IRelationValue, ISelectValue, ISingleValue, ITextValue } from '@/types/EType'
+import { EFieldType, IFieldValue, IMultiValue, INumberValue, IRelationValue, ISelectValue, ISingleValue, ITextValue } from '@/types/EType'
 import { IJSONTable } from '@/types/IJSONTable'
 import { IJSONNumberField, IJSONRelationField, IJSONSelectField, IJSONTableField } from '@/types/IJSONTableField'
 import { IOptionAction } from '@/types/IOptionAction'
@@ -46,9 +47,9 @@ export default class BaseConverter {
    * @returns 
    */
   toSelect (value: IFieldValue, target: IJSONSelectField, optionActions?: Record<ISingleValue, IOptionAction>): ISelectValue | undefined {
-    const text = String(value)
+    const text = this.toText(value)
     if (target.isMulti) {
-      const newOptions = text.split(',').filter(it => target.selectOptions.find(option => option.value === it))
+      const newOptions = libs.arrUniq(text.split(',').filter(it => target.selectOptions.find(option => option.value === it)), (a, b) => a === b)
       return newOptions
     } else {
       console.log(target.selectOptions.find(option => option.value === text))
@@ -56,13 +57,31 @@ export default class BaseConverter {
     }
   }
 
-  // 转换为关联类型
-  // 转换规则是名称匹配，名称存在就变成id
-  // 对于关联表名称不存在的，有两种处理方式，1关联表插入新行后存储id，2抛弃
-  // 转换默认按抛弃处理
+  /** 
+   * 转换为关联类型
+   * 通用转换规则，转换为文本后再处理
+   * 转换规则是名称匹配，名称存在就变成id
+   * 对于关联表名称不存在的，有两种处理方式，1关联表插入新行后存储id，2抛弃
+   * 转换默认按抛弃处理
+   */
   toRelation (value: IFieldValue, target: IJSONRelationField): IRelationValue | undefined {
+    const text = this.toText(value)
+    const targetTable = this.app.tables[target.relationTo]
+    const findRowByText = (text: string) => Object.values(targetTable.rows).find(it => it[targetTable.primaryField] === text)
 
-    return
+    if (target.isMulti) {
+      const newOptions = text.split(',').reduce((dict: IMultiValue, it) => {
+        const row = findRowByText(it)
+        if (row) {
+          dict.push(row.id)
+        }
+        return dict
+      }, [])
+      return libs.arrUniq(newOptions, (a, b) => a === b)
+    } else {
+      const row = findRowByText(text)
+      return row ? row.id : undefined
+    }
   }
 
   /** 
