@@ -104,7 +104,7 @@ export default class FieldListPanel extends Vue {
               if (field.type === EFieldType.select) {
 
                 const oldOptions = oldField.type === EFieldType.select ? oldField.selectOptions : []
-                const converter = ConverterFactory(oldField)
+                const converter = ConverterFactory(store.currentApp!, oldField)
 
                 // 通过对比新老option的 label 和 value  分析改动
                 const actions: Record<string, IOptionAction> = SelectManager.diff(oldOptions, field.selectOptions)
@@ -124,7 +124,7 @@ export default class FieldListPanel extends Vue {
                   }
                 })
               } else {
-                const converter = ConverterFactory(oldField)
+                const converter = ConverterFactory(store.currentApp!, oldField)
                 // 数据转换
                 Object.values(this.table.rows).forEach(row => {
                   const oldVal = row[oldField.id]

@@ -1,3 +1,4 @@
+import { IJSONApp } from '@/models/appHelper'
 import { ISelectOption } from '@/models/Table/fieldHelper'
 import { EFieldType, IFieldValue, INumberValue, IRelationValue, ISelectValue, ISingleValue, ITextValue } from '@/types/EType'
 import { IJSONTable } from '@/types/IJSONTable'
@@ -7,7 +8,7 @@ import { IOptionAction } from '@/types/IOptionAction'
 
 export default class BaseConverter {
 
-  constructor(public field: IJSONTableField) {
+  constructor(public app: IJSONApp, public field: IJSONTableField) {
 
   }
 
@@ -57,9 +58,10 @@ export default class BaseConverter {
 
   // 转换为关联类型
   // 转换规则是名称匹配，名称存在就变成id
-  // 对于关联表名称不存在的，有两种处理方式，1关联表插入新行后存储id，2不处理
-  // 暂时不考虑不处理的清空，默认按1处理
+  // 对于关联表名称不存在的，有两种处理方式，1关联表插入新行后存储id，2抛弃
+  // 转换默认按抛弃处理
   toRelation (value: IFieldValue, target: IJSONRelationField): IRelationValue | undefined {
+
     return
   }
 

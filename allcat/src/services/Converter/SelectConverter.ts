@@ -1,4 +1,5 @@
 import libs from '@/libs'
+import { IJSONApp } from '@/models/appHelper'
 import { ISelectOption } from '@/models/Table/fieldHelper'
 import { IMultiValue, INumberValue, ISelectValue, ISingleValue, ITextValue } from '@/types/EType'
 import { IJSONTable } from '@/types/IJSONTable'
@@ -8,8 +9,8 @@ import BaseConverter from './BaseConverter'
 
 export default class SelectConverter extends BaseConverter {
 
-  constructor(public field: IJSONSelectField) {
-    super(field)
+  constructor(public app: IJSONApp, public field: IJSONSelectField) {
+    super(app, field)
   }
 
   toText (value: ISelectValue): ITextValue {

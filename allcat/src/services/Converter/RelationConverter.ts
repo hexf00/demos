@@ -1,11 +1,12 @@
+import { IJSONApp } from '@/models/appHelper'
 import { IFieldValue, INumberValue, ITextValue } from '@/types/EType'
 import { IJSONNumberField, IJSONRelationField } from '@/types/IJSONTableField'
 import BaseConverter from './BaseConverter'
 
 export default class RelationConverter extends BaseConverter {
 
-  constructor(public field: IJSONRelationField) {
-    super(field)
+  constructor(public app: IJSONApp, public field: IJSONRelationField) {
+    super(app, field)
   }
 
   toText (value: IFieldValue): ITextValue {

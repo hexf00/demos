@@ -78,7 +78,7 @@ export default class FieldItemPanel extends Vue {
     if (field.type === EFieldType.select) {
       this.$set(field, 'isMulti', !!field.isMulti)
       // 获取选项
-      const options = ConverterFactory(this.table.fields[field.id]).getSelectOptions(this.table, field)
+      const options = ConverterFactory(store.currentApp!, this.table.fields[field.id]).getSelectOptions(this.table, field)
       this.$set(field, 'selectOptions', options)
       this.selectManager.setOptions(options)
     } else if (field.type === EFieldType.relation) {
