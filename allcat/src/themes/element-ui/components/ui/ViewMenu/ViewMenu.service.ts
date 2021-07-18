@@ -2,14 +2,10 @@ import { IJSONApp } from '@/models/appHelper'
 import tableHelper from '@/models/Table/tableHelper'
 import { IJSONTable } from '@/types/IJSONTable'
 import JsonView, { IView } from '@/models/View/View'
-import store from '@/store'
 import { IViewMenuService } from './ViewMenu'
 
 export default class ViewMenuService implements IViewMenuService {
-  app: IJSONApp
-
-  constructor() {
-    this.app = store.currentApp as IJSONApp
+  constructor(public app: IJSONApp) {
   }
 
   createNewTable () {

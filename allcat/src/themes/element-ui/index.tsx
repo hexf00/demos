@@ -12,6 +12,7 @@ import store from '@/store'
 @Component
 export default class extends Vue {
   service = new IndexService()
+
   store = store
 
   beforeDestroy () {
@@ -26,9 +27,11 @@ export default class extends Vue {
       <div class={style.top}>{name} {description}
         <el-button>导入</el-button>
         <el-button>导出</el-button>
+        <el-button onclick={() => this.service.record()}>测试：记录为快照</el-button>
+        <el-button onclick={() => this.service.reset()}>测试：恢复快照</el-button>
       </div>
       <div class={style.editor}>
-        <ViewMenu class={style.left}></ViewMenu>
+        <ViewMenu service={this.service.viewMenuService} class={style.left}></ViewMenu>
 
         <div class={style.right}>
           {

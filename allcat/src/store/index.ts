@@ -1,6 +1,7 @@
 import { IJSONApp } from '@/models/appHelper'
 import { IJSONTable } from '@/types/IJSONTable'
 import { IView } from '@/models/View/View'
+import Vue from 'vue'
 
 export interface IStore {
   apps: Record<string, IJSONApp>
@@ -20,5 +21,7 @@ const store: IStore = {
   currentView: null,
   search: {},
 }
+
+Vue.observable(store)
 
 export default store

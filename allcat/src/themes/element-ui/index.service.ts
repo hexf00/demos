@@ -1,23 +1,38 @@
-import JsonApp, { IJSONApp } from '@/models/appHelper'
+import appHelper, { IJSONApp } from '@/models/appHelper'
 import rowHelper from '@/models/Table/rowHelper'
 import store from '@/store'
 import qs from 'qs'
 import papaparse from 'papaparse'
+import ViewMenuService from './components/ui/ViewMenu/ViewMenu.service'
 
 export default class IndexService {
   app: IJSONApp
+  viewMenuService: ViewMenuService
 
   constructor() {
-    this.app = JsonApp.get()
+    this.app = appHelper.get()
     store.currentApp = this.app
-    this.routerInit();
-    (window as unknown as { app: IJSONApp }).app = this.app
+
+    this.viewMenuService = new ViewMenuService(store.currentApp)
+    this.routerInit()
 
     window.onbeforeunload = function () {
       console.log('自动保存')
-      JsonApp.save()
+      appHelper.save()
     }
     window.addEventListener('paste', this.onPaste)
+  }
+
+  record () {
+    appHelper.record()
+  }
+
+  reset () {
+    this.app = appHelper.get('record')
+
+    store.currentApp = this.app
+    this.viewMenuService = new ViewMenuService(store.currentApp)
+    this.routerInit()
   }
 
   /** 粘贴处理 */

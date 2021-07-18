@@ -38,6 +38,25 @@ function get (appId = 'default_app'): IJSONApp {
   return store.apps[appId]
 }
 
+/** 导入 */
+function importJson (appId = 'default_app') {
+  // TODO
+}
+
+/** 导出 */
+function exportJson (appId = 'default_app') {
+  //  TODO
+}
+
+/** 记录 */
+function record (appId = 'default_app') {
+  if (!store.apps[appId]) {
+    return
+  }
+  const { id: _id } = store.apps[appId]
+  localStorage.setItem('app:record', JSON.stringify(store.apps[appId]))
+}
+
 /** 缓存表结构 */
 function save (appId = 'default_app') {
   if (!store.apps[appId]) {
@@ -50,6 +69,9 @@ function save (appId = 'default_app') {
 const JsonApp = {
   get,
   save,
+  importJson,
+  exportJson,
+  record,
 }
 
 export default JsonApp

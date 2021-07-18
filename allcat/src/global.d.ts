@@ -8,6 +8,14 @@ declare module 'element-ui/lib/select'
 declare module '@/components/select/index'
 namespace JSX {
   interface IntrinsicElements { [key: string]: any }
+
+  // 给组件增加属性
+  interface IntrinsicAttributes {
+    key?: string | number
+    class?: string | string[]
+    placeholder?: string
+  }
+
   interface ElementAttributesProperty {
     $props: any
   }

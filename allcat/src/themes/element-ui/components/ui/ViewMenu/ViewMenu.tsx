@@ -1,6 +1,5 @@
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Component, Prop } from 'vue-property-decorator'
 import { CreateElement } from 'vue'
-import ViewMenuService from './ViewMenu.service'
 import { IJSONApp } from '@/models/appHelper'
 import style from './ViewMenu.module.scss'
 import { IJSONTable } from '@/types/IJSONTable'
@@ -28,7 +27,11 @@ export interface ITreeNode {
 }
 @Component
 export default class extends Vue {
-  service: IViewMenuService = new ViewMenuService()
+  $props!: {
+    service: IViewMenuService
+  }
+
+  @Prop() service!: IViewMenuService
 
   expandedTableIds = []
 
