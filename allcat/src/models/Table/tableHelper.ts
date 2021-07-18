@@ -1,5 +1,5 @@
 import libs from '@/libs'
-import { IJSONApp } from '../App'
+import { IJSONApp } from '../appHelper'
 import JsonView from '../View/View'
 import fieldHelper from './fieldHelper'
 import Vue from 'vue'

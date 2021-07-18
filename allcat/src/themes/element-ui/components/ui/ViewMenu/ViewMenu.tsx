@@ -1,7 +1,7 @@
 import { Vue, Component } from 'vue-property-decorator'
 import { CreateElement } from 'vue'
 import ViewMenuService from './ViewMenu.service'
-import { IJSONApp } from '@/models/App'
+import { IJSONApp } from '@/models/appHelper'
 import style from './ViewMenu.module.scss'
 import { IJSONTable } from '@/types/IJSONTable'
 import { IView } from '@/models/View/View'

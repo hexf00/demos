@@ -23,7 +23,10 @@ export default class extends Vue {
     const { currentTable, currentView } = this.store
 
     return <div class={style.bg}>
-      <div class={style.top}>{name} {description}</div>
+      <div class={style.top}>{name} {description}
+        <el-button>导入</el-button>
+        <el-button>导出</el-button>
+      </div>
       <div class={style.editor}>
         <ViewMenu class={style.left}></ViewMenu>
 

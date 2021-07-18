@@ -1,4 +1,4 @@
-import { IJSONApp } from '@/models/App'
+import { IJSONApp } from '@/models/appHelper'
 import tableHelper from '@/models/Table/tableHelper'
 import { IJSONTable } from '@/types/IJSONTable'
 import JsonView, { IView } from '@/models/View/View'

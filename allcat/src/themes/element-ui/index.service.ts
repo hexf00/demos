@@ -1,4 +1,4 @@
-import JsonApp, { IJSONApp } from '@/models/App'
+import JsonApp, { IJSONApp } from '@/models/appHelper'
 import rowHelper from '@/models/Table/rowHelper'
 import store from '@/store'
 import qs from 'qs'
