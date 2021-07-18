@@ -7,6 +7,8 @@ import OptionList from './components/OptionList/OptionList'
 import store from '@/store'
 import { EFieldType } from '@/types/EType'
 import { ConverterFactory } from '@/services/Converter/ConvertHelper'
+import { IJSONTableField } from '@/types/IJSONTableField'
+import SelectManager from '@/services/SelectManager'
 
 @Component
 export default class FieldItemPanel extends Vue {
@@ -20,9 +22,17 @@ export default class FieldItemPanel extends Vue {
   @Prop(Object) field!: any
   @Prop(Object) table!: IJSONTable
 
+  selectManager = new SelectManager()
+
   @Watch('field', { immediate: true })
-  onEdit (value: boolean) {
+  onEdit (field: IJSONTableField) {
     if (this.field) {
+
+      if (field.type === EFieldType.select) {
+        // 由于没有响应式，此处需要手动设置
+        this.selectManager.setOptions(field.selectOptions)
+      }
+
       this.$nextTick(() => {
         this.$refs.name.select()
       })
@@ -68,7 +78,9 @@ export default class FieldItemPanel extends Vue {
     if (field.type === EFieldType.select) {
       this.$set(field, 'isMulti', !!field.isMulti)
       // 获取选项
-      this.$set(field, 'selectOptions', ConverterFactory(this.table.fields[field.id]).getSelectOptions(this.table, field))
+      const options = ConverterFactory(this.table.fields[field.id]).getSelectOptions(this.table, field)
+      this.$set(field, 'selectOptions', options)
+      this.selectManager.setOptions(options)
     } else if (field.type === EFieldType.relation) {
       this.$set(field, 'isMulti', !!field.isMulti)
     }
@@ -138,7 +150,7 @@ export default class FieldItemPanel extends Vue {
           </el-select>
         </el-form-item>}
 
-        {field.type === 'select' && <OptionList field={field}></OptionList>}
+        {field.type === 'select' && <OptionList service={this.selectManager}></OptionList>}
 
         <el-form-item style="text-align: right;">
           <el-button on={{ click: () => { this.$emit('cancel') } }}>取消</el-button>

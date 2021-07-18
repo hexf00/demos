@@ -33,16 +33,33 @@ export default class TableCell extends Vue {
     } else if (field.type === EFieldType.number) {
       const service = new TextCellService()
       return <TextCell value={this.row[this.field.id] as string} service={service} oninput={val => {
-        this.$set(this.row, field.id, val && val.trim().length > 0 ? Number(val.trim()) : undefined)
+        if (typeof val === 'number') {
+          this.$set(this.row, field.id, val)
+        } else if (typeof val === 'string') {
+          this.$set(this.row, field.id, val.trim().length > 0 ? Number(val.trim()) : undefined)
+        } else {
+          this.$set(this.row, field.id, undefined)
+        }
       }} />
     } else if (field.type === EFieldType.select) {
       const service = new SelectCellService(field)
       service.selectOptions = field.selectOptions || []
       return <SelectCell value={this.row[this.field.id] as ISelectValue} service={service} oninput={(val) => {
+
         // 赋值，因为有attr校验，所以不能使用v-model
-        this.$set(this.row, field.id, val)
-        const list = field.isMulti ? val as IMultiValue : [val as ISingleValue]
-        checkOptionsIsNotExistAdd(field, list)
+        let value
+        if (field.isMulti) {
+          value = (val as string[]).length > 0 ? val : undefined
+        } else {
+          value = (val as string) || undefined
+        }
+
+        this.$set(this.row, field.id, value)
+        if (value !== undefined) {
+          const list = field.isMulti ? val as IMultiValue : [val as ISingleValue]
+          // 添加不存在的选项
+          checkOptionsIsNotExistAdd(field, list)
+        }
       }} />
     } else if (this.field.type === EFieldType.relation) {
       const service = new RelationCellService(this.field)

@@ -9,17 +9,19 @@ type Props = {
   onRemove?: (item: ISelectOption) => void
 }
 const OptionsItem = {
+  functional: true,
   props: {
     data: Object,
     onRemove: Function,
   },
-  functional: true,
   render (h: CreateElement, { props, parent }: RenderContext<Props>) {
     const { data, onRemove: onRemove } = props
     return <div class={style.item} >
       <Icon value="dragHandler" style="cursor: move;"></Icon>
-      <ColorPicker vModel={data.color} />
-      <el-input size="mini" vModel={data.value} ></el-input>
+      <ColorPicker value={data.color} oninput={(val: string) => { data.color = val }} />
+      <el-input size="mini" value={data.label} oninput={(val: string) => {
+        data.label = val
+      }} ></el-input>
       <i class="el-icon-close" on={{
         click: () => onRemove && onRemove(data),
       }}></i>

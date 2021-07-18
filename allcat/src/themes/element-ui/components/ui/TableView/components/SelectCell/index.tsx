@@ -57,6 +57,7 @@ export default class SelectCell<T extends string | string[]> extends Mixins(Base
             },
           }}
           allow-create
+          clearable
           props={{
             multiple: this.service.isMulti,
             /** 单选情况下第一次需要多按一次方向键，element-ui bug */

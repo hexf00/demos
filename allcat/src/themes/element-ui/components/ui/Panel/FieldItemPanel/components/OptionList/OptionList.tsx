@@ -3,18 +3,17 @@ import { CreateElement } from 'vue'
 import { ISelectOption } from '@/models/Table/fieldHelper'
 
 import style from './index.module.scss'
-import { Input } from 'element-ui'
 import { TreeNode } from 'element-ui/types/tree'
 import OptionItem from '../OptionItem/OptionItem'
-import { IJSONSelectField } from '@/types/IJSONTableField'
+import SelectManager from '@/services/SelectManager'
 
 @Component
 export default class OptionList extends Vue {
-  $refs!: {
-    name: Input
+  $props!: {
+    service: SelectManager
   }
 
-  @Prop(Object) field!: IJSONSelectField
+  @Prop(Object) service!: SelectManager
 
   /** 判断拖拽是否允许放下 */
   isAllowDrop (raggingNode: TreeNode<string, ISelectOption>, dropNode: TreeNode<string, ISelectOption>, pos: 'prev' | 'inner' | 'next') {
@@ -25,33 +24,15 @@ export default class OptionList extends Vue {
     return true
   }
 
-  removeOptions (option: ISelectOption) {
-    const { selectOptions } = this.field
-    if (selectOptions) {
-      const index = selectOptions.indexOf(option)
-      if (index !== -1) {
-        selectOptions.splice(index, 1)
-      }
-    }
-  }
-
   render (h: CreateElement) {
-    const list = this.field.selectOptions
     return <div>
       <el-button size="mini" on={{
-        click: () => {
-          const { selectOptions } = this.field
-          const option: ISelectOption = {
-            color: '',
-            label: '',
-            value: '',
-          }
-          selectOptions.push(option)
-        },
+        click: () => this.service.addOption(),
       }}>添加一个选项</el-button>
+      <p>提示:选项具有唯一性，相同会被合并，颜色保留第一项。</p>
       <el-tree
         props={{
-          data: list,
+          data: this.service.options,
           draggable: true,
           allowDrop: this.isAllowDrop,
           nodeKey: 'id',
@@ -62,7 +43,7 @@ export default class OptionList extends Vue {
           default: ({ data }: { data: ISelectOption }) => {
             return <OptionItem props={{
               data,
-              onRemove: (option) => this.removeOptions(option),
+              onRemove: (option) => this.service.removeOption(option),
             }} />
           },
         }} />

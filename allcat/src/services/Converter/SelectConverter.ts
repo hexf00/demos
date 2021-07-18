@@ -1,7 +1,9 @@
+import libs from '@/libs'
 import { ISelectOption } from '@/models/Table/fieldHelper'
 import { IMultiValue, INumberValue, ISelectValue, ISingleValue, ITextValue } from '@/types/EType'
 import { IJSONTable } from '@/types/IJSONTable'
 import { IJSONNumberField, IJSONSelectField } from '@/types/IJSONTableField'
+import { IOptionAction } from '@/types/IOptionAction'
 import BaseConverter from './BaseConverter'
 
 export default class SelectConverter extends BaseConverter {
@@ -32,17 +34,55 @@ export default class SelectConverter extends BaseConverter {
     return isNaN(newValue) ? undefined : newValue
   }
 
-  toSelect (value: ISelectValue, target: IJSONSelectField): ISelectValue | undefined {
-    if (this.field.isMulti === target.isMulti) {
-      return value
+  toSelect (value: ISelectValue, target: IJSONSelectField, optionActions: Record<ISingleValue, IOptionAction>): ISelectValue | undefined {
+    // 选项修改会进入此逻辑
+
+    console.log(this.field, target, optionActions)
+
+    const mapFn = (option: ISingleValue): ISingleValue | undefined => {
+      // 如果原选项删除，但又添加了相同字面量，则选项等同于不删除，这一动作已经在外部处理
+      const action = optionActions[option]
+      if (!action) {
+        // 无动作
+        return option
+      }
+
+      if (action.type === 'delete') {
+        return
+      } else if (action.type === 'edit') {
+        return action.newValue
+      } else {
+        // 其它情况，不存在
+        return
+      }
     }
 
     if (this.field.isMulti) {
-      // 多转单
-      return (value as IMultiValue)[0]
+      const reduceFn = (dict: IMultiValue, option: ISingleValue) => {
+        const r = mapFn(option)
+        if (r !== undefined) {
+          dict.push(r)
+        }
+        return dict
+      }
+
+      const r = libs.arrUniq((value as IMultiValue).reduce(reduceFn, []), (a, b) => a === b)
+
+      if (this.field.isMulti === target.isMulti) {
+        // 去重
+        return r.length > 0 ? r : undefined
+      } else {
+        // 多转单，保留第一项
+        return r.length > 0 ? r[0] : undefined
+      }
     } else {
-      // 单转多
-      return [value as ISingleValue]
+      const r = mapFn(value as ISingleValue)
+      if (this.field.isMulti === target.isMulti) {
+        return r
+      } else {
+        // 单转多
+        return r && [r]
+      }
     }
   }
 

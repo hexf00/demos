@@ -1,7 +1,8 @@
 import { ISelectOption } from '@/models/Table/fieldHelper'
 import { EFieldType, IFieldValue, INumberValue, IRelationValue, ISelectValue, ISingleValue, ITextValue } from '@/types/EType'
 import { IJSONTable } from '@/types/IJSONTable'
-import { IJSONNumberField, IJSONRelationField, IJSONSelectField, IJSONTableField, IJSONTextField } from '@/types/IJSONTableField'
+import { IJSONNumberField, IJSONRelationField, IJSONSelectField, IJSONTableField } from '@/types/IJSONTableField'
+import { IOptionAction } from '@/types/IOptionAction'
 // TODO 暂时不实现接口
 
 export default class BaseConverter {
@@ -10,11 +11,11 @@ export default class BaseConverter {
 
   }
 
-  convert (value: IFieldValue, target: IJSONTextField): ITextValue
-  convert (value: IFieldValue, target: IJSONNumberField): INumberValue | undefined
-  convert (value: IFieldValue, target: IJSONSelectField): ISelectValue | undefined
-  convert (value: IFieldValue, target: IJSONRelationField): IRelationValue | undefined
-  convert (value: IFieldValue, target: IJSONTableField): IFieldValue | undefined
+  // convert (value: IFieldValue, target: IJSONTextField): ITextValue
+  // convert (value: IFieldValue, target: IJSONNumberField): INumberValue | undefined
+  // convert (value: IFieldValue, target: IJSONSelectField): ISelectValue | undefined
+  // convert (value: IFieldValue, target: IJSONRelationField): IRelationValue | undefined
+  // convert (value: IFieldValue, target: IJSONTableField): IFieldValue | undefined
   convert (value: IFieldValue, target: IJSONTableField) {
     switch (target.type) {
       case EFieldType.text: return this.toText(value)
@@ -34,10 +35,24 @@ export default class BaseConverter {
 
   }
 
-  // 转化为选项
-  // 转换规则是名称匹配，不存在的就新增
-  toSelect (value: IFieldValue, target: IJSONSelectField): ISelectValue | undefined {
-    return
+  /**
+   * 转化为选项
+   * 转换规则是名称匹配，不存在的就新增
+   * 说明：由于 选项 转 选项 时会修改选项，此时对比两个字段的选项没有办法识别出修改的操作，此处加入一个参数optionActions
+   * @param value 
+   * @param target 
+   * @param optionActions 具体的修改操作，由外部传入
+   * @returns 
+   */
+  toSelect (value: IFieldValue, target: IJSONSelectField, optionActions?: Record<ISingleValue, IOptionAction>): ISelectValue | undefined {
+    const text = String(value)
+    if (target.isMulti) {
+      const newOptions = text.split(',').filter(it => target.selectOptions.find(option => option.value === it))
+      return newOptions
+    } else {
+      console.log(target.selectOptions.find(option => option.value === text))
+      return target.selectOptions.find(option => option.value === text) ? text : undefined
+    }
   }
 
   // 转换为关联类型
@@ -66,7 +81,7 @@ export default class BaseConverter {
             optionsMap.add(it)
           })
         } else {
-          optionsMap.add(value as ISingleValue)
+          optionsMap.add(text)
         }
       }
     }

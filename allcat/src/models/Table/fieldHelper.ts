@@ -91,7 +91,7 @@ export function checkOptionsIsNotExistAdd (field: IJSONSelectField, newOptions: 
   const items = new Set(field.selectOptions.map(it => it.value))
 
   newOptions.forEach(it => {
-    if (it !== '' && !items.has(it)) {
+    if (!items.has(it)) {
       items.add(it)
       const newOption: ISelectOption = {
         value: it,

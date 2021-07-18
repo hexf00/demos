@@ -46,8 +46,6 @@ export default class FieldItem extends Vue {
       {/* 操作区+右键菜单 */}
       <div class={style.opera}>
 
-
-
         <EyeSwitch vModel={viewField.isShow} />
         <el-dropdown size="mini" trigger="click" on={{
           command: (command: string) => {

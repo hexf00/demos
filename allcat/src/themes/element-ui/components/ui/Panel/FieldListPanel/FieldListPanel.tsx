@@ -11,7 +11,10 @@ import { IJSONTableField } from '@/types/IJSONTableField'
 import FieldItemPanel from '../FieldItemPanel/FieldItemPanel'
 import { checkIsNeedConvert, ConverterFactory } from '@/services/Converter/ConvertHelper'
 import FieldListPanelService from './service'
-
+import { EFieldType, ISelectValue } from '@/types/EType'
+import { IOptionAction } from '@/types/IOptionAction'
+import libs from '@/libs'
+import SelectManager from '@/services/SelectManager'
 @Component
 export default class FieldListPanel extends Vue {
   $props!: {
@@ -97,14 +100,39 @@ export default class FieldListPanel extends Vue {
             const oldField = this.currentField!
 
             if (checkIsNeedConvert(oldField, field)) {
-              const converter = ConverterFactory(oldField)
-              // 数据转换
-              Object.values(this.table.rows).forEach(row => {
-                const oldVal = row[oldField.id]
-                if (oldVal !== undefined) {
-                  row[oldField.id] = converter.convert(oldVal, field)
-                }
-              })
+
+              if (field.type === EFieldType.select) {
+
+                const oldOptions = oldField.type === EFieldType.select ? oldField.selectOptions : []
+                const converter = ConverterFactory(oldField)
+
+                // 通过对比新老option的 label 和 value  分析改动
+                const actions: Record<string, IOptionAction> = SelectManager.diff(oldOptions, field.selectOptions)
+
+                // 选项唯一处理，需要在diff之后，在数据转换之前
+                libs.arrUniq(field.selectOptions, (a, b) => a.label === b.label)
+                  .forEach(it => {
+                    // value同步为label，保持数据完整性
+                    it.value = it.label
+                  })
+
+                // 数据转换
+                Object.values(this.table.rows).forEach(row => {
+                  const oldVal = row[oldField.id]
+                  if (oldVal !== undefined) {
+                    row[oldField.id] = converter.toSelect(oldVal as ISelectValue, field, actions)
+                  }
+                })
+              } else {
+                const converter = ConverterFactory(oldField)
+                // 数据转换
+                Object.values(this.table.rows).forEach(row => {
+                  const oldVal = row[oldField.id]
+                  if (oldVal !== undefined) {
+                    row[oldField.id] = converter.convert(oldVal, field)
+                  }
+                })
+              }
             }
 
             Object.assign(this.currentField, this.fieldFormModel)
