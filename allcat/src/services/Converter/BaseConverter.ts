@@ -24,6 +24,7 @@ export default class BaseConverter {
       case EFieldType.number: return this.toNumber(value, target)
       case EFieldType.select: return this.toSelect(value, target)
       case EFieldType.relation: return this.toRelation(value, target)
+      default: return this.toText(value)
     }
   }
 

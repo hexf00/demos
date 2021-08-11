@@ -50,8 +50,16 @@ export interface IJSONRelationField extends IJSONBase {
   relationTo: string
 }
 
+export interface IJSONReverseRelationField extends IJSONBase {
+  type: EFieldType.reverseRelation
+  /** 关联表id */
+  relationTableId: string
+  /** 关联字段id */
+  relationFieldId: string
+}
+
 // export interface IJSONScriptField extends IJSONBase {
 //   type: EFieldType.script
 // }
 
-export type IJSONTableField = IJSONTextField | IJSONNumberField | IJSONSelectField | IJSONRelationField
+export type IJSONTableField = IJSONTextField | IJSONNumberField | IJSONSelectField | IJSONRelationField | IJSONReverseRelationField

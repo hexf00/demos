@@ -3,6 +3,7 @@
 import { IJSONApp } from '@/models/appHelper'
 import { EFieldType } from '@/types/EType'
 import { IJSONNumberField, IJSONRelationField, IJSONSelectField, IJSONTableField, IJSONTextField } from '@/types/IJSONTableField'
+import BaseConverter from './BaseConverter'
 import NumberConverter from './NumberConverter'
 import RelationConverter from './RelationConverter'
 import SelectConverter from './SelectConverter'
@@ -12,13 +13,14 @@ export function ConverterFactory (app: IJSONApp, source: IJSONTextField): TextCo
 export function ConverterFactory (app: IJSONApp, source: IJSONNumberField): NumberConverter
 export function ConverterFactory (app: IJSONApp, source: IJSONSelectField): SelectConverter
 export function ConverterFactory (app: IJSONApp, source: IJSONRelationField): RelationConverter
-export function ConverterFactory (app: IJSONApp, source: IJSONTableField): TextConverter | NumberConverter | SelectConverter | RelationConverter
+export function ConverterFactory (app: IJSONApp, source: IJSONTableField): TextConverter | NumberConverter | SelectConverter | RelationConverter | BaseConverter
 export function ConverterFactory (app: IJSONApp, source: IJSONTableField) {
   switch (source.type) {
     case EFieldType.text: return new TextConverter(app, source)
     case EFieldType.number: return new NumberConverter(app, source)
     case EFieldType.select: return new SelectConverter(app, source)
     case EFieldType.relation: return new RelationConverter(app, source)
+    default: return new BaseConverter(app, source)
   }
 }
 

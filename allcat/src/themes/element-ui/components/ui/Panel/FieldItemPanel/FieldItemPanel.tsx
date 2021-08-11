@@ -122,14 +122,15 @@ export default class FieldItemPanel extends Vue {
             <el-option label="数值" value={EFieldType.number}></el-option>
             <el-option label="选项" value={EFieldType.select}></el-option>
             <el-option label="关联" value={EFieldType.relation}></el-option>
+            <el-option label="反向关联" value={EFieldType.reverseRelation}></el-option>
           </el-select>
         </el-form-item>
 
-        {['select', 'relation'].includes(field.type) && <el-form-item label="启用多选" prop="multi">
+        {[EFieldType.select, EFieldType.relation].includes(field.type) && <el-form-item label="启用多选" prop="multi">
           <el-switch vModel={field.isMulti} oninput={() => this.changeType()}></el-switch>
         </el-form-item>}
 
-        {field.type === 'relation' && <el-form-item label="引用表" prop="relationTo" required>
+        {(field.type === EFieldType.relation || field.type === EFieldType.reverseRelation) && <el-form-item label="引用表" prop="relationTo" required>
           <el-select ref="relationTo" vModel={field.relationTo} on={{
             // 下拉框显示 hack
             'visible-change': (vis: boolean) => {

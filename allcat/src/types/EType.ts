@@ -7,6 +7,9 @@ export enum EFieldType {
   select = 'select',
   /** 关联类型 */
   relation = 'relation',
+  /** 反向关联类型 */
+  reverseRelation = 'reverseRelation',
+
   /** 脚本类型 */
   // script = 'script'
 }

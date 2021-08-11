@@ -75,6 +75,21 @@ export default class TableCell extends Vue {
         // 赋值，因为有attr校验，所以不能使用v-model
         this.$set(this.row, field.id, val)
       }} />
+    } else if (this.field.type === EFieldType.reverseRelation) {
+
+      const service = new RelationCellService(this.field)
+      // 关联与select 区别 是数据的来源有所不同
+
+      const relationTable = store.currentApp?.tables[this.field.relationTableId]
+      service.selectOptions = relationTable ? Object.values(relationTable.rows).map(row => ({
+        label: row[relationTable.primaryField] as string || '-',
+        value: row.id,
+        color: '',
+      })) : []
+      return <SelectCell value={this.row[this.field.id] as string[] | string} service={service} oninput={(val) => {
+        // 赋值，因为有attr校验，所以不能使用v-model
+        this.$set(this.row, field.id, val)
+      }} />
     } else {
       return <div>未知组件{this.field.type}</div>
     }
