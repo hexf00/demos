@@ -67,7 +67,7 @@ export default class BaseConverter {
    */
   toRelation (value: IFieldValue, target: IJSONRelationField): IRelationValue | undefined {
     const text = this.toText(value)
-    const targetTable = this.app.tables[target.relationTo]
+    const targetTable = this.app.tables[target.relationTableId]
     const findRowByText = (text: string) => Object.values(targetTable.rows).find(it => it[targetTable.primaryField] === text)
 
     if (target.isMulti) {

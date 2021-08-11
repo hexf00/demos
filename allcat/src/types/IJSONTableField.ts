@@ -47,7 +47,7 @@ export interface IJSONRelationField extends IJSONBase {
   /** 是否启用多选 */
   isMulti: boolean
   /** 映射表id */
-  relationTo: string
+  relationTableId: string
 }
 
 export interface IJSONReverseRelationField extends IJSONBase {

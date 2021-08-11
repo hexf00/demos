@@ -65,7 +65,7 @@ export default class TableCell extends Vue {
       const service = new RelationCellService(this.field)
       // 关联与select 区别 是数据的来源有所不同
 
-      const relationTable = store.currentApp?.tables[this.field.relationTo]
+      const relationTable = store.currentApp?.tables[this.field.relationTableId]
       service.selectOptions = relationTable ? Object.values(relationTable.rows).map(row => ({
         label: row[relationTable.primaryField] as string || '-',
         value: row.id,

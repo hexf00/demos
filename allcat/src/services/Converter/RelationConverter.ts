@@ -11,7 +11,7 @@ export default class RelationConverter extends BaseConverter {
 
   /** 转换为文本类型，使用primaryField */
   toText (value: IRelationValue): ITextValue {
-    const targetTable = this.app.tables[this.field.relationTo]
+    const targetTable = this.app.tables[this.field.relationTableId]
 
     if (this.field.isMulti) {
       const newOptions = (value as IMultiValue).reduce((dict: IMultiValue, it) => {
@@ -26,7 +26,7 @@ export default class RelationConverter extends BaseConverter {
 
   /** 转换为数字，保留第一项 */
   toNumber (value: IRelationValue, target: IJSONNumberField): INumberValue | undefined {
-    const targetTable = this.app.tables[this.field.relationTo]
+    const targetTable = this.app.tables[this.field.relationTableId]
     let val: ISingleValue
     if (this.field.isMulti) {
       val = (value as IMultiValue)[0]
@@ -39,7 +39,7 @@ export default class RelationConverter extends BaseConverter {
   }
 
   toRelation (value: IRelationValue, target: IJSONRelationField): IRelationValue | undefined {
-    if (this.field.relationTo === target.relationTo) {
+    if (this.field.relationTableId === target.relationTableId) {
       if (this.field.isMulti === target.isMulti) {
         return value
       }

@@ -16,7 +16,7 @@ export default class FieldItemPanel extends Vue {
     form: Form
     name: Input
     typeSelect: Select
-    relationTo: Select
+    relationToTable: Select
   }
 
   @Prop(Object) field!: any
@@ -130,13 +130,13 @@ export default class FieldItemPanel extends Vue {
           <el-switch vModel={field.isMulti} oninput={() => this.changeType()}></el-switch>
         </el-form-item>}
 
-        {(field.type === EFieldType.relation || field.type === EFieldType.reverseRelation) && <el-form-item label="引用表" prop="relationTo" required>
-          <el-select ref="relationTo" vModel={field.relationTo} on={{
+        {(field.type === EFieldType.relation || field.type === EFieldType.reverseRelation) && <el-form-item label="引用表" prop="relationTableId" required>
+          <el-select ref="relationToTable" vModel={field.relationTableId} on={{
             // 下拉框显示 hack
             'visible-change': (vis: boolean) => {
               if (vis) {
                 this.$nextTick(() => {
-                  const vNode = this.$refs['relationTo'].$refs['popper'] as Vue
+                  const vNode = this.$refs['relationToTable'].$refs['popper'] as Vue
                   const el = vNode.$el as HTMLElement
                   el.style.zIndex = '10000'
                 })

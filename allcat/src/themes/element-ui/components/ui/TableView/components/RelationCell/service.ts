@@ -23,15 +23,17 @@ export default class RelationCellService extends BaseCellService {
 
   toText (value: string): string {
 
-    let relationTable
-    if (this.field.type === EFieldType.relation) {
-      relationTable = store.currentApp!.tables[this.field.relationTo]
-    } else {
-      relationTable = store.currentApp!.tables[this.field.relationTableId]
+    const relationTable = store.currentApp!.tables[this.field.relationTableId]
+    if (!relationTable) {
+      console.warn('失效引用:表丢失', value)
+      return `表丢失,${value}`
     }
 
     const row = relationTable.rows[value]
-    !row && console.warn('失效引用', value)
+    if (!row) {
+      console.warn('失效引用:行丢失', value)
+      return `行丢失,${value}`
+    }
     // 删除数据需要联动删除，否则这里会报错
     // 表被删除
     // 行被删除
