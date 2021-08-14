@@ -4,9 +4,10 @@ import { Select } from 'element-ui'
 import BaseCell from '../BaseCell'
 import SelectCellService from './service'
 import style from './index.module.scss'
+import { IFieldValue } from '@/types/EType'
 
 @Component
-export default class SelectCell<T extends string | string[]> extends Mixins(BaseCell) {
+export default class SelectCell<T extends IFieldValue> extends Mixins(BaseCell) {
   $refs!: {
     select: Select
   }

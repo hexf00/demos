@@ -1,21 +1,49 @@
 {
   "parser": "@typescript-eslint/parser",
-  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
   "rules": {
+    // 允许使用ts名字空间
+    "@typescript-eslint/no-namespace": 0,
     // 允许使用!断言
     "@typescript-eslint/no-non-null-assertion": 0,
     // 使用2个空格缩进
-    "indent": [2, 2, { "SwitchCase": 1 }],
+    "indent": [
+      2,
+      2,
+      {
+        "SwitchCase": 1
+      }
+    ],
     // 空行最多不能超过1行
-    "no-multiple-empty-lines": [1, { "max": 1 }],
+    "no-multiple-empty-lines": [
+      1,
+      {
+        "max": 1
+      }
+    ],
     // 单引号
-    "quotes": [2, "single"],
+    "quotes": [
+      2,
+      "single"
+    ],
     // 逗号换行时在行尾
-    "comma-style": [2, "last"],
+    "comma-style": [
+      2,
+      "last"
+    ],
     // 多行时候需要尾随逗号
-    "comma-dangle": [2, "always-multiline"],
+    "comma-dangle": [
+      2,
+      "always-multiline"
+    ],
     // 不允许使用一般比较
-    "eqeqeq": [2, "always"],
+    "eqeqeq": [
+      2,
+      "always"
+    ],
     // 不检查未使用的变量，因为h
     "@typescript-eslint/no-unused-vars": 0,
     // 不检查函数一定要有返回值类型定义，因为render
@@ -25,7 +53,10 @@
     // 需要禁用，才能使用ts的校验
     "semi": 0,
     // TS也不要分号
-    "@typescript-eslint/semi": [2, "never"],
+    "@typescript-eslint/semi": [
+      2,
+      "never"
+    ],
     // 定义ts interface type分号类型
     "@typescript-eslint/member-delimiter-style": [
       2,

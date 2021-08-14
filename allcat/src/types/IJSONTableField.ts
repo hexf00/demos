@@ -48,6 +48,8 @@ export interface IJSONRelationField extends IJSONBase {
   isMulti: boolean
   /** 映射表id */
   relationTableId: string
+  /** 反向关联字段的id */
+  relationFieldId?: string
 }
 
 export interface IJSONReverseRelationField extends IJSONBase {

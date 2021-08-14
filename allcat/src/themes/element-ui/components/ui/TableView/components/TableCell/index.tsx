@@ -8,7 +8,7 @@ import TextCellService from '../TextCell/service'
 import SelectCellService from '../SelectCell/service'
 import store from '@/store'
 import RelationCellService from '../RelationCell/service'
-import { EFieldType, IMultiValue, ISelectValue, ISingleValue } from '@/types/EType'
+import { EFieldType, IFieldValue, IMultiValue, ISelectValue, ISingleValue } from '@/types/EType'
 import { checkOptionsIsNotExistAdd } from '@/models/Table/fieldHelper'
 
 @Component
@@ -71,24 +71,28 @@ export default class TableCell extends Vue {
         value: row.id,
         color: '',
       })) : []
-      return <SelectCell value={this.row[this.field.id] as string[] | string} service={service} oninput={(val) => {
+      return <SelectCell value={this.row[this.field.id] as IFieldValue} service={service} oninput={(val) => {
         // 赋值，因为有attr校验，所以不能使用v-model
         this.$set(this.row, field.id, val)
       }} />
     } else if (this.field.type === EFieldType.reverseRelation) {
+      const field = this.field
 
-      const service = new RelationCellService(this.field)
+      const service = new RelationCellService(field)
       // 关联与select 区别 是数据的来源有所不同
 
-      const relationTable = store.currentApp?.tables[this.field.relationTableId]
-      service.selectOptions = relationTable ? Object.values(relationTable.rows).map(row => ({
+      const app = store.currentApp!
+      const relationTable = app.tables[field.relationTableId]
+
+      //目标表一定存在
+      service.selectOptions = Object.values(relationTable.rows).map(row => ({
         label: row[relationTable.primaryField] as string || '-',
         value: row.id,
         color: '',
-      })) : []
-      return <SelectCell value={this.row[this.field.id] as string[] | string} service={service} oninput={(val) => {
-        // 赋值，因为有attr校验，所以不能使用v-model
-        this.$set(this.row, field.id, val)
+      }))
+
+      return <SelectCell value={this.row[this.field.id] as IMultiValue} service={service} oninput={(val) => {
+        service.setValue(val, field, this.row)
       }} />
     } else {
       return <div>未知组件{this.field.type}</div>
