@@ -26,7 +26,7 @@ export default class extends Vue {
     return <div class={style.bg}>
       <div class={style.top}>{name} {description}
         <el-button>导入</el-button>
-        <el-button>导出</el-button>
+        <el-button onclick={() => this.service.export()}>导出</el-button>
         <el-button onclick={() => this.service.record()}>测试：记录为快照</el-button>
         <el-button onclick={() => this.service.reset()}>测试：恢复快照</el-button>
       </div>

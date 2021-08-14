@@ -77,4 +77,19 @@ export default class IndexService {
     }
   }
 
+  export () {
+    const link = document.createElement('a')
+    const body = document.querySelector('body')!
+
+    link.href = 'data:application/json;charset=UTF-8,' + encodeURIComponent(JSON.stringify(this.app, null, 1))
+    link.download = 'app.json'
+
+    // fix Firefox
+    link.style.display = 'none'
+    body.appendChild(link)
+
+    link.click()
+    body.removeChild(link)
+  }
+
 }
