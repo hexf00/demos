@@ -54,7 +54,7 @@ export default class IndexService {
       csvRows.forEach(csvRow => {
         const row = rowHelper.addRow(currentTable)
         currentView.fields.forEach((field, index) => {
-          row[field.id] = csvRow[index] || ''
+          row[field.id] = csvRow[index] || undefined
         })
       })
     }
