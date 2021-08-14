@@ -72,8 +72,7 @@ export default class TableCell extends Vue {
         color: '',
       })) : []
       return <SelectCell value={this.row[this.field.id] as IFieldValue} service={service} oninput={(val) => {
-        // 赋值，因为有attr校验，所以不能使用v-model
-        this.$set(this.row, field.id, val)
+        service.setValue(val, field, this.row)
       }} />
     } else if (this.field.type === EFieldType.reverseRelation) {
       const field = this.field

@@ -7,7 +7,7 @@ import store from '@/store'
 import { IJSONTable } from '@/types/IJSONTable'
 import { IView } from '@/models/View/View'
 import fieldHelper from '@/models/Table/fieldHelper'
-import { IJSONTableField } from '@/types/IJSONTableField'
+import { IJSONRelationField, IJSONTableField } from '@/types/IJSONTableField'
 import FieldItemPanel from '../FieldItemPanel/FieldItemPanel'
 import { checkIsNeedConvert, ConverterFactory } from '@/services/Converter/ConvertHelper'
 import FieldListPanelService from './service'
@@ -133,6 +133,12 @@ export default class FieldListPanel extends Vue {
                   }
                 })
               }
+            }
+
+            if (field.type === EFieldType.reverseRelation) {
+              // 添加 关联字段 到 反向关联 的关联
+              const relationField = store.currentApp!.tables[field.relationTableId].fields[field.relationFieldId] as IJSONRelationField
+              relationField.relationFieldId = field.id
             }
 
             Object.assign(this.currentField, this.fieldFormModel)

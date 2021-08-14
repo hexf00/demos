@@ -69,6 +69,9 @@ export default class FieldItemPanel extends Vue {
     } else if (field.type === EFieldType.relation) {
       this.$set(field, 'isMulti', !!field.isMulti)
       field.selectOptions = undefined
+    } else if (field.type === EFieldType.reverseRelation) {
+      field.isMulti = true
+      field.selectOptions = undefined
     } else {
       field.isMulti = undefined
       field.selectOptions = undefined

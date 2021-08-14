@@ -77,7 +77,7 @@ export default class RelationCellService extends BaseCellService {
     return diffResult
   }
 
-  setValue (val: IMultiValue, field: IJSONRelationField | IJSONReverseRelationField, row: IJSONRow) {
+  setValue (val: IFieldValue, field: IJSONRelationField | IJSONReverseRelationField, row: IJSONRow) {
     const app = store.currentApp!
     const relationTable = app.tables[field.relationTableId]
 
