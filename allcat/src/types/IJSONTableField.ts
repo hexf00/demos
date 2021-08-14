@@ -52,6 +52,7 @@ export interface IJSONRelationField extends IJSONBase {
 
 export interface IJSONReverseRelationField extends IJSONBase {
   type: EFieldType.reverseRelation
+  isMulti: true
   /** 关联表id */
   relationTableId: string
   /** 关联字段id */

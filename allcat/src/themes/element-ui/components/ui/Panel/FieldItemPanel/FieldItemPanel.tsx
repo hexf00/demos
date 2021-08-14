@@ -17,12 +17,22 @@ export default class FieldItemPanel extends Vue {
     name: Input
     typeSelect: Select
     relationToTable: Select
+    relationToField: Select
   }
 
   @Prop(Object) field!: any
   @Prop(Object) table!: IJSONTable
 
   selectManager = new SelectManager()
+
+  /** 关联到本表的 关联字段 */
+  get fields () {
+    if (!this.field.relationTableId || !store.currentApp!.tables[this.field.relationTableId]) {
+      return []
+    }
+    return Object.values(store.currentApp!.tables[this.field.relationTableId].fields)
+      .filter(it => it.type === EFieldType.relation && it.relationTableId === this.table.id)
+  }
 
   @Watch('field', { immediate: true })
   onEdit (field: IJSONTableField) {
@@ -147,6 +157,26 @@ export default class FieldItemPanel extends Vue {
               store.currentApp?.tableSorts.map(it => {
                 const table = store.currentApp!.tables[it]
                 return <el-option label={table.name} value={table.id} key={table.id}></el-option>
+              })}
+          </el-select>
+        </el-form-item>}
+
+        {(field.type === EFieldType.reverseRelation) && <el-form-item label="关联字段" prop="relationFieldId" required>
+          <el-select ref="relationToField" vModel={field.relationFieldId} on={{
+            // 下拉框显示 hack
+            'visible-change': (vis: boolean) => {
+              if (vis) {
+                this.$nextTick(() => {
+                  const vNode = this.$refs['relationToField'].$refs['popper'] as Vue
+                  const el = vNode.$el as HTMLElement
+                  el.style.zIndex = '10000'
+                })
+              }
+            },
+          }}>
+            {
+              this.fields.map(it => {
+                return <el-option label={it.name} value={it.id} key={it.id}></el-option>
               })}
           </el-select>
         </el-form-item>}

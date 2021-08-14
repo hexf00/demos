@@ -6,6 +6,7 @@ export default class SelectManager {
 
   options: ISelectOption[] = []
 
+  /** 创建选项管理类 */
   constructor() {
 
   }
