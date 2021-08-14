@@ -47,6 +47,10 @@ export default class IndexService {
     if (!currentView) {
       return
     }
+    // 文本框激活时不触发行粘贴
+    if (document.activeElement && document.activeElement.tagName === 'INPUT') {
+      return
+    }
 
     if (csvText) {
       const result: papaparse.ParseResult<string[]> = papaparse.parse(csvText)
