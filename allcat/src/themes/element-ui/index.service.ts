@@ -23,18 +23,6 @@ export default class IndexService {
     window.addEventListener('paste', this.onPaste)
   }
 
-  record () {
-    appHelper.record()
-  }
-
-  reset () {
-    this.app = appHelper.get('record')
-
-    store.currentApp = this.app
-    this.viewMenuService = new ViewMenuService(store.currentApp)
-    this.routerInit()
-  }
-
   /** 粘贴处理 */
   onPaste (e: Event) {
     const event = e as ClipboardEvent
@@ -69,6 +57,7 @@ export default class IndexService {
     window.removeEventListener('paste', this.onPaste)
   }
 
+  // TODO:可删除
   routerInit () {
     store.search = qs.parse(location.search.substr(1)) as Record<string, string>
     const { tableId, viewId } = store.search
