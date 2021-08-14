@@ -179,7 +179,7 @@ export default class extends Vue {
               data: this.list,
               'row-key': 'id',
               border: true,
-              'max-height': '400', //流体高度
+              'max-height': '470', //流体高度
             },
             on: {
               /** 右键点击 */
