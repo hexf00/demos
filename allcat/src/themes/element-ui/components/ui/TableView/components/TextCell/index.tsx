@@ -40,7 +40,7 @@ export default class TextCell extends Mixins(BaseCell) {
 
   render (h: CreateElement) {
     if (this.isEdit) {
-      return <el-input ref="input" size="mini" type="text" v-model={this.localValue} on={{
+      return <el-input class={style.textarea} ref="input" size="mini" type="textarea" autosize v-model={this.localValue} on={{
         blur: () => this.onBlur(),
       }} nativeOn={{
         click: (e: Event) => {
@@ -51,9 +51,17 @@ export default class TextCell extends Mixins(BaseCell) {
           if (code === 'Escape') {
             this.isEdit = false
           } else if (code === 'Enter') {
-            // 保存
-            this.submit()
-            this.isEdit = false
+            if (e.altKey || e.ctrlKey) {
+              /** 增加空格 */
+              this.localValue += '\n'
+            } else {
+              /** 删除空格 */
+              this.localValue = this.localValue.slice(0, -1)
+
+              // 保存
+              this.submit()
+              this.isEdit = false
+            }
           }
         },
       }} />
@@ -63,13 +71,13 @@ export default class TextCell extends Mixins(BaseCell) {
           this.isEdit = true
         },
       }}>
-        <el-popover
-          placement="bottom-start"
-          width="280"
-          trigger="click">
-          <div>{this.value}</div>
-          <div class={style.cell} slot="reference">{this.value}</div>
-        </el-popover>
+        <el-tooltip
+          placement="top"
+          open-delay={350}
+          popper-class={style.tip}>
+          <div class={style.cell}>{this.value}</div>
+          <div slot="content">{this.value}</div>
+        </el-tooltip>
       </div>
     }
   }

@@ -11,6 +11,7 @@ import {
   DropdownItem,
   Input,
   Popover,
+  Tooltip,
   Form,
   FormItem,
   Select,
@@ -33,6 +34,7 @@ Vue.use(DropdownMenu)
 Vue.use(DropdownItem)
 Vue.use(Input)
 Vue.use(Popover)
+Vue.use(Tooltip)
 Vue.use(Form)
 Vue.use(FormItem)
 Vue.use(Select)

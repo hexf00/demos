@@ -13,15 +13,26 @@
   margin-left: -10px;
 }
 
-:global{
+:global {
   .el-tag.el-tag--info .el-tag__close {
     color: inherit;
     background-color: transparent;
   }
 }
 
-.cell{
+.cell {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.textarea {
+  position: absolute;
+  background: #fff;
+  z-index: 1;
+  margin-left: -10px;
+}
+
+.tip {
+  max-width: 280px;
 }

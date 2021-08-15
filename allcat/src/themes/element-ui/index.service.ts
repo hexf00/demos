@@ -36,7 +36,7 @@ export default class IndexService {
       return
     }
     // 文本框激活时不触发行粘贴
-    if (document.activeElement && document.activeElement.tagName === 'INPUT') {
+    if (document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA')) {
       return
     }
 
