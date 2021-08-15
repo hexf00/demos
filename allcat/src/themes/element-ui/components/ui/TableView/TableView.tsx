@@ -14,6 +14,7 @@ import SortPanel from '../Panel/SorterPanel/SortPanel'
 import SortPanelService from '../Panel/SorterPanel/SortPanel.service'
 import { IViewSorter } from '@/models/View/ViewSorter'
 import FieldListPanelService from '../Panel/FieldListPanel/service'
+const isShowJSON = localStorage.getItem('isShowJSON')
 
 @Component({
   directives: { Clickoutside },
@@ -237,9 +238,9 @@ export default class extends Vue {
           ))}
         </el-table>
       </div>
-      <div class={style.log}>
+      {isShowJSON && <div class={style.log}>
         <pre>{JSON.stringify(table, null, 2)}</pre>
-      </div>
+      </div>}
     </div >
   }
 }
