@@ -941,7 +941,7 @@ export default {
       }
     },
     getColor(item) {
-      return item.$slots.default[0].data.style["background-color"];
+      return item.$slots.default && item.$slots.default[0].data.style["background-color"];
     },
   },
 
