@@ -21,6 +21,7 @@ function addRow (table: IJSONTable) {
 
   const row: IJSONRow = {
     id: generateRowId(table),
+    createdAt: new Date().getTime(),
   }
 
   //需要通过Vue给不存在的属性添加响应式
