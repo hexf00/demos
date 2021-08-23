@@ -50,6 +50,8 @@
     }
     .right {
       flex: 1;
+      /** 不要超出100% */
+      overflow: hidden;
     }
   }
 }
