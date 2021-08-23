@@ -10,7 +10,7 @@ import SortPanel from '../Panel/SorterPanel/SortPanel'
 import SortPanelService from '../Panel/SorterPanel/SortPanel.service'
 import { IViewSorter } from '@/models/View/ViewSorter'
 import FieldListPanelService from '../Panel/FieldListPanel/service'
-import SimpleTable from './components/Table'
+import SimpleTable from './components/SimpleTable'
 import TableViewService from './service'
 const isShowJSON = localStorage.getItem('isShowJSON')
 
