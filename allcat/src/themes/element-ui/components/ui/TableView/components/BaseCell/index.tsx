@@ -22,7 +22,11 @@ export default class BaseCell extends Vue {
 
   /** 提交数据，进行更新 */
   submit () {
-    this.$emit('input', this.localValue)
+    if (this.localValue === '' || (Array.isArray(this.localValue) && this.localValue.length === 0)) {
+      this.$emit('input', undefined)
+    } else {
+      this.$emit('input', this.localValue)
+    }
   }
 
 }
