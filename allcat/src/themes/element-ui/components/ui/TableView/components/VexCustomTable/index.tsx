@@ -40,8 +40,12 @@ export default class VexCustomTable extends Vue {
   }
   get list () {
     if (this.view?.sort?.rules) {
-      const rules = this.view.sort.rules.filter(it => it.field)
-
+      const rules = this.view.sort.rules.filter(it => it.field).map(it => {
+        return {
+          ...it,
+          field: this.table.fields[it.field],
+        }
+      })
       const data = this.view.rowsSorts.map(it => this.table.rows[it])
 
       data.sort(sortFun(rules))
