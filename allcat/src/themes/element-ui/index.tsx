@@ -3,7 +3,7 @@ import { CreateElement } from 'vue'
 
 import '@/themes/element-ui/element-ui'
 import ViewMenu from '@/themes/element-ui/components/ui/ViewMenu/ViewMenu'
-import TableView from '@/themes/element-ui/components/ui/TableView/TableView'
+import TableView from '@/themes/element-ui/components/ui/TableView'
 
 import style from './index.module.scss'
 import IndexService from './index.service'

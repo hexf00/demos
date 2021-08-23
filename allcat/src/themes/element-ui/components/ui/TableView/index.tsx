@@ -1,29 +1,28 @@
-import { Vue, Component, Prop } from 'vue-property-decorator'
+import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import { CreateElement } from 'vue'
 import { IJSONTable } from '@/types/IJSONTable'
 import { IView } from '@/models/View/View'
 import FieldListPanel from '../Panel/FieldListPanel/FieldListPanel'
-import style from './TableView.module.scss'
+import style from './index.module.scss'
 import Clickoutside from '@/directives/clickoutside'
 import rowHelper from '@/models/Table/rowHelper'
-import { IJSONRow } from '@/types/IJSONRow'
-import Icon from '../../base/Icon/Icon'
-import TableCell from './components/TableCell'
-import { TableColumn } from 'element-ui/types/table-column'
 import SortPanel from '../Panel/SorterPanel/SortPanel'
 import SortPanelService from '../Panel/SorterPanel/SortPanel.service'
 import { IViewSorter } from '@/models/View/ViewSorter'
 import FieldListPanelService from '../Panel/FieldListPanel/service'
+import SimpleTable from './components/Table'
+import TableViewService from './service'
 const isShowJSON = localStorage.getItem('isShowJSON')
 
 @Component({
   directives: { Clickoutside },
 })
-export default class extends Vue {
+export default class TableView extends Vue {
   @Prop(Object) table!: IJSONTable
   @Prop(Object) view!: IView
 
-  selected: IJSONRow[] = []
+  service = new TableViewService(this.table, this.view)
+
   mounted () {
   }
 
@@ -78,6 +77,15 @@ export default class extends Vue {
 
   }
 
+  @Watch('table', { immediate: true })
+  tableChange (table: IJSONTable) {
+    this.service.table = table
+  }
+  @Watch('view', { immediate: true })
+  change (view: IView) {
+    this.service.view = view
+  }
+
   render (h: CreateElement) {
     const { table, view } = this
 
@@ -118,11 +126,11 @@ export default class extends Vue {
           class: style.btn,
           props: {
             size: 'mini',
-            disabled: this.selected.length === 0,
+            disabled: this.service.selected.length === 0,
           },
           on: {
             click: () => {
-              rowHelper.removeRow(this.table, this.selected)
+              rowHelper.removeRow(this.table, this.service.selected)
             },
           },
         }}>删除行</el-button>
@@ -174,69 +182,7 @@ export default class extends Vue {
 
       </div>
       <div>
-        <el-table
-          {...{
-            props: {
-              data: this.list,
-              'row-key': 'id',
-              border: true,
-              'max-height': '470', //流体高度
-            },
-            on: {
-              /** 右键点击 */
-              'row-contextmenu': (row: IJSONRow, column: TableColumn, event: MouseEvent) => {
-                event.preventDefault() //屏蔽系统右键菜单
-              },
-              /** 选中项变化 */
-              'selection-change': (rows: IJSONRow[]) => {
-                this.selected = rows
-              },
-              /** 列宽度改变 */
-              'header-dragend': (newWidth: number, oldWidth: number, column: TableColumn, event: MouseEvent) => {
-                // console.log(column.property, newWidth)
-                const viewField = this.view.fields.find(it => it.id === column.property)
-                if (viewField) {
-                  viewField.width = Math.ceil(newWidth)
-                }
-              },
-            },
-          }}
-        >
-          <el-table-column
-            type="selection"
-            width="36">
-          </el-table-column>
-          <el-table-column
-            type="index"
-            width="50">
-          </el-table-column>
-          {this.cols.map(it => (
-            <el-table-column
-              props={{
-                prop: it.id,
-                label: it.name,
-                width: this.colsWidth[it.id],
-              }}
-              scopedSlots={{
-                default: (args: { column: TableColumn; row: IJSONRow }) => {
-                  const { column, row } = args
-                  const field = table.fields[column.property]
-                  return <TableCell row={row} field={field} width={this.colsWidth[it.id]}></TableCell>
-                },
-                header: (args: { column: TableColumn }) => {
-                  // TODO 添加getter
-                  console.log(args.column.property)
-                  return <div class={style.th}>
-                    <Icon value={it.type}></Icon>
-                    {it.name}
-                  </div>
-                },
-              }}
-            >
-
-            </el-table-column>
-          ))}
-        </el-table>
+        <SimpleTable service={this.service}></SimpleTable>
       </div>
       {isShowJSON && <div class={style.log}>
         <pre>{JSON.stringify(table, null, 2)}</pre>
