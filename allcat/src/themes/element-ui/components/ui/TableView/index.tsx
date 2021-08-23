@@ -10,7 +10,7 @@ import SortPanel from '../Panel/SorterPanel/SortPanel'
 import SortPanelService from '../Panel/SorterPanel/SortPanel.service'
 import { IViewSorter } from '@/models/View/ViewSorter'
 import FieldListPanelService from '../Panel/FieldListPanel/service'
-import SimpleTable from './components/SimpleTable'
+import VexCustomTable from './components/VexCustomTable'
 import TableViewService from './service'
 const isShowJSON = localStorage.getItem('isShowJSON')
 
@@ -33,6 +33,8 @@ export default class TableView extends Vue {
 
   /** 排序面板 */
   sortPanelService: SortPanelService | null = null
+
+  isShowTable = true
 
   constructor() {
     super()
@@ -84,6 +86,12 @@ export default class TableView extends Vue {
   @Watch('view', { immediate: true })
   change (view: IView) {
     this.service.view = view
+
+    // 强行刷新
+    this.isShowTable = false
+    this.$nextTick(() => {
+      this.isShowTable = true
+    })
   }
 
   render (h: CreateElement) {
@@ -182,7 +190,7 @@ export default class TableView extends Vue {
 
       </div>
       <div>
-        <SimpleTable service={this.service}></SimpleTable>
+        {this.isShowTable && <VexCustomTable service={this.service}></VexCustomTable>}
       </div>
       {isShowJSON && <div class={style.log}>
         <pre>{JSON.stringify(table, null, 2)}</pre>
