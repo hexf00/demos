@@ -6,6 +6,7 @@ import Icon from '../../../../base/Icon/Icon'
 import TableCell from '../TableCell'
 import TableViewService from '../../service'
 import { TableColumn } from 'element-ui/types/table-column'
+import { sortFun } from '@/libs/sort'
 
 @Component
 export default class VexCustomTable extends Vue {
@@ -43,27 +44,12 @@ export default class VexCustomTable extends Vue {
 
       const data = this.view.rowsSorts.map(it => this.table.rows[it])
 
-      data.sort((itemA, itemB) => {
-        const result = rules.reduce((result, rule, index) => {
-          const { field, type } = rule
-          const [a, b] = type === 'asc' ? [itemA, itemB] : [itemB, itemA]
-          if (typeof a === 'number' && typeof b === 'number') {
-            // TODO:确认规则是否准确
-            result += (rules.length - index) * (a > b ? 1 : -1)
-          } else {
-            result += (rules.length - index) * (String(a[field]).localeCompare(String(b[field])))
-          }
-          return result
-        }, 0)
-
-        return result
-      })
+      data.sort(sortFun(rules))
 
       return data
     }
 
     return this.view.rowsSorts.map(it => this.table.rows[it])
-
   }
 
   mounted () {
@@ -131,7 +117,7 @@ export default class VexCustomTable extends Vue {
             },
             header: (args: { column: TableColumn }) => {
               // TODO 添加getter
-              console.log(args.column.property)
+              // console.log(args.column.property)
               return <div class={style.th}>
                 <Icon value={it.type}></Icon>
                 {it.name}

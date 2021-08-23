@@ -50,34 +50,6 @@ export default class TableView extends Vue {
   get cols () {
     return this.view.fields.filter(it => it.isShow).map(it => this.table.fields[it.id])
   }
-  get list () {
-    if (this.view?.sort?.rules) {
-      const rules = this.view.sort.rules.filter(it => it.field)
-
-      const data = this.view.rowsSorts.map(it => this.table.rows[it])
-
-      data.sort((itemA, itemB) => {
-        const result = rules.reduce((result, rule, index) => {
-          const { field, type } = rule
-          const [a, b] = type === 'asc' ? [itemA, itemB] : [itemB, itemA]
-          if (typeof a === 'number' && typeof b === 'number') {
-            // TODO:确认规则是否准确
-            result += (rules.length - index) * (a > b ? 1 : -1)
-          } else {
-            result += (rules.length - index) * (String(a[field]).localeCompare(String(b[field])))
-          }
-          return result
-        }, 0)
-
-        return result
-      })
-
-      return data
-    }
-
-    return this.view.rowsSorts.map(it => this.table.rows[it])
-
-  }
 
   @Watch('table', { immediate: true })
   tableChange (table: IJSONTable) {
