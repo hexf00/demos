@@ -1,6 +1,5 @@
-import { ISortRule } from '@/models/View/ViewSorter'
+import { IJSONSortRule } from '@/models/View/ViewSorter'
 export default class SortItemService {
-  constructor(public data: ISortRule) {
-
+  constructor(public data: IJSONSortRule) {
   }
 }

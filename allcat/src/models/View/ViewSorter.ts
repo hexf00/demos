@@ -1,5 +1,5 @@
 /** 过滤器规则 */
-export interface ISortRule {
+export interface IJSONSortRule {
   /** 字段 */
   field: string
   /** 规则类型 */
@@ -10,5 +10,5 @@ export interface IViewSorter {
   /** 是否自动排序 */
   isAutoSort: boolean
   /** 过滤器规则 */
-  rules: ISortRule[]
+  rules: IJSONSortRule[]
 }

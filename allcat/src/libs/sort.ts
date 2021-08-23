@@ -1,8 +1,8 @@
-import { ISortRule } from '@/models/View/ViewSorter'
+import { IJSONSortRule } from '@/models/View/ViewSorter'
 import { IJSONRow } from '@/types/IJSONRow'
 
 /** 多条件排序，计算rate后排序 */
-export function sortFun (rules: ISortRule[]) {
+export function sortFun (rules: IJSONSortRule[]) {
   return (itemA: IJSONRow, itemB: IJSONRow) => {
     const result = rules.reduce((result, rule, index) => {
       const { field, type } = rule

@@ -1,8 +1,8 @@
-import { ISortRule } from '@/models/View/ViewSorter'
+import { IJSONSortRule } from '@/models/View/ViewSorter'
 import { CreateElement, RenderContext } from 'vue'
 
 type Props = {
-  service: ISortRule
+  service: IJSONSortRule
 }
 
 const SortItem = {

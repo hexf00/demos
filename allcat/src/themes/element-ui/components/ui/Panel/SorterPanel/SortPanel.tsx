@@ -1,6 +1,6 @@
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import { IJSONTableField } from '@/types/IJSONTableField'
-import { ISortRule, IViewSorter } from '@/models/View/ViewSorter'
+import { IJSONSortRule, IViewSorter } from '@/models/View/ViewSorter'
 import { CreateElement } from 'vue'
 import style from './SortPanel.module.scss'
 import { TreeNode } from 'element-ui/types/tree'
@@ -15,7 +15,7 @@ export default class FieldListPanel extends Vue {
   @Prop(Object) service!: ISortPanel
 
   /** 判断拖拽是否允许放下 */
-  isAllowDrop (raggingNode: TreeNode<string, ISortRule>, dropNode: TreeNode<string, ISortRule>, pos: 'prev' | 'inner' | 'next') {
+  isAllowDrop (raggingNode: TreeNode<string, IJSONSortRule>, dropNode: TreeNode<string, IJSONSortRule>, pos: 'prev' | 'inner' | 'next') {
     if (pos === 'inner') {
       return false
     }
@@ -38,7 +38,7 @@ export default class FieldListPanel extends Vue {
         }
         }
         scopedSlots={{
-          default: ({ data }: { data: ISortRule }) => {
+          default: ({ data }: { data: IJSONSortRule }) => {
             const rule = data
             return <div class={style.row}>
               <el-select class={style.select} size="mini" vModel={rule.field}>
