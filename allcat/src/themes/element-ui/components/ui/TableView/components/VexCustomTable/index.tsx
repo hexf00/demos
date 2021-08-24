@@ -152,9 +152,11 @@ export default class VexCustomTable extends Vue {
           'scroll-y': { gt: 10 },
           /** 可调整宽度 */
           resizable: true,
-          'row-class-name': ({ row }: { row: IJSONRow }) => {
+          'row-class-name': ({ row }: { row: IJSONRow }): string => {
             if (row === this.service.inEditRow && this.isNeedSort) {
               return style.inEdit
+            } else {
+              return ''
             }
           },
 
