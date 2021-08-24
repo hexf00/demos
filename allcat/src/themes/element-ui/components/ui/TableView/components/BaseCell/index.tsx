@@ -1,3 +1,4 @@
+import { IJSONRow } from '@/types/IJSONRow'
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import BaseCellService from './service'
 
@@ -16,6 +17,27 @@ export default class BaseCell extends Vue {
 
   /** 是否处于编辑模式 */
   isEdit = false
+
+  @Watch('isEdit', { immediate: true })
+  onEditBase (isEdit: boolean) {
+    if (isEdit === true) {
+      console.log('enterEdit')
+      this.$emit('enterEdit')
+      document.addEventListener('rowBlur', this.onBlur)
+    } else {
+      document.removeEventListener('rowBlur', this.onBlur)
+    }
+  }
+
+  onBlur (e: CustomEventInit<{ row: IJSONRow }>) {
+    this.$emit('leaveEdit', e.detail?.row)
+    this.submit()
+    this.isEdit = false
+  }
+
+  beforeDestroy () {
+    document.removeEventListener('rowBlur', this.onBlur)
+  }
 
   /** 单元格的配置 */
   @Prop(Object) readonly service!: BaseCellService

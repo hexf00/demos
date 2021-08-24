@@ -1,4 +1,13 @@
 :global {
+  .vxe-table--render-default .vxe-cell {
+    padding: 0 !important;
+  }
+
+  .vxe-table--render-default.size--mini .vxe-body--column.col--ellipsis {
+    height: 30px;
+    line-height: 30px;
+  }
+
   .vxe-cell > div {
     top: 0;
   }
@@ -12,4 +21,9 @@
   align-items: center;
   color: #909399;
   fill: #909399;
+}
+
+.inEdit {
+  outline: 1px #ff0 solid;
+  background: #ffffa7;
 }

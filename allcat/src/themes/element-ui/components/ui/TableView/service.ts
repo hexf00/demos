@@ -6,6 +6,9 @@ export default class TableViewService {
 
   selected: IJSONRow[] = []
 
+  /** 正在被编辑的行 */
+  inEditRow: IJSONRow | null = null
+
   constructor(public table: IJSONTable, public view: IView) {
 
   }

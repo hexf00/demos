@@ -10,13 +10,26 @@ import store from '@/store'
 import RelationCellService from '../RelationCell/service'
 import { EFieldType, IFieldValue, IMultiValue, ISelectValue, ISingleValue } from '@/types/EType'
 import { checkOptionsIsNotExistAdd } from '@/models/Table/fieldHelper'
+import TableViewService from '../../service'
 
 @Component
 export default class TableCell extends Vue {
+  $props!: {
+    service: TableViewService
+    row: IJSONRow
+    field: IJSONTableField
+    width: number
+  }
+
+  @Prop(Object) service!: TableViewService
 
   @Prop(Object) row!: IJSONRow
   @Prop(Object) field!: IJSONTableField
   @Prop(Number) width!: number
+
+  onClick () {
+    console.log('不在行内点击')
+  }
 
   render (h: CreateElement) {
     if (!this.field) {
@@ -27,7 +40,11 @@ export default class TableCell extends Vue {
 
     if (field.type === EFieldType.text) {
       const service = new TextCellService()
-      return <TextCell value={this.row[this.field.id] as string} service={service} oninput={val => {
+      return <TextCell value={this.row[this.field.id] as string} service={service} on={{
+        enterEdit: () => {
+          this.service.inEditRow = this.row
+        },
+      }} oninput={val => {
         this.$set(this.row, field.id, val || undefined)
       }} />
     } else if (field.type === EFieldType.number) {

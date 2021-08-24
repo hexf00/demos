@@ -15,6 +15,9 @@ export default class TextCell extends Mixins(BaseCell) {
     value: string
     service: TextCellService
     oninput: (value: string) => void
+    on?: {
+      enterEdit?: () => void
+    }
   }
 
   @Prop() readonly value!: string
@@ -33,15 +36,10 @@ export default class TextCell extends Mixins(BaseCell) {
     }
   }
 
-  onBlur () {
-    this.submit()
-    this.isEdit = false
-  }
-
   render (h: CreateElement) {
     if (this.isEdit) {
       return <el-input class={style.textarea} ref="input" size="mini" type="textarea" autosize v-model={this.localValue} on={{
-        blur: () => this.onBlur(),
+        // 因为自动排序与失去焦点存在冲突，所以弃用失去焦点，改为手动判断点击是否处于当前行来判断焦点是否丢失
       }} nativeOn={{
         click: (e: Event) => {
           e.stopPropagation()

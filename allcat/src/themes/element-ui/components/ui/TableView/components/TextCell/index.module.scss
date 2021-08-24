@@ -10,7 +10,6 @@
   position: absolute;
   background: #fff;
   z-index: 1;
-  margin-left: -10px;
 }
 
 :global {
@@ -30,7 +29,6 @@
   position: absolute;
   background: #fff;
   z-index: 1;
-  margin-left: -10px;
   :global(.el-textarea__inner) {
     font-family: "微软雅黑";
   }
