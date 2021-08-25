@@ -126,6 +126,18 @@ export default class VexCustomTable extends Vue {
   mounted () {
     // this.$refs.xTable1.loadData(this.list)
     (this.$refs.xTable1.$el as HTMLElement).addEventListener('click', this.onclick)
+
+    this.service.bindScrollToRow((row: IJSONRow) => {
+      setTimeout(() => {
+        this.$refs.xTable1.scrollToRow(row)
+      }, 0)
+    })
+    this.service.bindScrollTo((y: number) => {
+      setTimeout(() => {
+        this.$refs.xTable1.scrollTo(undefined, y)
+      }, 0)
+    })
+
   }
 
   beforeDestroy () {

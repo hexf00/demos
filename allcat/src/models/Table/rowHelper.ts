@@ -17,7 +17,7 @@ function generateRowId (table: IJSONTable): string {
   return id
 }
 
-function addRow (table: IJSONTable) {
+function addRow (table: IJSONTable): IJSONRow {
 
   const row: IJSONRow = {
     id: generateRowId(table),

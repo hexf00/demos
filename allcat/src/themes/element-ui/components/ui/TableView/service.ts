@@ -9,7 +9,20 @@ export default class TableViewService {
   /** 正在被编辑的行 */
   inEditRow: IJSONRow | null = null
 
+  callbacks = {
+    scrollToRow: (row: IJSONRow) => { },
+    scrollTo: (y: number) => { },
+  }
+
   constructor(public table: IJSONTable, public view: IView) {
 
+  }
+
+  bindScrollToRow (fn: (row: IJSONRow) => void) {
+    this.callbacks.scrollToRow = fn
+  }
+
+  bindScrollTo (fn: (y: number) => void) {
+    this.callbacks.scrollTo = fn
   }
 }

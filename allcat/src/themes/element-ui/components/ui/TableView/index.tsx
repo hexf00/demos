@@ -98,7 +98,8 @@ export default class TableView extends Vue {
       <div>
         <el-button size="mini" on={{
           click: () => {
-            rowHelper.addRow(this.table)
+            const row = rowHelper.addRow(this.table)
+            this.service.callbacks.scrollToRow(row)
           },
         }}>新增行</el-button>
 
