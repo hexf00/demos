@@ -67,13 +67,13 @@ export default class VexCustomTable extends Vue {
    * 需要手动控制排序渲染的时机，所以computed后还需要再判断处理
    */
   @Watch('list', { immediate: true })
-  onSort (rows: IJSONRow[], oldRows: IJSONRow[]) {
+  onSort (rows: IJSONRow[], oldRows: IJSONRow[] | undefined) {
 
     let oldIndex
     const inEditRow = this.service.inEditRow
 
     console.log('编辑中', inEditRow)
-    if (inEditRow) {
+    if (inEditRow && oldRows) {
       oldIndex = oldRows.indexOf(inEditRow)
     }
 
