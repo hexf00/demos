@@ -53,6 +53,12 @@ export default class TextCell extends Mixins(BaseCell) {
               /** 增加空格 */
               this.localValue += '\n'
             } else {
+
+              //中文输入法中输入英文需要按回车，但不应该触发回车事件
+              const lastChar = this.localValue.slice(-1)
+              if (lastChar !== '\n') {
+                return
+              }
               /** 删除空格 */
               this.localValue = this.localValue.slice(0, -1)
 
