@@ -1,7 +1,7 @@
 import { <%= componentInterfaceName %>, <%= dataInterfaceName %> } from './types'
 
 export default class <%= serviceName %> implements <%= componentInterfaceName %> {
-  data: <%= dataInterfaceName %>
+  data!: <%= dataInterfaceName %>
 
   /** 动态注册的函数 */
   callbacks = {
@@ -10,8 +10,8 @@ export default class <%= serviceName %> implements <%= componentInterfaceName %>
 <% } %>
   }
 
-  constructor (data?: <%= dataInterfaceName %>) {
-    this.data = { ...this.getDefaultData(), ...data }
+  constructor (data?: Partial<<%= dataInterfaceName %>>) {
+    this.setData(data === undefined ? {} : data)
   }
 
   /** 获取默认数据 */
@@ -35,5 +35,9 @@ export default class <%= serviceName %> implements <%= componentInterfaceName %>
 
   getData () {
     return this.data
+  }
+
+  setData (data: Partial<<%= dataInterfaceName %>>) {
+    this.data = { ...this.getDefaultData(), ...data }
   }
 }

@@ -25,13 +25,18 @@ const name = program.args[0]
         checked: true,
       },
       {
-        name: "有表单吗",
+        name: "有表单",
         value: "hasForm",
         checked: true,
       },
       {
-        name: "有样式吗",
+        name: "有样式",
         value: "hasCss",
+        checked: true,
+      },
+      {
+        name: "service从Props传入",
+        value: "isServiceFromProps",
         checked: true,
       },
       {
@@ -63,8 +68,9 @@ const name = program.args[0]
     componentName: voca.titleCase(answers.componentName),
     dataInterfaceName: `I${voca.titleCase(answers.componentName)}Data`,
     componentInterfaceName: 'I' + voca.titleCase(answers.componentName),
-    serviceName: `${voca.camelCase(answers.componentName)}Service`,
+    serviceName: `${voca.titleCase(answers.componentName)}Service`,
     serviceObjName: 'service',
+    isServiceFromProps: answers.types.includes('isServiceFromProps'),
     hasForm: answers.types.includes('hasForm'),
     hasCss: answers.types.includes('hasCss')
   }

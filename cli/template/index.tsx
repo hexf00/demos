@@ -1,24 +1,40 @@
 import { CreateElement } from 'vue'
-import { Component, Prop, Vue } from 'vue-property-decorator'
+import { Component, Prop, Vue<% if(!isServiceFromProps){ %>, Watch<% } %> } from 'vue-property-decorator'
 import classnames from 'classnames'
 
-import { <%= componentInterfaceName %> } from './types'
+
+<% if (!isServiceFromProps) { %>import <%= serviceName %> from './service'<% } %>
+import { <%= componentInterfaceName %><% if(!isServiceFromProps){ %>, <%= dataInterfaceName %><% } %> } from './types'
 <% if (hasCss) { %>import style from './index.module.scss'<% } %>
 
 @Component
 export default class <%= componentName %> extends Vue {
-  $props!: {
-    <%= serviceObjName %>: <%= componentInterfaceName %>
-  }
-
-  @Prop() <%= serviceObjName %>!: <%= componentInterfaceName %>
-
 <% if (hasForm) { %>
   /** 表单元素 */
   $refs!: {
     form: any
   }
 <% } %>
+
+<% if(isServiceFromProps){ %> 
+  $props!: {
+    <%= serviceObjName %>: <%= componentInterfaceName %>
+  }
+
+  @Prop() <%= serviceObjName %>!: <%= componentInterfaceName %>
+<% } else { %>
+  $props!: {
+    value: <%= dataInterfaceName %>
+  }
+
+  @Prop() value!: <%= dataInterfaceName %>
+  @Watch('value', { immediate: true })
+  onValueChange (value: <%= dataInterfaceName %>) {
+    this.service.setData(value)
+  }
+
+  service: <%= componentInterfaceName %> = new <%= serviceName %>()
+<% } %> 
 
   mounted() {
 <% if (hasForm) { %>
