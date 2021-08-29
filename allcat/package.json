@@ -11,6 +11,7 @@
     "@vue/babel-helper-vue-jsx-merge-props": "^1.2.1",
     "@vue/babel-preset-jsx": "^1.2.4",
     "babel-loader": "^8.1.0",
+    "classnames": "^2.3.1",
     "element-ui": "^2.15.0",
     "eslint": "^7.20.0",
     "html-webpack-plugin": "^4.3.0",
