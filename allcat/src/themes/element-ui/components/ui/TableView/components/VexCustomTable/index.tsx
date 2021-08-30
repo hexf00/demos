@@ -4,10 +4,10 @@ import style from './index.module.scss'
 import { IJSONRow } from '@/types/IJSONRow'
 import Icon from '../../../../base/Icon/Icon'
 import TableCell from '../TableCell'
-import TableViewService from '../../service'
 import { TableColumn } from 'element-ui/types/table-column'
 import { sortFun } from '@/libs/sort'
 import { findParent } from '@/libs/domHelper'
+import { ITableView } from './types'
 
 @Component
 export default class VexCustomTable extends Vue {
@@ -15,10 +15,10 @@ export default class VexCustomTable extends Vue {
     xTable1: any
   }
   $props!: {
-    service: TableViewService
+    service: ITableView
   }
 
-  @Prop(Object) service!: TableViewService
+  @Prop(Object) service!: ITableView
 
   get table () {
     return this.service.table
@@ -188,6 +188,10 @@ export default class VexCustomTable extends Vue {
             if (viewField) {
               viewField.width = Math.ceil(args.cell.offsetWidth)
             }
+          },
+          'scroll': ({ type, scrollTop, scrollLeft, isX, isY, $event }: any) => {
+
+            console.log('scroll', type, scrollTop, scrollLeft, isX, isY, $event)
           },
         },
       }}

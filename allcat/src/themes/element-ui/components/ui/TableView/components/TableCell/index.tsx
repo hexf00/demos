@@ -10,18 +10,18 @@ import store from '@/store'
 import RelationCellService from '../RelationCell/service'
 import { EFieldType, IFieldValue, IMultiValue, ISelectValue, ISingleValue } from '@/types/EType'
 import { checkOptionsIsNotExistAdd } from '@/models/Table/fieldHelper'
-import TableViewService from '../../service'
+import { ITableView } from './types'
 
 @Component
 export default class TableCell extends Vue {
   $props!: {
-    service: TableViewService
+    service: ITableView
     row: IJSONRow
     field: IJSONTableField
     width: number
   }
 
-  @Prop(Object) service!: TableViewService
+  @Prop(Object) service!: ITableView
 
   @Prop(Object) row!: IJSONRow
   @Prop(Object) field!: IJSONTableField
