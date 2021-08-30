@@ -132,9 +132,9 @@ export default class VexCustomTable extends Vue {
         this.$refs.xTable1.scrollToRow(row)
       }, 0)
     })
-    this.service.bindScrollTo((y: number) => {
+    this.service.bindScrollTo(({ x, y }) => {
       setTimeout(() => {
-        this.$refs.xTable1.scrollTo(undefined, y)
+        this.$refs.xTable1.scrollTo(x, y)
       }, 0)
     })
 
@@ -190,8 +190,7 @@ export default class VexCustomTable extends Vue {
             }
           },
           'scroll': ({ type, scrollTop, scrollLeft, isX, isY, $event }: any) => {
-
-            console.log('scroll', type, scrollTop, scrollLeft, isX, isY, $event)
+            this.service.onScroll({ x: scrollLeft, y: scrollTop })
           },
         },
       }}

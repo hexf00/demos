@@ -36,7 +36,7 @@ export default class TableView extends Vue {
 
   isShowTable = true
 
-  constructor() {
+  constructor () {
     super()
   }
 
@@ -63,6 +63,10 @@ export default class TableView extends Vue {
     this.isShowTable = false
     this.$nextTick(() => {
       this.isShowTable = true
+
+      setTimeout(() => {
+        this.service.callbacks.scrollTo?.(this.service.getScrollPos())
+      }, 0)
     })
   }
 
@@ -99,7 +103,7 @@ export default class TableView extends Vue {
         <el-button size="mini" on={{
           click: () => {
             const row = rowHelper.addRow(this.table)
-            this.service.callbacks.scrollToRow(row)
+            this.service.callbacks.scrollToRow?.(row)
           },
         }}>新增行</el-button>
 
