@@ -18,6 +18,7 @@ export default class TableViewService implements ITableView {
   constructor (public table: IJSONTable, public view: IView) {
 
   }
+  tableHeight = 470
 
   bindScrollToRow (fn: (row: IJSONRow) => void) {
     this.callbacks.scrollToRow = fn
@@ -25,6 +26,10 @@ export default class TableViewService implements ITableView {
 
   bindScrollTo (fn: (pos: { x: number; y: number }) => void) {
     this.callbacks.scrollTo = fn
+  }
+
+  onResize (windowHeight: number) {
+    this.tableHeight = windowHeight - 90
   }
 
   getScrollPos (): { x: number; y: number } {

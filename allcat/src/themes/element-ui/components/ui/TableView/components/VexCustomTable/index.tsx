@@ -138,10 +138,17 @@ export default class VexCustomTable extends Vue {
       }, 0)
     })
 
+    window.addEventListener('resize', this.onResize)
   }
 
   beforeDestroy () {
     (this.$refs.xTable1.$el as HTMLElement).removeEventListener('click', this.onclick)
+
+    window.removeEventListener('resize', this.onResize)
+  }
+
+  onResize () {
+    this.service.onResize(window.innerHeight)
   }
 
   render (h: CreateElement) {
@@ -155,7 +162,7 @@ export default class VexCustomTable extends Vue {
           border: true,
           'show-overflow': true,
           'highlight-hover-row': true,
-          height: 470,
+          height: this.service.tableHeight,
           data: this.rows,
           'row-key': true,
           'row-id': 'id',

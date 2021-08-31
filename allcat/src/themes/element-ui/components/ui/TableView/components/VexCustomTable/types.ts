@@ -7,6 +7,8 @@ export interface ITableView {
   view: IView
   /** 正在被编辑的行 */
   inEditRow: IJSONRow | null
+  onResize: (windowHeight: number) => void
+  tableHeight: number
   bindScrollToRow (arg0: (row: IJSONRow) => void): void
   bindScrollTo (arg0: (pos: { x: number; y: number }) => void): void
   onScroll (arg0: { x: number; y: number }): void
