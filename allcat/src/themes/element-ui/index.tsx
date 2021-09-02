@@ -1,4 +1,4 @@
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Component, Prop } from 'vue-property-decorator'
 import { CreateElement } from 'vue'
 
 import '@/themes/element-ui/element-ui'
@@ -8,10 +8,18 @@ import TableView from '@/themes/element-ui/components/ui/TableView'
 import style from './index.module.scss'
 import IndexService from './index.service'
 import store from '@/store'
+import { IJSONApp } from '@/models/appHelper'
 
 @Component
 export default class extends Vue {
-  service = new IndexService()
+
+  $props!: {
+    app: IJSONApp
+  }
+
+  @Prop() app!: IJSONApp
+
+  service = new IndexService(this.app)
 
   store = store
 

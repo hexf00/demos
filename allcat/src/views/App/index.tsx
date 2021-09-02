@@ -37,7 +37,7 @@ export default class App extends Vue {
         return <NoUIIndex></NoUIIndex>
         break
       case 'element-ui':
-        return <ElementUIIndex></ElementUIIndex>
+        return <ElementUIIndex app={this.service.app}></ElementUIIndex>
         break
       default:
         return <div>未知UI:{this.theme}</div>

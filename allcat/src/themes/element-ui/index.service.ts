@@ -6,14 +6,11 @@ import papaparse from 'papaparse'
 import ViewMenuService from './components/ui/ViewMenu/ViewMenu.service'
 
 export default class IndexService {
-  app: IJSONApp
   viewMenuService: ViewMenuService
 
-  constructor () {
-    this.app = appHelper.get()
-    store.currentApp = this.app
+  constructor (public app: IJSONApp) {
 
-    this.viewMenuService = new ViewMenuService(store.currentApp)
+    this.viewMenuService = new ViewMenuService(app)
     this.routerInit()
 
     window.onbeforeunload = function () {
