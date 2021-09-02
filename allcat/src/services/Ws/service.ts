@@ -9,12 +9,14 @@ export class WsService implements IWs {
 
   unsetFn: (() => void)[] = []
 
-  actionProxy (data: any) {
-    const { action } = data
+  async actionProxy (data: any) {
+    const { action, _reqId } = data
     if (action === 'addRow') {
-      this.api.addRow(data.data)
+      const result = await this.api.addRow(data.data)
+      this.wsManager.emit('message', { _reqId, result, code: 200 })
     } else {
       console.warn('未知动作', data)
+      this.wsManager.emit('message', { _reqId, result: null, code: 404 })
     }
   }
 
