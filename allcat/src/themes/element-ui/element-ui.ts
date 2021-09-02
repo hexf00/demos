@@ -48,3 +48,6 @@ Vue.use(RadioGroup)
 
 import CustomSelect from '@/components/select/index'
 Vue.use(CustomSelect)
+
+import VXETable from 'vxe-table'
+Vue.use(VXETable)

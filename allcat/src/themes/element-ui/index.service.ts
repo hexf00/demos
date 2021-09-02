@@ -9,7 +9,7 @@ export default class IndexService {
   app: IJSONApp
   viewMenuService: ViewMenuService
 
-  constructor() {
+  constructor () {
     this.app = appHelper.get()
     store.currentApp = this.app
 

@@ -3,7 +3,7 @@ class WsManager {
   ws: WebSocket
 
   subscriptionProxies: Record<string, {
-    funcs: ((data: unknown) => void)[]
+    funcs: ((...args: any) => unknown)[]
   }> = {}
 
   heartCheck = {
@@ -21,6 +21,8 @@ class WsManager {
       }, this.heartCheck.timeout)
     },
   }
+
+  isDied = false
 
   constructor (public url: string) {
     this.ws = new WebSocket(this.url)
@@ -57,12 +59,16 @@ class WsManager {
 
     ws.onerror = (e) => {
       console.log('ws:出错...', e)
-      this.reconnect()
+      if (!this.isDied) {
+        this.reconnect()
+      }
     }
 
     ws.onclose = () => {
       console.log('ws:连接已关闭...')
-      this.reconnect()
+      if (!this.isDied) {
+        this.reconnect()
+      }
     }
   }
 
@@ -85,7 +91,7 @@ class WsManager {
   /**
    * 监听
    */
-  on (actionName: string, fn: () => void) {
+  on (actionName: string, fn: (...args: any) => unknown) {
     if (!actionName || !fn) {
       throw new Error('WsProxy监听注册 入参错误')
     }
@@ -103,7 +109,7 @@ class WsManager {
   /**
      * 注销
      */
-  off (actionName: string, fn: () => void) {
+  off (actionName: string, fn: (...args: any) => unknown) {
     if (!actionName || !fn) {
       throw new Error('WsProxy监听注销 入参错误')
     }
@@ -120,6 +126,13 @@ class WsManager {
       }
     }
 
+  }
+
+  unset () {
+    this.subscriptionProxies = {}
+    this.isDied = true
+    clearTimeout(this.heartCheck.timeoutObj)
+    this.ws.close()
   }
 }
 
