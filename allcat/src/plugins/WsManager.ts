@@ -22,7 +22,7 @@ class WsManager {
     },
   }
 
-  constructor(public url: string) {
+  constructor (public url: string) {
     this.ws = new WebSocket(this.url)
     this.initEventHandler(this.ws)
   }
@@ -41,6 +41,7 @@ class WsManager {
 
       const { event, data } = JSON.parse(e.data) as { event: string; data: unknown }
       if (event === 'heartbeatConfig') {
+        clearTimeout(this.heartCheck.timeoutObj)
         const time = (data as { time: number }).time
         heartCheck.timeout = time + 1000
         heartCheck.start()
@@ -121,7 +122,5 @@ class WsManager {
 
   }
 }
-
-
 
 export default WsManager
