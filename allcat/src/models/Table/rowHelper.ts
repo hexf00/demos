@@ -17,9 +17,10 @@ function generateRowId (table: IJSONTable): string {
   return id
 }
 
-function addRow (table: IJSONTable): IJSONRow {
+function addRow (table: IJSONTable, rowData?: Partial<IJSONRow>): IJSONRow {
 
   const row: IJSONRow = {
+    ...rowData,
     id: generateRowId(table),
     createdAt: new Date().getTime(),
   }

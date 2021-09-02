@@ -1,3 +1,4 @@
+import rowHelper from '@/models/Table/rowHelper'
 import { IJSONApp } from './../../models/appHelper'
 import { IJSONRow } from '@/types/IJSONRow'
 import { IApi } from './types'
@@ -8,15 +9,37 @@ export class ApiService implements IApi {
 
   }
 
-  addRow (data: { app: string; tableId: string; row: IJSONRow }): Promise<boolean> {
+  async addRow (data: { app: string; tableId: string; data: IJSONRow }): Promise<IJSONRow | false> {
 
     // 字段名称 使用id 还是 使用具名
     // 字段名称 不存在是创建 还是 抛弃
+    // 新增还是追加   判断依据是什么
 
-    // 新增还是追加 
+    if (this.app.tables[data.tableId]) {
 
-    console.log('addRow arguments', data)
-    return Promise.resolve(true)
+      const primaryField = this.app.tables[data.tableId].primaryField
+
+      const realRow: Partial<IJSONRow> = {}
+      Object.keys(data.data).forEach(k => {
+        const realKey = this.getFieldNameByLabelName(data.tableId, k)
+        if (realKey) {
+          realRow[realKey] = data.data[k]
+        }
+      })
+
+      // if (realRow[primaryField]) {
+
+      // 不重复添加
+      const existRow = await this.findRow({ app: data.app, tableId: data.tableId, query: { url: realRow[primaryField] } })
+      if (existRow) {
+        return false
+      }
+      // }
+
+      return rowHelper.addRow(this.app.tables[data.tableId], realRow)
+    } else {
+      return false
+    }
   }
 
   getFieldNameByLabelName (tableId: string, label: string) {

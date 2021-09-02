@@ -13,7 +13,11 @@ export class WsService implements IWs {
     const { action, _reqId } = data
     if (action === 'addRow') {
       const result = await this.api.addRow(data.data)
-      this.wsManager.emit('message', { _reqId, result, code: 200 })
+      if (result) {
+        this.wsManager.emit('message', { _reqId, result, code: 200 })
+      } else {
+        this.wsManager.emit('message', { _reqId, result, message: '添加失败', code: 500 })
+      }
     } else if (action === 'findRow') {
       const result = await this.api.findRow(data.data)
       this.wsManager.emit('message', { _reqId, result, code: 200 })
