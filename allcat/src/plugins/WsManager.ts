@@ -51,10 +51,11 @@ class WsManager {
         return
       }
 
+      console.log('ws:数据已接收...', event, data)
+
       const subscriptionProxy = this.subscriptionProxies[event]
       subscriptionProxy && subscriptionProxy.funcs.forEach(func => func(data))
 
-      console.log('ws:数据已接收...', event, data)
     }
 
     ws.onerror = (e) => {
