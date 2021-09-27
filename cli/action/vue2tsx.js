@@ -82,12 +82,17 @@ function getMaxLineLength (str) {
     // style 替换
     templateContent = templateContent.replace(/(class)="(.*?)["]([\n\s>/])/g, (_, $1, $2, $3) => {
       let $r_result = $2.split(' ').map(className => {
-        if ((className.includes('-') || className.includes('_'))
-          && (className.indexOf('fx') !== 0 && className.indexOf('mb') !== 0)) {
+
+        // 忽略这些开头
+        const startWith = ['fx_', 'mb-', 'ml-'].some(str => className.indexOf(str) === 0)
+        // 忽略这些匹配
+        const fullMatch = ['fx'].some(str => str === className)
+        if (startWith || fullMatch) {
+          return `'${className}'`
+        } else {
+          // 转驼峰
           const camelCaseClassName = voca.camelCase(className)
           return `style.${camelCaseClassName}`
-        } else {
-          return `'${className}'`
         }
       }).join(',')
       return `${$1}={classnames(${$r_result})}${$3}`
