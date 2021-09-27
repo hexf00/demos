@@ -4,7 +4,7 @@ import classnames from 'classnames'
 
 
 <% if (!isServiceFromProps) { %>import <%= serviceName %> from './service'<% } %>
-import { <%= componentInterfaceName %><% if(!isServiceFromProps){ %>, <%= dataInterfaceName %><% } %> } from './types'
+import { <%= namespaceName %> } from './types'
 <% if (hasCss) { %>import style from './index.module.scss'<% } %>
 
 @Component
@@ -18,10 +18,10 @@ export default class <%= componentName %> extends Vue {
 
 <% if(isServiceFromProps){ %> 
   $props!: {
-    <%= serviceObjName %>: <%= componentInterfaceName %>
+    <%= serviceObjName %>: <%= namespaceName %>.<%= componentInterfaceName %>
   }
 
-  @Prop() <%= serviceObjName %>!: <%= componentInterfaceName %>
+  @Prop() <%= serviceObjName %>!: <%= namespaceName %>.<%= componentInterfaceName %>
 <% } else { %>
   $props!: {
     value: <%= dataInterfaceName %>
@@ -50,10 +50,12 @@ export default class <%= componentName %> extends Vue {
 
   render(h: CreateElement) {
     const <%= serviceObjName %> = this.<%= serviceObjName %>
-    return <div class={classnames(<% if (hasCss) { %>style.component, <% } %>'manually-create')}>
+    return <div class={classnames(<% if (hasCss) { %>style.component<% } %>)}>
 <% if (hasForm) { %>
       <jk-Form ref="form" props={{ model: <%= serviceObjName %>.data }} rules={<%= serviceObjName %>.rules} autocomplete="off">
       </jk-Form>
+<% } else { %>
+  {service.data}
 <% } %>
     </div>
   }

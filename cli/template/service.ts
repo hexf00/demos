@@ -1,7 +1,7 @@
-import { <%= componentInterfaceName %>, <%= dataInterfaceName %> } from './types'
+import { <%= namespaceName %> } from './types'
 
-export default class <%= serviceName %> implements <%= componentInterfaceName %> {
-  data!: <%= dataInterfaceName %>
+export default class <%= serviceName %> implements <%= namespaceName %>.<%= componentInterfaceName %> {
+  data!: <%= namespaceName %>.<%= dataInterfaceName %>
 
   /** 动态注册的函数 */
   callbacks = {
@@ -10,12 +10,12 @@ export default class <%= serviceName %> implements <%= componentInterfaceName %>
 <% } %>
   }
 
-  constructor (data?: Partial<<%= dataInterfaceName %>>) {
+  constructor (data?: Partial<<%= namespaceName %>.<%= dataInterfaceName %>>) {
     this.setData(data === undefined ? {} : data)
   }
 
   /** 获取默认数据 */
-  private getDefaultData (): <%= dataInterfaceName %> {
+  private getDefaultData (): <%= namespaceName %>.<%= dataInterfaceName %> {
     return {}
   }
 
@@ -37,7 +37,7 @@ export default class <%= serviceName %> implements <%= componentInterfaceName %>
     return this.data
   }
 
-  setData (data: Partial<<%= dataInterfaceName %>>) {
+  setData (data: Partial<<%= namespaceName %>.<%= dataInterfaceName %>>) {
     this.data = { ...this.getDefaultData(), ...data }
   }
 }

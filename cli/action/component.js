@@ -66,8 +66,9 @@ const name = program.args[0]
   console.log(answers);
   let data = {
     componentName: voca.titleCase(answers.componentName),
-    dataInterfaceName: `I${voca.titleCase(answers.componentName)}Data`,
-    componentInterfaceName: 'I' + voca.titleCase(answers.componentName),
+    namespaceName: `N${voca.titleCase(answers.componentName)}`,
+    dataInterfaceName: 'IData',
+    componentInterfaceName: 'IView',
     serviceName: `${voca.titleCase(answers.componentName)}Service`,
     serviceObjName: 'service',
     isServiceFromProps: answers.types.includes('isServiceFromProps'),
