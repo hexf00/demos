@@ -1,11 +1,10 @@
+import classnames from 'classnames'
 import { CreateElement } from 'vue'
 import { Component, Prop, Vue<% if(!isServiceFromProps){ %>, Watch<% } %> } from 'vue-property-decorator'
-import classnames from 'classnames'
 
-
+<% if (hasCss) { %>import style from './index.module.scss'<% } %>
 <% if (!isServiceFromProps) { %>import <%= serviceName %> from './service'<% } %>
 import { <%= namespaceName %> } from './types'
-<% if (hasCss) { %>import style from './index.module.scss'<% } %>
 
 @Component
 export default class <%= componentName %> extends Vue {
@@ -23,21 +22,11 @@ export default class <%= componentName %> extends Vue {
 
   @Prop() <%= serviceObjName %>!: <%= namespaceName %>.<%= componentInterfaceName %>
 <% } else { %>
-  $props!: {
-    value: <%= dataInterfaceName %>
-  }
-
-  @Prop() value!: <%= dataInterfaceName %>
-  @Watch('value', { immediate: true })
-  onValueChange (value: <%= dataInterfaceName %>) {
-    this.service.setData(value)
-  }
-
-  service: <%= componentInterfaceName %> = new <%= serviceName %>()
+  service: <%= namespaceName %>.<%= componentInterfaceName %> = new <%= serviceName %>()
 <% } %> 
 
-  mounted() {
 <% if (hasForm) { %>
+  mounted() {
     this.<%= serviceObjName %>.bindValidate(() => {
       return new Promise((resolve) => {
         this.$refs.form.getVnode().validate((valid: boolean) => {
@@ -45,16 +34,17 @@ export default class <%= componentName %> extends Vue {
         })
       })
     })
-<% } %>
   }
 
   beforeDestroy () {
     this.service.unbindValidate()
   }
+<% } %>
 
   render(h: CreateElement) {
     const <%= serviceObjName %> = this.<%= serviceObjName %>
-    return <div class={classnames(<% if (hasCss) { %>style.component<% } %>)}>
+    return (
+    <div class={classnames(<% if (hasCss) { %>style.component<% } %>)}>
 <% if (hasForm) { %>
       <jk-Form ref="form" props={{ model: <%= serviceObjName %>.data }} rules={<%= serviceObjName %>.rules} autocomplete="off">
       </jk-Form>
@@ -62,5 +52,6 @@ export default class <%= componentName %> extends Vue {
   {service.data}
 <% } %>
     </div>
+    )
   }
 }

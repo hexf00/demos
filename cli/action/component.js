@@ -17,13 +17,9 @@ const name = program.args[0]
   const answers = await inquirer
     .prompt([{
       type: 'checkbox',
-      message: '组件类型',
+      message: '创建 tsx + service + types组件，请调整下列选项：',
       name: 'types',
-      choices: [{
-        name: "tsx + service + types",
-        value: "ts",
-        checked: true,
-      },
+      choices: [
       {
         name: "有表单",
         value: "hasForm",
