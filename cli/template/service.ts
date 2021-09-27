@@ -1,14 +1,10 @@
 import { <%= namespaceName %> } from './types'
 
-export default class <%= serviceName %> implements <%= namespaceName %>.<%= componentInterfaceName %> {
+export default class <%= serviceName %> implements <%= namespaceName %>.<%= componentInterfaceName %>,<%= namespaceName %>.<%= serviceInterfaceName %> {
   data!: <%= namespaceName %>.<%= dataInterfaceName %>
 
   /** 动态注册的函数 */
-  callbacks = {
-<% if (hasForm) { %>
-    validate: () => { return Promise.resolve(true) }
-<% } %>
-  }
+  callbacks : Partial<<%= namespaceName %>.ICallbacks>  = {}
 
   constructor (data?: Partial<<%= namespaceName %>.<%= dataInterfaceName %>>) {
     this.setData(data === undefined ? {} : data)
@@ -20,23 +16,34 @@ export default class <%= serviceName %> implements <%= namespaceName %>.<%= comp
   }
 
 <% if (hasForm) { %>
+  /** 校验规则 */
   rules = {}
 
   /** 注入校验实现 */
-  bindValidate (fn: () => Promise<boolean>): void {
+  bindValidate (fn: <%= namespaceName %>.ICallbacks['validate']): void {
     this.callbacks.validate = fn
+  }
+  
+  /** 注销校验实现 */
+  unbindValidate(){
+    this.callbacks.validate = undefined
   }
 
   /** 校验 */
   validate (): Promise<boolean> {
-    return this.callbacks.validate()
+    if (this.callbacks.validate) {
+      return this.callbacks.validate()
+    }
+    return Promise.resolve(true)
   }
 <% } %>
 
+  /** 获取数据 */
   getData () {
     return this.data
   }
 
+  /** 设置数据 */
   setData (data: Partial<<%= namespaceName %>.<%= dataInterfaceName %>>) {
     this.data = { ...this.getDefaultData(), ...data }
   }

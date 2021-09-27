@@ -48,6 +48,10 @@ export default class <%= componentName %> extends Vue {
 <% } %>
   }
 
+  beforeDestroy () {
+    this.service.unbindValidate()
+  }
+
   render(h: CreateElement) {
     const <%= serviceObjName %> = this.<%= serviceObjName %>
     return <div class={classnames(<% if (hasCss) { %>style.component<% } %>)}>

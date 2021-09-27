@@ -69,6 +69,7 @@ const name = program.args[0]
     namespaceName: `N${voca.titleCase(answers.componentName)}`,
     dataInterfaceName: 'IData',
     componentInterfaceName: 'IView',
+    serviceInterfaceName: 'IService',
     serviceName: `${voca.titleCase(answers.componentName)}Service`,
     serviceObjName: 'service',
     isServiceFromProps: answers.types.includes('isServiceFromProps'),
@@ -105,6 +106,7 @@ const name = program.args[0]
         prettier.format(str, {
           singleQuote: true, //单引号
           semi: false, //无分号
+          printWidth: 120, //最大长度
           parser: "babel-ts"
         })
       )
