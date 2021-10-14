@@ -4,9 +4,15 @@ import store from '@/store'
 import qs from 'qs'
 import papaparse from 'papaparse'
 import ViewMenuService from './components/ui/ViewMenu/ViewMenu.service'
+import { NLayout } from './types'
+import HeaderService from './components/Header/service'
 
-export default class IndexService {
+export default class IndexService implements NLayout.IView {
   viewMenuService: ViewMenuService
+
+  header = new HeaderService()
+
+  data = {}
 
   constructor (public app: IJSONApp) {
 
@@ -65,21 +71,6 @@ export default class IndexService {
         store.currentView = table.views[viewId]
       }
     }
-  }
-
-  export () {
-    const link = document.createElement('a')
-    const body = document.querySelector('body')!
-
-    link.href = 'data:application/json;charset=UTF-8,' + encodeURIComponent(JSON.stringify(this.app, null, 1))
-    link.download = 'app.json'
-
-    // fix Firefox
-    link.style.display = 'none'
-    body.appendChild(link)
-
-    link.click()
-    body.removeChild(link)
   }
 
 }

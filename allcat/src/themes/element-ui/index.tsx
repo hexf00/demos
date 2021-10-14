@@ -9,6 +9,8 @@ import style from './index.module.scss'
 import IndexService from './index.service'
 import store from '@/store'
 import { IJSONApp } from '@/models/appHelper'
+import Header from './components/Header'
+import { NLayout } from './types'
 
 @Component
 export default class extends Vue {
@@ -19,7 +21,7 @@ export default class extends Vue {
 
   @Prop() app!: IJSONApp
 
-  service = new IndexService(this.app)
+  service: NLayout.IView = new IndexService(this.app)
 
   store = store
 
@@ -28,16 +30,13 @@ export default class extends Vue {
   }
 
   render (h: CreateElement) {
-    const { name, description } = this.service.app
+    const service = this.service
     const { currentTable, currentView } = this.store
 
     return <div class={style.bg}>
-      <div class={style.top}>{name} {description}
-        <el-button>导入</el-button>
-        <el-button onclick={() => this.service.export()}>导出</el-button>
-      </div>
+      <Header service={service.header} />
       <div class={style.editor}>
-        <ViewMenu service={this.service.viewMenuService} class={style.left}></ViewMenu>
+        <ViewMenu service={service.viewMenuService} class={style.left}></ViewMenu>
 
         <div class={style.right}>
           {
